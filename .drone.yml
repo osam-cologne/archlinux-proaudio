@@ -1,0 +1,44 @@
+---
+kind: pipeline
+type: docker
+name: Build and check
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: Build packages
+    image: archlinux/archlinux:base-devel
+    commands:
+      - mkdir -p out
+      - chmod -R a+w out packages
+      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/nobody-sudo"
+      - pacman -Syyu --noconfirm
+      - sudo -u nobody ./tools/clean-build-all.sh
+
+  - name: List built packages
+    image: alpine
+    commands:
+      - ls -1 out/
+    when:
+      status:
+        - success
+        - failure
+
+  - name: Analyze built packages
+    image: archlinux/archlinux:base-devel
+    commands:
+      - pacman -Sy --noconfirm namcap
+      - "namcap out/*.pkg.tar.zst"
+    when:
+      status:
+        - success
+        - failure
+
+trigger:
+  ref:
+    include:
+      - refs/heads/master
+      - refs/pull/**
+      - refs/tags/**
