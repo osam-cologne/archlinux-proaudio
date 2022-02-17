@@ -32,5 +32,7 @@ for PKG in *; do
 	fi
 	cd ..
 done
+
 echo "$SUCC built, $FAIL failed, $SKIP skipped"
-[ $FAIL -gt 0 ] && exit 1
+
+[ $FAIL -eq 0 ] || exit 1
