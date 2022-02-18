@@ -5,13 +5,16 @@
 
 cd "${0%/*}/.."
 ROOT="$(pwd)"
+MAKEPKG_ARGS="$*"
 
-export PKGDEST="$ROOT/out"
-export LOGDEST="$ROOT/out"
+#export PKGDEST="$ROOT/out"
+#export LOGDEST="$ROOT/out"
 
 SUCC=0
 FAIL=0
 SKIP=0
+
+echo "epoch is $SOURCE_DATE_EPOCH"
 
 cd "$ROOT/packages"
 for PKG in *; do
@@ -24,7 +27,7 @@ for PKG in *; do
 		continue
 	fi
 
-	if makepkg -srcf --noconfirm --noprogressbar; then
+	if makepkg -srcf --noconfirm $MAKEPKG_ARGS; then
 		SUCC=$((SUCC+1))
 	else
 		FAIL=$((FAIL+1))

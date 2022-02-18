@@ -8,19 +8,66 @@ platform:
   arch: amd64
 
 steps:
+  - name: Pacman cache
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    environment:
+      PKGDEST: /tmp/build
+      LOGDEST: /tmp/build
+      SRCDEST: /tmp/build
+      SRCPKGDEST: /tmp/build
+      BUILDDIR: /tmp/build
+    commands:
+      - pacman -Syyu --noconfirm namcap diffoscope
+      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
+      - sudo -Eu nobody ./tools/syncdeps-all.sh
+
+  - name: Analyze build scripts
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - pacman -S --noconfirm namcap
+      - namcap packages/*/PKGBUILD
+    depends_on:
+      - Pacman cache
+
   - name: Build packages
     image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    environment:
+      PKGDEST: /drone/src/out1
+      LOGDEST: /drone/src/out1
+      SRCDEST: /tmp/build
+      SRCPKGDEST: /tmp/build
+      BUILDDIR: /tmp/build
     commands:
-      - mkdir -p out
-      - chmod -R a+w out packages
-      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/nobody-sudo"
-      - pacman -Syyu --noconfirm
-      - sudo -u nobody ./tools/clean-build-all.sh
+      - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
+      - rm -rf out out1 out.SHA512  # cleanup, needed for local testing
+      - mkdir -p out1 && chmod -R a+w out1
+      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
+      - pacman -Su --noconfirm
+      - sudo -Eu nobody ./tools/clean-build-all.sh
+    depends_on:
+      - Pacman cache
 
   - name: List built packages
     image: alpine
     commands:
-      - ls -1 out/
+      - ls -1 out1/
+    depends_on:
+      - Build packages
     when:
       status:
         - success
@@ -28,9 +75,116 @@ steps:
 
   - name: Analyze built packages
     image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
     commands:
-      - pacman -Sy --noconfirm namcap
-      - "namcap out/*.pkg.tar.zst"
+      - pacman -S --noconfirm namcap
+      - namcap out1/*.pkg.tar.zst
+    depends_on:
+      - Build packages
+    when:
+      status:
+        - success
+        - failure
+
+  - name: Reproduce packages
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    environment:
+      PKGDEST: /drone/src/out2
+      LOGDEST: /drone/src/out2
+      SRCDEST: /tmp/build
+      SRCPKGDEST: /tmp/build
+      BUILDDIR: /tmp/build
+    commands:
+      - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
+      - mkdir -p out2 && chmod -R a+w out2
+      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
+      - pacman -Su --noconfirm
+      - sudo -Eu nobody ./tools/clean-build-all.sh
+    depends_on:
+      - Pacman cache
+
+  - name: Check reproduced checksums
+    image: alpine
+    commands:
+      - cd out1 && sha512sum *.pkg.tar.zst > ../out.SHA512
+      - cd ../out2 && sha512sum -c ../out.SHA512
+    depends_on:
+      - Build packages
+      - Reproduce packages
+    when:
+      status:
+        - success
+        - failure
+
+  - name: Analyze reproduced packages
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - pacman -S --noconfirm diffoscope
+      - cd out2
+      - for PKG in *.pkg.tar.zst; do diffoscope ../out1/$PKG $PKG; done
+    depends_on:
+      - Build packages
+      - Reproduce packages
+    when:
+      status:
+        - success
+        - failure
+
+# use a shared pacman cache to clean up successive package installs
+volumes:
+  - name: pkgcache
+    temp: {}
+  - name: pkgdb
+    temp: {}
+
+trigger:
+  ref:
+    include:
+      - refs/heads/master
+      - refs/pull/**
+      - refs/tags/**
+
+---
+kind: pipeline
+type: docker
+name: Build arm64
+
+# makepkg -A will attempt building even if aarch64 is missing in PKGBUILD
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: Build packages
+    image: agners/archlinuxarm
+    commands:
+      - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
+      - pacman -Syyu --noconfirm
+      - pacman -S --noconfirm base-devel
+      - mkdir -p out
+      - chmod -R a+w out packages
+      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
+      - sudo -Eu nobody ./tools/clean-build-all.sh -A
+
+  - name: List built packages
+    image: alpine
+    commands:
+      - ls -1 out/
     when:
       status:
         - success
