@@ -1,3 +1,4 @@
 #!/bin/sh -e
 cd /usr/share/tuxguitar
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 exec ./tuxguitar.sh -Dorg.eclipse.swt.internal.gtk.cairoGraphics=false "$@"

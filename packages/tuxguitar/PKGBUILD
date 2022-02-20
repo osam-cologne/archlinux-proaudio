@@ -14,15 +14,15 @@ pkgdesc="Multitrack guitar tablature editor and player"
 arch=('x86_64' 'i686' 'armv7h')
 url="https://sourceforge.net/projects/tuxguitar/"
 license=('LGPL')
-depends=('alsa-lib' 'libxtst' 'glibc' 'java-runtime' 'hicolor-icon-theme')
-makedepends=('unzip' 'zip' 'ant' 'jack' 'fluidsynth' 'jdk-openjdk' 'maven')
+depends=('alsa-lib' 'libxtst' 'glibc' 'java-runtime-openjdk=11' 'hicolor-icon-theme')
+makedepends=('unzip' 'zip' 'ant' 'jack' 'fluidsynth' 'java-environment-openjdk=11' 'maven')
 optdepends=('fluidsynth')
 source=(https://downloads.sourceforge.net/tuxguitar/tuxguitar-$pkgver-src.tar.gz
         tuxguitar
         tuxguitar-gtk2)
 sha256sums=('2e855500d9cea6987962a851d7e3fcb144e3220b10f71fba1514913e70542398'
-            'efeef39d43ecf5a87ed64abc7d8cf63a01f3c9b08bac0ea299bf959fcb7c216a'
-            '39f92c0de6fcf86635dec5ac3b83613ca980fa7d24f66888fd06e5bb2c7c571f')
+            '4ac92793fd186115942e6d29fb81b2c8bf40c221b2c6985498b64ee2a3f5792c'
+            '017e23bcb299562717fb0aa38b6f1a87f5803e77fd34f33a38f499471fb61751')
 
 case $CARCH in
   i686) _arch=x86;;
@@ -33,7 +33,7 @@ esac
 prepare() {
   cd tuxguitar-$pkgver-src
   export MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir"
-  export JAVA_HOME=/usr/lib/jvm/default
+  export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 
   for file in pom.xml TuxGuitar*/pom.xml build-scripts/*/pom.xml build-scripts/native-modules/*/pom.xml; do
       sed -i -e 's|<source>1\.6</source>|<source>1\.7</source>|g' \
@@ -54,7 +54,7 @@ prepare() {
 build() {
   cd tuxguitar-$pkgver-src
   export MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir"
-  export JAVA_HOME=/usr/lib/jvm/default
+  export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 
   mvn clean install -P platform-linux-$_arch
   for _i in build-scripts/{tuxguitar,native-modules/tuxguitar-{alsa,oss,jack,fluidsynth}}-linux-$_arch
