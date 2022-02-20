@@ -8,6 +8,21 @@ platform:
   arch: amd64
 
 steps:
+  - name: Remove unmodified packages
+    image: alpine/git
+    failure: ignore  # build all packages if none are modified
+    commands:
+      - if git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} ./packages;
+        then false; else true; fi
+      - for PKG in ./packages/*; do
+        git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} "$PKG" &&
+        echo rm -rf "$PKG" && rm -rf "$PKG" || true;
+        done
+    when:
+      ref:
+        include:
+          - refs/pull/**
+
   - name: Pacman cache
     image: archlinux/archlinux:base-devel
     volumes:
@@ -25,6 +40,8 @@ steps:
       - pacman -Syyu --noconfirm namcap diffoscope
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - sudo -Eu nobody ./tools/syncdeps-all.sh
+    depends_on:
+      - Remove unmodified packages
 
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
@@ -34,7 +51,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
-      - pacman -S --noconfirm namcap
+      - pacman -S --noconfirm namcap >/dev/null
       - namcap packages/*/PKGBUILD
     depends_on:
       - Pacman cache
@@ -54,7 +71,7 @@ steps:
       BUILDDIR: /tmp/build
     commands:
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
-      - rm -rf out out1 out.SHA512  # cleanup, needed for local testing
+      - rm -rf out1  # cleanup, needed for local testing
       - mkdir -p out1 && chmod -R a+w out1
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
@@ -81,7 +98,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
-      - pacman -S --noconfirm namcap
+      - pacman -S --noconfirm namcap >/dev/null
       - namcap out1/*.pkg.tar.zst
     depends_on:
       - Build packages
@@ -104,7 +121,9 @@ steps:
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
     commands:
+      - sleep 9  # backoff to prevent false positives
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
+      - rm -rf out2  # cleanup, needed for local testing
       - mkdir -p out2 && chmod -R a+w out2
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
@@ -115,6 +134,7 @@ steps:
   - name: Check reproduced checksums
     image: alpine
     commands:
+      - rm -rf out.SHA512  # cleanup, needed for local testing
       - cd out1 && sha512sum *.pkg.tar.zst > ../out.SHA512
       - cd ../out2 && sha512sum -c ../out.SHA512
     depends_on:
@@ -133,7 +153,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
-      - pacman -S --noconfirm diffoscope
+      - pacman -S --noconfirm diffoscope >/dev/null
       - cd out2
       - for PKG in *.pkg.tar.zst; do diffoscope ../out1/$PKG $PKG; done
     depends_on:
@@ -170,8 +190,24 @@ platform:
   arch: arm64
 
 steps:
+  - name: Remove unmodified packages
+    image: alpine/git
+    failure: ignore  # build all packages if none are modified
+    commands:
+      - if git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} ./packages;
+        then false; else true; fi
+      - for PKG in ./packages/*; do
+        git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} "$PKG" &&
+        echo rm -rf "$PKG" && rm -rf "$PKG" || true;
+        done
+    when:
+      ref:
+        include:
+          - refs/pull/**
+
   - name: Build packages
     image: agners/archlinuxarm
+    failure: ignore  # arm64 is not critical for now
     commands:
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - pacman -Syyu --noconfirm
