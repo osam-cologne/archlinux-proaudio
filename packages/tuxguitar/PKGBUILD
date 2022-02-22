@@ -12,17 +12,21 @@ pkgver=1.5.5
 pkgrel=2
 pkgdesc="Multitrack guitar tablature editor and player"
 arch=('x86_64' 'i686' 'armv7h')
+_java_ver=11
 url="https://sourceforge.net/projects/tuxguitar/"
 license=('LGPL')
-depends=('alsa-lib' 'libxtst' 'glibc' 'java-runtime-openjdk=11' 'hicolor-icon-theme')
-makedepends=('unzip' 'zip' 'ant' 'jack' 'fluidsynth' 'java-environment-openjdk=11' 'maven')
+depends=('alsa-lib' 'libxtst' 'glibc' "java-runtime-openjdk=${_java_ver}" 'hicolor-icon-theme')
+makedepends=('unzip' 'zip' 'ant' 'jack' 'fluidsynth' "java-environment-openjdk=${_java_ver}" 'maven')
 optdepends=('fluidsynth')
 source=(https://downloads.sourceforge.net/tuxguitar/tuxguitar-$pkgver-src.tar.gz
-        tuxguitar
-        tuxguitar-gtk2)
+        settings.xml
+        tuxguitar.sh
+        tuxguitar-gtk2.sh)
 sha256sums=('2e855500d9cea6987962a851d7e3fcb144e3220b10f71fba1514913e70542398'
-            '4ac92793fd186115942e6d29fb81b2c8bf40c221b2c6985498b64ee2a3f5792c'
-            '017e23bcb299562717fb0aa38b6f1a87f5803e77fd34f33a38f499471fb61751')
+            '72623a2fbb1bb3c2202dc47b70380fcbe21682fe8e85d5bd404ba32727865a7f'
+            '480b0526254131f9bfd9cf0ad5f80e53b9d963294aeabfe72623f72cbce98e5d'
+            '3c880fa74fc458dc08bc210416fa6e04930df5c8df6e0c9954d1ab7f5b4541eb')
+
 
 case $CARCH in
   i686) _arch=x86;;
@@ -32,45 +36,40 @@ esac
 
 prepare() {
   cd tuxguitar-$pkgver-src
-  export MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir"
-  export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
 
-  for file in pom.xml TuxGuitar*/pom.xml build-scripts/*/pom.xml build-scripts/native-modules/*/pom.xml; do
-      sed -i -e 's|<source>1\.6</source>|<source>1\.7</source>|g' \
-             -e 's|<target>1\.6</target>|<target>1\.7</target>|g' "$file"
-
+  for file in pom.xml */pom.xml; do
       # https://maven.apache.org/guides/mini/guide-reproducible-builds.html
-      sed -i -e 's|<properties>|<properties><project\.build\.outputTimestamp>${SOURCE_DATE_EPOCH}</project\.build\.outputTimestamp>|g' \
-        -e 's|</plugins>|<plugin><groupId>org\.apache\.maven\.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3\.2\.2</version></plugin></plugins>|g' \
-        "$file"
+      sed -i -e 's|</plugins>|<plugin><groupId>org\.apache\.maven\.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3\.2\.2</version></plugin></plugins>|g' "$file"
   done
-  sed -i -e 's|<build>|<properties><project\.build\.outputTimestamp>${SOURCE_DATE_EPOCH}</project\.build\.outputTimestamp></properties><build>|g' TuxGuitar-lib/pom.xml
-  sed -i 's|http://maven-eclipse.github.io/maven|https://maven-eclipse.github.io/maven|' pom.xml
-
-  # fetch dependencies
-  mvn --batch-mode validate
 }
 
 build() {
   cd tuxguitar-$pkgver-src
   export MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir"
-  export JAVA_HOME=/usr/lib/jvm/java-11-openjdk
+  export PATH="/usr/lib/jvm/java-${_java_ver}-openjdk/bin:$PATH"
 
-  mvn clean install -P platform-linux-$_arch
+  mvn \
+    -s "$srcdir/settings.xml" \
+    -P platform-linux-$_arch \
+    -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH \
+    clean install
   for _i in build-scripts/{tuxguitar,native-modules/tuxguitar-{alsa,oss,jack,fluidsynth}}-linux-$_arch
   do (
     cd $_i
-    mvn clean install
+    mvn \
+      -s "$srcdir/settings.xml" \
+      -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH \
+      clean install
   ); done
 }
 
 package_tuxguitar-common () {
   # tuxguitar
   cd tuxguitar-$pkgver-src/build-scripts
-  install -d "$pkgdir"/usr/share
-  cp -a tuxguitar-linux-$_arch/target/tuxguitar-$pkgver-linux-$_arch "$pkgdir"/usr/share/tuxguitar
+  install -d "$pkgdir"/opt
+  cp -a tuxguitar-linux-$_arch/target/tuxguitar-$pkgver-linux-$_arch "$pkgdir"/opt/tuxguitar
   cp -a native-modules/tuxguitar-{alsa,oss,jack,fluidsynth}-linux-$_arch/target/build/* \
-    "$pkgdir"/usr/share/tuxguitar/
+    "$pkgdir"/opt/tuxguitar/
 
   # icons
   cd ..
@@ -83,31 +82,28 @@ package_tuxguitar-common () {
     done
   done 
   
-  #misc
+  # misc
   cd "${srcdir}/tuxguitar-$pkgver-src/misc"
   install -Dm644 tuxguitar.xml "$pkgdir"/usr/share/mime/packages/tuxguitar.xml
   install -Dm644 tuxguitar.desktop "$pkgdir"/usr/share/applications/tuxguitar.desktop
   
   # remove tuxguitar.sh
-  rm "${pkgdir}/usr/share/tuxguitar/tuxguitar.sh"
+  rm "${pkgdir}/opt/tuxguitar/tuxguitar.sh"
 }
 
 package_tuxguitar () {
   depends=('tuxguitar-common' 'gtk3')
   replaces=('tuxguitar-gtk3')
+  arch=('any')
   
-  install -Dm 755 tuxguitar "$pkgdir"/usr/bin/tuxguitar
-  install -Dm 755 "${srcdir}/tuxguitar-$pkgver-src/build-scripts/tuxguitar-linux-$_arch/target/tuxguitar-$pkgver-linux-$_arch/tuxguitar.sh" \
-                  "${pkgdir}/usr/share/tuxguitar/tuxguitar.sh"
-  sed -i s/SWT_GTK3=0/SWT_GTK3=1/g "${pkgdir}/usr/share/tuxguitar/tuxguitar.sh"
+  install -Dm 755 tuxguitar.sh "$pkgdir"/usr/bin/tuxguitar
 }
 
 package_tuxguitar-gtk2 () {
   depends=('tuxguitar-common' 'gtk2')
   conflicts=('tuxguitar')
   provides=('tuxguitar')
+  arch=('any')
   
-  install -Dm 755 tuxguitar-gtk2 "$pkgdir"/usr/bin/tuxguitar
-  install -Dm 755 "${srcdir}/tuxguitar-$pkgver-src/build-scripts/tuxguitar-linux-$_arch/target/tuxguitar-$pkgver-linux-$_arch/tuxguitar.sh" \
-                  "${pkgdir}/usr/share/tuxguitar/tuxguitar.sh"
+  install -Dm 755 tuxguitar-gtk2.sh "$pkgdir"/usr/bin/tuxguitar
 }
