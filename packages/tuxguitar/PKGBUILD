@@ -13,21 +13,23 @@ pkgrel=2
 pkgdesc="Multitrack guitar tablature editor and player"
 arch=('x86_64' 'i686' 'armv7h')
 _java_ver=11
+_swt_rel=4.22-202111241800
+_swt_ver=${_swt_rel:0:-13}
 url="https://sourceforge.net/projects/tuxguitar/"
 license=('LGPL')
 depends=('alsa-lib' 'libxtst' 'glibc' "java-runtime-openjdk=${_java_ver}" 'hicolor-icon-theme')
 makedepends=('unzip' 'zip' 'ant' 'jack' 'fluidsynth' "java-environment-openjdk=${_java_ver}" 'maven')
 optdepends=('fluidsynth')
 source=(https://downloads.sourceforge.net/tuxguitar/tuxguitar-$pkgver-src.tar.gz
-        settings.xml
+        https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel}/swt-${_swt_ver}-gtk-linux-x86_64.zip
+        dep-versions.patch
         tuxguitar.sh
         tuxguitar-gtk2.sh)
 sha256sums=('2e855500d9cea6987962a851d7e3fcb144e3220b10f71fba1514913e70542398'
-            '72623a2fbb1bb3c2202dc47b70380fcbe21682fe8e85d5bd404ba32727865a7f'
+            '55b46b575e8c93172be81e096fb72bce83b60df8087b4863a1a057aaead30b1f'
+            'f42adf9b3c2df273e192a5a620695bd2deca2fd0afc973cf2981b193413e6ad9'
             '480b0526254131f9bfd9cf0ad5f80e53b9d963294aeabfe72623f72cbce98e5d'
             '3c880fa74fc458dc08bc210416fa6e04930df5c8df6e0c9954d1ab7f5b4541eb')
-
-
 case $CARCH in
   i686) _arch=x86;;
   armv7h) _arch=armv7hl;;
@@ -35,21 +37,28 @@ case $CARCH in
 esac
 
 prepare() {
-  cd tuxguitar-$pkgver-src
-
-  for file in pom.xml */pom.xml; do
-      # https://maven.apache.org/guides/mini/guide-reproducible-builds.html
-      sed -i -e 's|</plugins>|<plugin><groupId>org\.apache\.maven\.plugins</groupId><artifactId>maven-jar-plugin</artifactId><version>3\.2\.2</version></plugin></plugins>|g' "$file"
-  done
-}
-
-build() {
-  cd tuxguitar-$pkgver-src
   export MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir"
   export PATH="/usr/lib/jvm/java-${_java_ver}-openjdk/bin:$PATH"
 
+  mvn deploy:deploy-file \
+    -DgroupId=org.eclipse.swt \
+    -DartifactId=org.eclipse.swt.gtk.linux.x86_64 \
+    -Dversion=${_swt_ver} \
+    -Durl="file://${srcdir}/.m2/repository" \
+    -Dfile="${srcdir}/swt.jar" \
+    -Dsources="${srcdir}/src.zip" \
+    -DupdateReleaseInfo=true
+
+  cd tuxguitar-$pkgver-src
+  patch -p1 -i ../dep-versions.patch
+}
+
+build() {
+  export MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir"
+  export PATH="/usr/lib/jvm/java-${_java_ver}-openjdk/bin:$PATH"
+  cd tuxguitar-$pkgver-src
+
   mvn \
-    -s "$srcdir/settings.xml" \
     -P platform-linux-$_arch \
     -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH \
     clean install
@@ -57,7 +66,6 @@ build() {
   do (
     cd $_i
     mvn \
-      -s "$srcdir/settings.xml" \
       -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH \
       clean install
   ); done
