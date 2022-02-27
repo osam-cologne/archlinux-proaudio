@@ -22,7 +22,7 @@ depends=(alsa-lib libxtst glibc "java-runtime-openjdk=${_java_ver}" hicolor-icon
 makedepends=(unzip zip ant jack fluidsynth "java-environment-openjdk=${_java_ver}" maven)
 optdepends=('fluidsynth: alternative synthesizer for playback')
 conflicts=(tuxguitar-common tuxguitar-gtk2)
-source=("https://downloads.sourceforge.net/tuxguitar/tuxguitar-$pkgver-src.tar.gz"
+source=("https://downloads.sourceforge.net/tuxguitar/tuxguitar-${pkgver}-src.tar.gz"
         "https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel}/swt-${_swt_ver}-gtk-linux-x86_64.zip"
         'dep-versions.patch'
         'tuxguitar.sh')
@@ -55,6 +55,9 @@ prepare() {
   # https://sourceforge.net/p/tuxguitar/patches/45/
   # Reproducible build; recent SWT version; use https for swt-repo
   patch -p1 -i ../dep-versions.patch
+
+  # https://sourceforge.net/p/tuxguitar/support-requests/13/
+  rm TuxGuitar-resources/resources/soundfont/*
 }
 
 build() {
@@ -94,7 +97,7 @@ package() {
   cd "$srcdir"/tuxguitar-${pkgver}-src/build-scripts/tuxguitar-linux-${_arch}/target/tuxguitar-${pkgver}-linux-${_arch}
   install -d "$pkgdir"/usr/share/{,doc/}$pkgname
   cp -a {dist,doc,share} "${pkgdir}"/usr/share/${pkgname}/
-  rm -r "${pkgdir}"/usr/share/${pkgname}/share/{help,plugins,lang/toutf.pl}
+  rm -r "${pkgdir}"/usr/share/${pkgname}/share/{help,plugins,soundfont,lang/toutf.pl}
   cp -a share/help "${pkgdir}"/usr/share/doc/$pkgname
   # ensure correct permissions for data
   find "$pkgdir"/usr/share/{,doc/}$pkgname -type f -exec chmod 644 {} \;
@@ -110,12 +113,11 @@ package() {
     done
   done 
   
-  # misc
+  # mimetype and launcher
   cd "$srcdir"/tuxguitar-${pkgver}-src/misc
   install -Dm644 tuxguitar.xml "$pkgdir"/usr/share/mime/packages/tuxguitar.xml
   install -Dm644 tuxguitar.desktop "$pkgdir"/usr/share/applications/tuxguitar.desktop
   
   # use custom instead of upstream starter script
-  # rm "$pkgdir"/usr/share/${pkgname}/tuxguitar.sh
-  install -Dm 755 "$srcdir"/tuxguitar.sh "$pkgdir"/usr/bin/tuxguitar
+  install -Dm755 "$srcdir"/tuxguitar.sh "$pkgdir"/usr/bin/tuxguitar
 }
