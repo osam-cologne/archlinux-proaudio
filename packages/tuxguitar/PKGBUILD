@@ -25,13 +25,11 @@ conflicts=(tuxguitar-common tuxguitar-gtk2)
 source=("https://downloads.sourceforge.net/tuxguitar/tuxguitar-$pkgver-src.tar.gz"
         "https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel}/swt-${_swt_ver}-gtk-linux-x86_64.zip"
         'dep-versions.patch'
-        'tuxguitar.sh'
-        'redirect-docs.html')
+        'tuxguitar.sh')
 sha256sums=('2e855500d9cea6987962a851d7e3fcb144e3220b10f71fba1514913e70542398'
             '55b46b575e8c93172be81e096fb72bce83b60df8087b4863a1a057aaead30b1f'
             'f42adf9b3c2df273e192a5a620695bd2deca2fd0afc973cf2981b193413e6ad9'
-            '87546ca471695ffecfd79a36ab4ee8be2e2f03074a05766f59787ee6ccfa2499'
-            '1b073960632a560fd4b55a4d5ffd67c3f3d09a0cad0016556b3c63ebdd73552e')
+            'ddaed0fc471de5dbee24b00c92f63cdee505ab6a2dd07b2e253d1a65eaa44b6e')
 # project internal build target names
 case $CARCH in
   i686) _arch=x86;;
@@ -98,8 +96,6 @@ package() {
   cp -a {dist,doc,share} "${pkgdir}"/usr/share/${pkgname}/
   rm -r "${pkgdir}"/usr/share/${pkgname}/share/{help,plugins,lang/toutf.pl}
   cp -a share/help "${pkgdir}"/usr/share/doc/$pkgname
-  # TuxGuitar assumes its own doc location, this html redirects to the correct one
-  install -Dm644 "$srcdir"/redirect-docs.html "$pkgdir"/usr/share/${pkgname}/share/help/index.html
   # ensure correct permissions for data
   find "$pkgdir"/usr/share/{,doc/}$pkgname -type f -exec chmod 644 {} \;
 

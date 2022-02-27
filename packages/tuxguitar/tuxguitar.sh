@@ -1,6 +1,7 @@
 #!/bin/sh -e
 export PATH="/usr/lib/jvm/java-11-openjdk/bin:$PATH"
 CP=/usr/share/tuxguitar/dist
+CP="$CP:/usr/share/doc/tuxguitar"
 for jar in /usr/share/java/tuxguitar/*.jar; do
   CP="$CP:$jar"
 done
