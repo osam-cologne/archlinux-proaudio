@@ -18,9 +18,12 @@ _swt_ver=${_swt_rel:0:-13}
 url='https://sourceforge.net/projects/tuxguitar/'
 license=(LGPL)
 groups=(pro-audio)
-depends=(alsa-lib libxtst glibc "java-runtime-openjdk=${_java_ver}" hicolor-icon-theme gtk3)
-makedepends=(unzip zip ant jack fluidsynth "java-environment-openjdk=${_java_ver}" maven)
-optdepends=('fluidsynth: alternative synthesizer for playback')
+depends=()
+makedepends=(alsa-lib fluidsynth jack "java-environment-openjdk=${_java_ver}" maven)
+optdepends=('alsa-lib: playback with ALSA'
+            'fluidsynth: alternative synthesizer for playback'
+            'jack: playback and MIDI support with JACK'
+            'pulseaudio: playback with PulseAudio')
 conflicts=(tuxguitar-common tuxguitar-gtk2)
 source=("https://downloads.sourceforge.net/tuxguitar/tuxguitar-${pkgver}-src.tar.gz"
         "https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel}/swt-${_swt_ver}-gtk-linux-x86_64.zip"
@@ -81,6 +84,7 @@ build() {
 }
 
 package() {
+  depends+=(libxtst glibc "java-runtime-openjdk=${_java_ver}" hicolor-icon-theme gtk3)
   # base libraries
   cd "$srcdir"/tuxguitar-${pkgver}-src/build-scripts/tuxguitar-linux-${_arch}/target/tuxguitar-${pkgver}-linux-${_arch}
   install -Dm644 lib/*.jar -t "$pkgdir"/usr/share/java/$pkgname
