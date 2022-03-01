@@ -208,12 +208,18 @@ steps:
   - name: Build packages
     image: agners/archlinuxarm
     failure: ignore  # arm64 is not critical for now
+    environment:
+      PKGDEST: /drone/src/out
+      LOGDEST: /drone/src/out
+      SRCDEST: /tmp/build
+      SRCPKGDEST: /tmp/build
+      BUILDDIR: /tmp/build
     commands:
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - pacman -Syyu --noconfirm
       - pacman -S --noconfirm base-devel
       - mkdir -p out
-      - chmod -R a+w out packages
+      - chmod -R a+w out
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - sudo -Eu nobody ./tools/clean-build-all.sh -A
 
