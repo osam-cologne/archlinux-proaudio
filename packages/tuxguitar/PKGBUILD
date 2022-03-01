@@ -26,15 +26,15 @@ optdepends=('alsa-lib: playback with ALSA'
             'pulseaudio: playback with PulseAudio')
 conflicts=(tuxguitar-common tuxguitar-gtk2)
 source=("https://downloads.sourceforge.net/tuxguitar/tuxguitar-${pkgver}-src.tar.gz"
-        "https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel}/swt-${_swt_rel:0:-13}-gtk-linux-x86_64.zip"
-        "https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel_i686}/swt-${_swt_rel_i686:0:-13}-gtk-linux-x86.zip"
         'dep-versions.patch'
         'tuxguitar.sh')
+source_i686=("https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel_i686}/swt-${_swt_rel_i686%-*}-gtk-linux-x86.zip")
+source_x86_64=("https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel}/swt-${_swt_rel%-*}-gtk-linux-x86_64.zip")
 sha256sums=('2e855500d9cea6987962a851d7e3fcb144e3220b10f71fba1514913e70542398'
-            '55b46b575e8c93172be81e096fb72bce83b60df8087b4863a1a057aaead30b1f'
-            '5317a8e30121a1c7b6da743bdd658b13491889d95158352de0de16831e5b5a5f'
             'ff3c39a1a287fe0679f429aea682361963b0662a49a6088542dd429aa64441b0'
             '8a5eccd2dca5a02580ccca3838db2220cabbb0a4b080030ea361efbafd7737aa')
+sha256sums_x86_64=('55b46b575e8c93172be81e096fb72bce83b60df8087b4863a1a057aaead30b1f')
+sha256sums_i686=('5317a8e30121a1c7b6da743bdd658b13491889d95158352de0de16831e5b5a5f')
 _javapath="/usr/lib/jvm/java-${_java_ver}-openjdk/bin:$PATH"
 # project internal build target names
 case $CARCH in
@@ -125,13 +125,13 @@ package() {
     for _mime in audio-x-{tuxguitar,gtp,ptb}; do
       ln -sr "${_dir}"/apps/tuxguitar.png "$_dir"/mimetypes/${_mime}.png
     done
-  done 
-  
+  done
+
   # mimetype and launcher
   cd "$srcdir"/tuxguitar-${pkgver}-src/misc
   install -Dm644 tuxguitar.xml "$pkgdir"/usr/share/mime/packages/tuxguitar.xml
   install -Dm644 tuxguitar.desktop "$pkgdir"/usr/share/applications/tuxguitar.desktop
-  
+
   # use custom instead of upstream starter script
   install -Dm755 "$srcdir"/tuxguitar.sh "$pkgdir"/usr/bin/tuxguitar
 }
