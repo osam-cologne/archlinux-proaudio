@@ -1,7 +1,13 @@
 diff -aur a/pom.xml b/pom.xml
---- a/pom.xml	2022-02-12 15:25:54.000000000 +0100
-+++ b/pom.xml	2022-02-23 01:31:45.593172559 +0100
-@@ -319,7 +319,7 @@
+--- a/pom.xml	2022-03-01 08:32:02.739961011 +0100
++++ b/pom.xml	2022-03-01 08:34:49.333291617 +0100
+@@ -314,12 +314,12 @@
+ 			<dependency>
+ 				<groupId>${org.eclipse.swt.groupId}</groupId>
+ 				<artifactId>org.eclipse.swt.gtk.linux.x86</artifactId>
+-				<version>4.6.1</version>
++				<version>4.9</version>
+ 			</dependency>
  			<dependency>
  				<groupId>${org.eclipse.swt.groupId}</groupId>
  				<artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
@@ -36,8 +42,8 @@ diff -aur a/pom.xml b/pom.xml
  	</repositories>
  
 diff -aur a/TuxGuitar-lib/pom.xml b/TuxGuitar-lib/pom.xml
---- a/TuxGuitar-lib/pom.xml	2022-02-12 15:25:53.000000000 +0100
-+++ b/TuxGuitar-lib/pom.xml	2022-02-23 01:31:45.593172559 +0100
+--- a/TuxGuitar-lib/pom.xml	2022-03-01 08:32:02.873294341 +0100
++++ b/TuxGuitar-lib/pom.xml	2022-03-01 08:33:00.986626731 +0100
 @@ -22,6 +22,11 @@
  						<target>1.6</target>
  					</configuration>
