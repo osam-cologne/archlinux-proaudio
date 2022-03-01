@@ -38,9 +38,9 @@ sha256sums_i686=('5317a8e30121a1c7b6da743bdd658b13491889d95158352de0de16831e5b5a
 _javapath="/usr/lib/jvm/java-${_java_ver}-openjdk/bin:$PATH"
 # project internal build target names
 case $CARCH in
-  i686) _arch=x86;;
-  armv7h) _arch=armv7hl;;
-  *) _arch=$CARCH;;
+  i686) _arch=x86 ;;
+  armv7h) _arch=armv7hl ;;
+  *) _arch=$CARCH ;;
 esac
 
 prepare() {
@@ -48,16 +48,16 @@ prepare() {
 
   # locally install pinned SWT version to be included in the package
   MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir" \
-  PATH="$_javapath" \
-  mvn install:install-file \
+    PATH="$_javapath" \
+    mvn install:install-file \
     -Dfile="${srcdir}/swt.jar" \
     -DgroupId=org.eclipse.swt \
     -DartifactId=org.eclipse.swt.gtk.linux.x86_64 \
     -Dversion=${_swt_rel:0:-13} \
     -Dpackaging=jar
   MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir" \
-  PATH="$_javapath" \
-  mvn install:install-file \
+    PATH="$_javapath" \
+    mvn install:install-file \
     -Dfile="${srcdir}/swt.jar" \
     -DgroupId=org.eclipse.swt \
     -DartifactId=org.eclipse.swt.gtk.linux.x86 \
@@ -77,17 +77,16 @@ build() {
   cd tuxguitar-$pkgver-src
 
   MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir" \
-  PATH="$_javapath" \
-  mvn \
+    PATH="$_javapath" \
+    mvn \
     -P platform-linux-$_arch \
     -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH \
     clean install
-  for _module in build-scripts/{tuxguitar,native-modules/tuxguitar-{alsa,fluidsynth,jack}}-linux-$_arch
-  do (
+  for _module in build-scripts/{tuxguitar,native-modules/tuxguitar-{alsa,fluidsynth,jack}}-linux-$_arch; do (
     cd $_module
     MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir" \
-    PATH="$_javapath" \
-    mvn \
+      PATH="$_javapath" \
+      mvn \
       -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH \
       clean install
   ); done
