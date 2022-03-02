@@ -16,7 +16,6 @@ groups=('pro-audio')
 source=("https://github.com/brummer10/Mamba/files/6329780/${_projectname}_${pkgver}.tar.gz")
 sha256sums=('974403e08ab5d0bc92dcfad7cfdc4c95df87c5d8ca586794923bdb2254569838')
 
-
 build() {
   cd "${srcdir}/${_projectname}_${pkgver}"
   make
