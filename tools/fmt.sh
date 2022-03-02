@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# Format PKGBUILD files
+#
 
 cd "${0%/*}/.."
 ROOT="$(pwd)"
