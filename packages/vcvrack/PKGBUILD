@@ -7,11 +7,14 @@
 
 pkgname=vcvrack
 pkgver=2.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Open-source Eurorack modular synthesizer simulator'
 url='https://vcvrack.com/'
 license=(custom CCPL GPL3)
 arch=(x86_64)
+_plugin_name=Fundamental
+_plugin_ver=2.0.3
+_plugin_pkg=${pkgname}-${_plugin_name,,}
 depends=(
   curl
   glew
@@ -26,8 +29,10 @@ depends=(
   zenity
   zstd
 )
-makedepends=(git wget cmake unzip gendesk)
-groups=('pro-audio')
+makedepends=(git gendesk jq)
+provides=($_plugin_pkg)
+conflicts=($_plugin_pkg)
+groups=(pro-audio)
 source=(
   "${pkgname}-${pkgver}::git+https://github.com/vcvrack/rack.git#tag=v$pkgver"
   'git+https://github.com/VCVRack/nanovg.git'
@@ -37,10 +42,12 @@ source=(
   'git+https://bitbucket.org/j_norberg/fuzzysearchdatabase.git'
   'git+https://github.com/gulrak/filesystem.git'
   'git+https://bitbucket.org/jpommier/pffft.git'
+  "${_plugin_pkg}-${_plugin_ver}.tar.gz::https://github.com/VCVRack/${_plugin_name}/archive/v${_plugin_ver}.tar.gz"
+  'system-plugins.patch'
   'vcvrack.sh'
 )
 sha512sums=(
-  SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP
+  SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP
   '8ca3fbc790fa5d311ce41b5b9e84a79fe51db73cbf0f56f04d0429b28f0c4c0646e2d0c081b584161356ec24b06cc0181b115b865d564ff1452c64a57135acf6'
 )
 _submodule_deps=(nanovg nanosvg osdialog oui-blendish fuzzysearchdatabase filesystem pffft)
@@ -64,6 +71,9 @@ prepare() {
   # recent changes to rtaudio.cpp require an unrelease version of rtaudio
   git checkout 6ae7fe05216950e461a27e05e8b9de53ccf8247b src/rtaudio.cpp
 
+  # load system-wide before user-installed plugins
+  patch -p1 -i ../system-plugins.patch
+
   gendesk -f -n \
     --pkgname $pkgname \
     --name "VCV Rack" \
@@ -75,8 +85,7 @@ prepare() {
 
 build() {
   cd "$pkgname-$pkgver"
-  VERSION=$pkgver make -C dep includes
-  VERSION=$pkgver make LDFLAGS+="-shared \
+  _ldflags="-shared \
     -lGLEW -lglfw -ljansson \
     -lcurl -lssl -lcrypto \
     -larchive -lzstd -lspeexdsp \
@@ -84,6 +93,10 @@ build() {
     -lpthread -lGL -ldl \
     -lasound -ljack \
     -lpulse -lpulse-simple"
+  VERSION=$pkgver make -C dep includes
+  VERSION=$pkgver make LDFLAGS+="$_ldflags"
+  cd ../${_plugin_name}-$_plugin_ver
+  VERSION=$_plugin_ver RACK_DIR="$srcdir"/${pkgname}-$pkgver make dist LDFLAGS+="$_ldflags"
 }
 
 package() {
@@ -113,4 +126,9 @@ package() {
   install -vDm644 res/icon.png "$pkgdir"/usr/share/pixmaps/${pkgname}.png
   # licenses
   install -vDm644 LICENSE.md -t "$pkgdir"/usr/share/licenses/$pkgname
+
+  # Fundamental plugin
+  cd ../${_plugin_name}-$_plugin_ver
+  install -d "$pkgdir"/opt/${pkgname}/plugins
+  cp -a dist/$_plugin_name -t "$pkgdir"/opt/${pkgname}/plugins/
 }
