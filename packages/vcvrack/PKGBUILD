@@ -22,6 +22,7 @@ depends=(
   glfw-x11
   jack
   jansson
+  libarchive
   libpulse
   openssl
   rtaudio
@@ -100,7 +101,7 @@ build() {
     samplerate rtmidi rtaudio gl \
     alsa jack libpulse libpulse-simple)"
   VERSION=$pkgver make -C dep includes
-  VERSION=$pkgver make LDFLAGS+="$_ldflags"
+  VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS=""
   cd ../${_plugin_name}-$_plugin_ver
   VERSION=$_plugin_ver RACK_DIR="$srcdir"/${pkgname}-$pkgver make dist LDFLAGS+="$_ldflags"
 }
