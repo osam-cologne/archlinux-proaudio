@@ -18,7 +18,8 @@ _plugin_pkg=${pkgname}-${_plugin_name,,}
 depends=(
   curl
   glew
-  glfw
+  # does not start with glfw-wayland
+  glfw-x11
   jack
   jansson
   libpulse
@@ -46,10 +47,17 @@ source=(
   'system-plugins.patch'
   'vcvrack.sh'
 )
-sha512sums=(
-  SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP SKIP
-  '8ca3fbc790fa5d311ce41b5b9e84a79fe51db73cbf0f56f04d0429b28f0c4c0646e2d0c081b584161356ec24b06cc0181b115b865d564ff1452c64a57135acf6'
-)
+sha512sums=('SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            '285b7e014ff40f214d866487d70f5e1f69c9e8b4c14727be0635451598d107cde9bb24e6f08d2e307b629d28851ee6b86e6e7c630a838359385f96280e249c03'
+            '86196f0aed29cf35753bc27f94b3234c6f7131d6c248bee69e31e61ac352ad1596a007fe32f55b2a3173feab24e5b2664dbe7deee7fa607a1974792a3c5450d7'
+            '8ca3fbc790fa5d311ce41b5b9e84a79fe51db73cbf0f56f04d0429b28f0c4c0646e2d0c081b584161356ec24b06cc0181b115b865d564ff1452c64a57135acf6')
 _submodule_deps=(nanovg nanosvg osdialog oui-blendish fuzzysearchdatabase filesystem pffft)
 
 prepare() {
@@ -85,14 +93,12 @@ prepare() {
 
 build() {
   cd "$pkgname-$pkgver"
-  _ldflags="-shared \
-    -lGLEW -lglfw -ljansson \
-    -lcurl -lssl -lcrypto \
-    -larchive -lzstd -lspeexdsp \
-    -lsamplerate -lrtmidi -lrtaudio \
-    -lpthread -lGL -ldl \
-    -lasound -ljack \
-    -lpulse -lpulse-simple"
+  _ldflags="-shared -ldl \
+    $(pkg-config --libs glew \
+    glfw3 jansson libcurl openssl \
+    libarchive libzstd speexdsp \
+    samplerate rtmidi rtaudio gl \
+    alsa jack libpulse libpulse-simple)"
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags"
   cd ../${_plugin_name}-$_plugin_ver
