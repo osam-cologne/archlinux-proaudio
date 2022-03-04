@@ -24,3 +24,17 @@ index 3258094f..7ed56d97 100644
  
  LDFLAGS += -shared
  # Plugins must link to libRack because when Rack is used as a plugin of another application, its symbols are not available to subsequently loaded shared libraries.
+diff --git a/src/plugin.cpp b/src/plugin.cpp
+index 5bea51bd..506d2fb1 100644
+--- a/src/plugin.cpp
++++ b/src/plugin.cpp
+@@ -231,6 +231,9 @@ void init() {
+ 	// Load Core
+ 	loadPlugin("");
+ 
++	// Load system-wide plugins
++	loadPlugins(asset::system("plugins"));
++
+ 	pluginsPath = asset::user("plugins");
+ 
+ 	// Get user plugins directory

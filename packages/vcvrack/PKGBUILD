@@ -33,6 +33,7 @@ source=(
   "${_plugin_pkg}-${_plugin_ver}.tar.gz::https://github.com/VCVRack/${_plugin_name}/archive/v${_plugin_ver}.tar.gz"
   'plugins.patch'
   'vcvrack.sh'
+  'profile.sh'
 )
 sha512sums=('SKIP'
             'SKIP'
@@ -43,8 +44,9 @@ sha512sums=('SKIP'
             'SKIP'
             'SKIP'
             '285b7e014ff40f214d866487d70f5e1f69c9e8b4c14727be0635451598d107cde9bb24e6f08d2e307b629d28851ee6b86e6e7c630a838359385f96280e249c03'
-            '8ab1d554cf087d44f0357e3aed2c16a53eedfe1b5be35870b7d5779eba6d7309c7b062178bf153d09b7cc06b28a6af69b9aaf4021c7069d72710465380a41cf2'
-            'f12dc46cb96e572c5ff540237205bddefc3990d94f0bc80a07601b6a10a6700b2c82afe8a0fc6d132f74f5bf12c6959b1cfe098d0774d8a3900ab2e1886c9fe7')
+            '6f441aff7ec763651068482771c9ac155caab9cb1e2193c1f6fabfa28f1b03014f6eb8a85a02d263e6f2e7c8eb31a3a368151f957f40ee376a7a0bce9a79d98f'
+            'f12dc46cb96e572c5ff540237205bddefc3990d94f0bc80a07601b6a10a6700b2c82afe8a0fc6d132f74f5bf12c6959b1cfe098d0774d8a3900ab2e1886c9fe7'
+            '9bb95450080fd19ce2306fbe11845b8b0ba3dfd0daac5ed5881bb1ebed41e240f092b596c9b856289c0945ef8b2ce0ea8c6de39ccc56ff2863c71b36d75a1848')
 _submodule_deps=(nanovg nanosvg osdialog oui-blendish fuzzysearchdatabase filesystem pffft)
 
 prepare() {
@@ -132,4 +134,8 @@ package() {
   cd ../${_plugin_name}-$_plugin_ver
   install -d "$pkgdir"/usr/lib/${pkgname}/plugins
   cp -a dist/$_plugin_name -t "$pkgdir"/usr/lib/${pkgname}/plugins/
+
+  cd ..
+  # RACK_DIR environment variable
+  install -vDm644 profile.sh "$pkgdir"/etc/profile.d/vcvrack.sh
 }
