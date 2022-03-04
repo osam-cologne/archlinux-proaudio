@@ -1,5 +1,5 @@
 diff --git a/plugin.mk b/plugin.mk
-index 3258094f..7ed56d97 100644
+index 3258094f..701b4127 100644
 --- a/plugin.mk
 +++ b/plugin.mk
 @@ -1,9 +1,7 @@
@@ -15,15 +15,15 @@ index 3258094f..7ed56d97 100644
  
  ifndef SLUG
  $(error SLUG could not be found in manifest)
-@@ -15,7 +13,7 @@ endif
- DISTRIBUTABLES += plugin.json
+@@ -24,6 +22,8 @@ LDFLAGS += -L$(RACK_DIR) -lRack
+ include $(RACK_DIR)/arch.mk
  
- FLAGS += -fPIC
--FLAGS += -I$(RACK_DIR)/include -I$(RACK_DIR)/dep/include
-+FLAGS += -I/usr/include/vcvrack -I/usr/include/vcvrack/dep
- 
- LDFLAGS += -shared
- # Plugins must link to libRack because when Rack is used as a plugin of another application, its symbols are not available to subsequently loaded shared libraries.
+ ifdef ARCH_LIN
++	# Installed includes
++	FLAGS += -I/usr/include/vcvrack -I/usr/include/vcvrack/dep
+ 	TARGET := plugin.so
+ 	# This prevents static variables in the DSO (dynamic shared object) from being preserved after dlclose().
+ 	FLAGS += -fno-gnu-unique
 diff --git a/src/plugin.cpp b/src/plugin.cpp
 index 5bea51bd..506d2fb1 100644
 --- a/src/plugin.cpp
