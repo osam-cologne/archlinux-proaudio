@@ -15,23 +15,9 @@ arch=(x86_64)
 _plugin_name=Fundamental
 _plugin_ver=2.0.3
 _plugin_pkg=${pkgname}-${_plugin_name,,}
-depends=(
-  curl
-  glew
-  # does not start with glfw-wayland
-  glfw-x11
-  jack
-  jansson
-  libarchive
-  libpulse
-  openssl
-  rtaudio
-  rtmidi
-  speexdsp
-  zenity
-  zstd
-)
-makedepends=(git gendesk jq)
+makedepends=(curl glew glfw-x11 jack jansson
+  libarchive libpulse openssl rtaudio
+  rtmidi speexdsp zstd git gendesk jq)
 provides=($_plugin_pkg)
 conflicts=($_plugin_pkg)
 groups=(pro-audio)
@@ -45,7 +31,7 @@ source=(
   'git+https://github.com/gulrak/filesystem.git'
   'git+https://bitbucket.org/jpommier/pffft.git'
   "${_plugin_pkg}-${_plugin_ver}.tar.gz::https://github.com/VCVRack/${_plugin_name}/archive/v${_plugin_ver}.tar.gz"
-  'system-plugins.patch'
+  'plugins.patch'
   'vcvrack.sh'
 )
 sha512sums=('SKIP'
@@ -57,8 +43,8 @@ sha512sums=('SKIP'
             'SKIP'
             'SKIP'
             '285b7e014ff40f214d866487d70f5e1f69c9e8b4c14727be0635451598d107cde9bb24e6f08d2e307b629d28851ee6b86e6e7c630a838359385f96280e249c03'
-            '86196f0aed29cf35753bc27f94b3234c6f7131d6c248bee69e31e61ac352ad1596a007fe32f55b2a3173feab24e5b2664dbe7deee7fa607a1974792a3c5450d7'
-            '8ca3fbc790fa5d311ce41b5b9e84a79fe51db73cbf0f56f04d0429b28f0c4c0646e2d0c081b584161356ec24b06cc0181b115b865d564ff1452c64a57135acf6')
+            '8ab1d554cf087d44f0357e3aed2c16a53eedfe1b5be35870b7d5779eba6d7309c7b062178bf153d09b7cc06b28a6af69b9aaf4021c7069d72710465380a41cf2'
+            'f12dc46cb96e572c5ff540237205bddefc3990d94f0bc80a07601b6a10a6700b2c82afe8a0fc6d132f74f5bf12c6959b1cfe098d0774d8a3900ab2e1886c9fe7')
 _submodule_deps=(nanovg nanosvg osdialog oui-blendish fuzzysearchdatabase filesystem pffft)
 
 prepare() {
@@ -69,19 +55,14 @@ prepare() {
     git submodule update "dep/$_mod"
   done
 
-  # fix plugin.mk’s use of jq, if SLUG/VERSION are unset
-  sed -e 's/SLUG :=/SLUG ?=/' \
-    -e 's/VERSION :=/VERSION ?=/' \
-    -i plugin.mk
-
   # add target to only build included dependencies
   echo 'includes: $(nanovg) $(nanosvg) $(osdialog) $(oui-blendish) $(fuzzysearchdatabase) $(ghcfilesystem) $(pffft)' >> dep/Makefile
 
   # recent changes to rtaudio.cpp require an unrelease version of rtaudio
   git checkout 6ae7fe05216950e461a27e05e8b9de53ccf8247b src/rtaudio.cpp
 
-  # load system-wide before user-installed plugins
-  patch -p1 -i ../system-plugins.patch
+  # support building plugins and loading system-wide plugins
+  patch -p1 -i ../plugins.patch
 
   gendesk -f -n \
     --pkgname $pkgname \
@@ -103,20 +84,33 @@ build() {
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS=""
   cd ../${_plugin_name}-$_plugin_ver
-  VERSION=$_plugin_ver RACK_DIR="$srcdir"/${pkgname}-$pkgver make dist LDFLAGS+="$_ldflags"
+  VERSION=$_plugin_ver RACK_DIR=../${pkgname}-$pkgver make dist LDFLAGS+="$_ldflags"
 }
 
 package() {
+  depends=(
+    libcurl.so
+    libGLEW.so
+    # does not start with glfw-wayland
+    glfw-x11
+    jansson
+    libarchive.so
+    openssl
+    librtaudio.so
+    librtmidi.so
+    speexdsp
+    zenity
+  )
   cd "${pkgname}-$pkgver"
-  install -vDm755 Rack -t "$pkgdir"/opt/$pkgname
-  install -vDm755 libRack.so -t "$pkgdir"/opt/$pkgname
+  install -vDm755 Rack -t "$pkgdir"/usr/lib/${pkgname}
+  install -vDm755 libRack.so -t "$pkgdir"/usr/lib
   install -vDm755 "$srcdir"/vcvrack.sh "$pkgdir"/usr/bin/Rack
-  install -vDm644 -t "$pkgdir"/opt/$pkgname template.vcv
-  install -vDm644 -t "$pkgdir"/opt/$pkgname Core.json
-  install -vDm644 -t "$pkgdir"/opt/$pkgname cacert.pem
+  install -vDm644 -t "$pkgdir"/usr/lib/$pkgname template.vcv
+  install -vDm644 -t "$pkgdir"/usr/lib/$pkgname Core.json
+  install -vDm644 -t "$pkgdir"/usr/lib/$pkgname cacert.pem
 
   # resources
-  cp -dr --preserve=mode res -t "$pkgdir"/opt/$pkgname
+  cp -dr --preserve=mode res -t "$pkgdir"/usr/lib/$pkgname
 
   # headers (required for plugins)
   for _path in {app,dsp,engine,plugin,simd,ui,widget,window}; do
@@ -136,6 +130,6 @@ package() {
 
   # Fundamental plugin
   cd ../${_plugin_name}-$_plugin_ver
-  install -d "$pkgdir"/opt/${pkgname}/plugins
-  cp -a dist/$_plugin_name -t "$pkgdir"/opt/${pkgname}/plugins/
+  install -d "$pkgdir"/usr/lib/${pkgname}/plugins
+  cp -a dist/$_plugin_name -t "$pkgdir"/usr/lib/${pkgname}/plugins/
 }

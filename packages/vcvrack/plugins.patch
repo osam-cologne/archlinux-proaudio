@@ -1,0 +1,26 @@
+diff --git a/plugin.mk b/plugin.mk
+index 3258094f..7ed56d97 100644
+--- a/plugin.mk
++++ b/plugin.mk
+@@ -1,9 +1,7 @@
+-ifndef RACK_DIR
+-$(error RACK_DIR is not defined)
+-endif
++RACK_DIR ?= /usr/share/vcvrack
+ 
+-SLUG := $(shell jq -r .slug plugin.json)
+-VERSION := $(shell jq -r .version plugin.json)
++SLUG ?= $(shell jq -r .slug plugin.json)
++VERSION ?= $(shell jq -r .version plugin.json)
+ 
+ ifndef SLUG
+ $(error SLUG could not be found in manifest)
+@@ -15,7 +13,7 @@ endif
+ DISTRIBUTABLES += plugin.json
+ 
+ FLAGS += -fPIC
+-FLAGS += -I$(RACK_DIR)/include -I$(RACK_DIR)/dep/include
++FLAGS += -I/usr/include/vcvrack -I/usr/include/vcvrack/dep
+ 
+ LDFLAGS += -shared
+ # Plugins must link to libRack because when Rack is used as a plugin of another application, its symbols are not available to subsequently loaded shared libraries.
