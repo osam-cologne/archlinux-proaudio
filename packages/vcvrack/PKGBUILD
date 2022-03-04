@@ -5,6 +5,7 @@
 # Contributor: Miroslav Koškár <http://mkoskar.com/>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
+_name=Rack
 pkgname=vcvrack
 pkgver=2.1.0
 pkgrel=2
@@ -16,32 +17,34 @@ _plugin_name=Fundamental
 _plugin_ver=$pkgver
 _plugin_pkg=${pkgname}-${_plugin_name,,}
 makedepends=(curl glew glfw-x11 jansson libarchive \
-  openssl rtaudio rtmidi speexdsp zstd git gendesk jq)
+  openssl rtaudio rtmidi speexdsp zstd gendesk jq)
 provides=($_plugin_pkg)
 conflicts=($_plugin_pkg)
 groups=(pro-audio)
 source=(
-  "${pkgname}-${pkgver}::git+https://github.com/vcvrack/rack.git#tag=v$pkgver"
-  'git+https://github.com/VCVRack/nanovg.git'
-  'git+https://github.com/memononen/nanosvg.git'
-  'git+https://github.com/AndrewBelt/osdialog.git'
-  'git+https://github.com/VCVRack/oui-blendish.git'
-  'git+https://bitbucket.org/j_norberg/fuzzysearchdatabase.git'
-  'git+https://github.com/gulrak/filesystem.git'
-  'git+https://bitbucket.org/jpommier/pffft.git'
+  "${pkgname}-${pkgver}.tar.gz::https://github.com/VCVRack/${_name}/archive/v${pkgver}.tar.gz"
+  'https://github.com/VCVRack/Rack/commit/ac73ef4.patch'
+  "${pkgname}-${pkgver}-nanovg.tar.gz::https://github.com/VCVRack/nanovg/archive/0bebdb3.tar.gz"
+  "${pkgname}-${pkgver}-nanosvg.tar.gz::https://github.com/memononen/nanosvg/archive/25241c5.tar.gz"
+  "${pkgname}-${pkgver}-osdialog.tar.gz::https://github.com/AndrewBelt/osdialog/archive/21b9dcc.tar.gz"
+  "${pkgname}-${pkgver}-oui-blendish.tar.gz::https://github.com/VCVRack/oui-blendish/archive/2fc6405.tar.gz"
+  "${pkgname}-${pkgver}-fuzzysearchdatabase.tar.gz::https://bitbucket.org/j_norberg/fuzzysearchdatabase/get/fe62479.tar.gz"
+  "${pkgname}-${pkgver}-filesystem.tar.gz::https://github.com/gulrak/filesystem/archive/7e37433.tar.gz"
+  "${pkgname}-${pkgver}-pffft.tar.gz::https://bitbucket.org/jpommier/pffft/get/74d7261.tar.gz"
   "${_plugin_pkg}-${_plugin_ver}.tar.gz::https://github.com/VCVRack/${_plugin_name}/archive/v${_plugin_ver}.tar.gz"
   'plugins.patch'
   'vcvrack.sh'
   'profile.sh'
 )
-sha512sums=('SKIP'
-            'SKIP'
-            'SKIP'
-            'SKIP'
-            'SKIP'
-            'SKIP'
-            'SKIP'
-            'SKIP'
+sha512sums=('f34b99f121bf27325a7a45dbde650586089662fe5ed7a6d308fdd6bac6c4a77d828cd1275fb184774d16a337f6ea279cc98b4ce0c853502f4f53089edec3da1c'
+            '04b750cf165de1673f7ad70567b50e673976b4ab8f2f14fb8a5cf6ee3ad6cf6f45267e4dcae746692f6778fcbf64785254a6e0e2410b913e25afaa958a0ad3e4'
+            '51e8227d1d557aed53059a3a6f355abc8fedc7afd2edb133699cffc2960b0939a2ed13bb5cde13de89a4fe0fd5c62ef3964c255d7b61f5b1db55b7169babc8a3'
+            'ff98b989dd963030687cbb2e6457199b9f636018381640f4e5e6cb4ab3547b4b6d2e81472cb95ceb1bf1e2a0bf59b666615d62b7ffe27465ec29ae56475b37a9'
+            '10c8642e66436a0d02311a4e56ac8188d1172fb00eaa585384046423c074e7a4d62340cbc33680bd5c3f4e82e86af23cd3a3d590d1021b2beb0302785fbe079b'
+            'aefe428a17651f2dbe464fd581e52a847d8a59e5b46be62d8852e762c60155b310738e135e9ff1b9c878bd94b5e3f99e515a4e52f3382c690f12b814e277c901'
+            'b0dc6224d1141665f0de6b015249878fd143cedec45e13b3a04652a39da7f288910842c77f37ce2c3fe2a9d7a17b461e0ca8f2e1e9ed963d789d413a937d55de'
+            '93831752368e0f14448409e00db5e674e645e40f65ec9b8aac9b466a328a434396330d8ba0d31939764b9632fd569edf3503234229c3e9ae41d2759ec7cf5024'
+            '37aab14325bc061c71c3b0bbaaaf5f97247f5e2a569eb3e56ae71be17cec8b1effd4812a63fe93c572756a8d1e8453a058c4f07b878da083c4ef373e52b33145'
             'ee1de025f2828d0ee47103f83b23163f7f406377e14b9d303124c4e5387d78f7140eb43a20a9f3cacc976b4804b5ec3c6883ceeb491641b4c86dcd49ba7455f2'
             '1a9f37a482eb073cda53d8bb0c398f34181171fa1082d9a28bebc80e49db3560630f9f9c17b5ff55eaa79e397d4c44ddf1ba97a05cd08d4a4cea342cba600d46'
             '2ca496c8be8bd8ba5d4afa631cddb585f60f4af022df79eb266fb8be26a987bf1af62b82a9f0d04e6f447086a47fab3ec59d226b1bd76c5de9522a2d9ba18b93'
@@ -49,18 +52,18 @@ sha512sums=('SKIP'
 _submodule_deps=(nanovg nanosvg osdialog oui-blendish fuzzysearchdatabase filesystem pffft)
 
 prepare() {
-  cd "${pkgname}-$pkgver"
+  cd "${_name}-$pkgver"
+  # prepare submodules
   for _mod in "${_submodule_deps[@]}"; do
-    git submodule init "dep/$_mod"
-    git config "submodule.dep/${_mod}.url" "${srcdir}/$_mod"
-    git submodule update "dep/$_mod"
+    rm -r dep/$_mod
+    mv ../*${_mod}-* dep/$_mod
   done
 
   # add target to only build included dependencies
   echo 'includes: $(nanovg) $(nanosvg) $(osdialog) $(oui-blendish) $(fuzzysearchdatabase) $(ghcfilesystem) $(pffft)' >> dep/Makefile
 
-  # recent changes to rtaudio.cpp require an unrelease version of rtaudio
-  git checkout 6ae7fe05216950e461a27e05e8b9de53ccf8247b src/rtaudio.cpp
+  # revert recent changes to rtaudio.cpp that require an unreleased version of rtaudio
+  patch -Rp1 -r - -i ../ac73ef4.patch || true
 
   # support building plugins and loading system-wide plugins
   patch -p1 -i ../plugins.patch
@@ -75,7 +78,7 @@ prepare() {
 }
 
 build() {
-  cd "$pkgname-$pkgver"
+  cd "${_name}-$pkgver"
   _ldflags="-shared -ldl \
     $(pkg-config --libs glew \
     glfw3 jansson libcurl openssl \
@@ -84,24 +87,14 @@ build() {
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS=""
   cd ../${_plugin_name}-$_plugin_ver
-  VERSION=$_plugin_ver RACK_DIR=../${pkgname}-$pkgver make dist LDFLAGS+="$_ldflags"
+  VERSION=$_plugin_ver RACK_DIR=../${_name}-$pkgver make dist LDFLAGS+="$_ldflags"
 }
 
 package() {
-  depends=(
-    libcurl.so
-    libGLEW.so
-    # does not start with glfw-wayland
-    glfw-x11
-    jansson
-    libarchive.so
-    openssl
-    librtaudio.so
-    librtmidi.so
-    speexdsp
-    zenity
-  )
-  cd "${pkgname}-$pkgver"
+  # Rack does not start with glfw-wayland
+  depends=(libcurl.so libGLEW.so glfw-x11 jansson libarchive.so \
+    openssl librtaudio.so librtmidi.so speexdsp zenity)
+  cd "${_name}-$pkgver"
   install -vDm755 Rack -t "$pkgdir"/usr/lib/${pkgname}
   install -vDm755 libRack.so -t "$pkgdir"/usr/lib
   install -vDm755 "$srcdir"/vcvrack.sh "$pkgdir"/usr/bin/Rack
