@@ -83,7 +83,7 @@ build() {
     $(pkg-config --libs glew \
     glfw3 jansson libcurl openssl \
     libarchive libzstd speexdsp \
-    rtmidi rtaudio)"
+    samplerate rtmidi rtaudio)"
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS="$LDFLAGS"
   cd ../${_plugin_name}-$_plugin_ver
@@ -93,7 +93,7 @@ build() {
 package() {
   # Rack does not start with glfw-wayland
   depends=(libcurl.so libGLEW.so glfw-x11 jansson libarchive.so \
-    openssl librtaudio.so librtmidi.so speexdsp zenity)
+    openssl librtaudio.so librtmidi.so libsamplerate.so speexdsp zenity)
   cd "${_name}-$pkgver"
   install -vDm755 Rack -t "$pkgdir"/usr/lib/${pkgname}
   install -vDm755 libRack.so -t "$pkgdir"/usr/lib
