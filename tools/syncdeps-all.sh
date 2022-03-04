@@ -8,8 +8,17 @@ ROOT="$(pwd)"
 MAKEPKG_ARGS="$*"
 
 cd "$ROOT/packages"
-for PKG in *; do
-	cd $PKG
-	makepkg -sorcef --noconfirm $MAKEPKG_ARGS
-	cd ..
+
+if [[ -n "$PACKAGE" ]]; then
+    echo "Caching dependencies for package $PACKAGE..."
+    PACKAGES="$PACKAGE"
+else
+    echo "Caching dependencies for all packages..."
+    PACKAGES="$(ls -1)"
+fi
+
+for PKG in $PACKAGES; do
+    cd $PKG
+    makepkg -srcf --verifysource --noconfirm $MAKEPKG_ARGS
+    cd ..
 done

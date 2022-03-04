@@ -52,7 +52,7 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - pacman -S --noconfirm namcap >/dev/null
-      - namcap packages/*/PKGBUILD
+      - if [ -n "$PACKAGE" ]; then namcap packages/$PACKAGE/PKGBUILD; else namcap packages/*/PKGBUILD; fi
     depends_on:
       - Pacman cache
 
