@@ -13,7 +13,7 @@ url='https://vcvrack.com/'
 license=(custom CCPL GPL3)
 arch=(x86_64)
 _plugin_name=Fundamental
-_plugin_ver=2.0.3
+_plugin_ver=$pkgver
 _plugin_pkg=${pkgname}-${_plugin_name,,}
 makedepends=(curl glew glfw-x11 jansson libarchive \
   openssl rtaudio rtmidi speexdsp zstd git gendesk jq)
@@ -42,9 +42,9 @@ sha512sums=('SKIP'
             'SKIP'
             'SKIP'
             'SKIP'
-            '285b7e014ff40f214d866487d70f5e1f69c9e8b4c14727be0635451598d107cde9bb24e6f08d2e307b629d28851ee6b86e6e7c630a838359385f96280e249c03'
+            'ee1de025f2828d0ee47103f83b23163f7f406377e14b9d303124c4e5387d78f7140eb43a20a9f3cacc976b4804b5ec3c6883ceeb491641b4c86dcd49ba7455f2'
             '1a9f37a482eb073cda53d8bb0c398f34181171fa1082d9a28bebc80e49db3560630f9f9c17b5ff55eaa79e397d4c44ddf1ba97a05cd08d4a4cea342cba600d46'
-            'f12dc46cb96e572c5ff540237205bddefc3990d94f0bc80a07601b6a10a6700b2c82afe8a0fc6d132f74f5bf12c6959b1cfe098d0774d8a3900ab2e1886c9fe7'
+            '2ca496c8be8bd8ba5d4afa631cddb585f60f4af022df79eb266fb8be26a987bf1af62b82a9f0d04e6f447086a47fab3ec59d226b1bd76c5de9522a2d9ba18b93'
             '9bb95450080fd19ce2306fbe11845b8b0ba3dfd0daac5ed5881bb1ebed41e240f092b596c9b856289c0945ef8b2ce0ea8c6de39ccc56ff2863c71b36d75a1848')
 _submodule_deps=(nanovg nanosvg osdialog oui-blendish fuzzysearchdatabase filesystem pffft)
 
