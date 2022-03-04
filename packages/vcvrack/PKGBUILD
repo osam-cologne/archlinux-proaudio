@@ -15,9 +15,8 @@ arch=(x86_64)
 _plugin_name=Fundamental
 _plugin_ver=2.0.3
 _plugin_pkg=${pkgname}-${_plugin_name,,}
-makedepends=(curl glew glfw-x11 jack jansson
-  libarchive libpulse openssl rtaudio
-  rtmidi speexdsp zstd git gendesk jq)
+makedepends=(curl glew glfw-x11 jansson libarchive \
+  openssl rtaudio rtmidi speexdsp zstd git gendesk jq)
 provides=($_plugin_pkg)
 conflicts=($_plugin_pkg)
 groups=(pro-audio)
@@ -81,8 +80,7 @@ build() {
     $(pkg-config --libs glew \
     glfw3 jansson libcurl openssl \
     libarchive libzstd speexdsp \
-    samplerate rtmidi rtaudio gl \
-    alsa jack libpulse libpulse-simple)"
+    samplerate rtmidi rtaudio gl)"
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS=""
   cd ../${_plugin_name}-$_plugin_ver
