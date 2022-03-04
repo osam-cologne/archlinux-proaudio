@@ -83,9 +83,9 @@ build() {
     $(pkg-config --libs glew \
     glfw3 jansson libcurl openssl \
     libarchive libzstd speexdsp \
-    samplerate rtmidi rtaudio gl)"
+    rtmidi rtaudio)"
   VERSION=$pkgver make -C dep includes
-  VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS=""
+  VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS="$LDFLAGS"
   cd ../${_plugin_name}-$_plugin_ver
   VERSION=$_plugin_ver RACK_DIR=../${_name}-$pkgver make dist LDFLAGS+="$_ldflags"
 }
