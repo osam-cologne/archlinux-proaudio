@@ -17,23 +17,34 @@ SKIP=0
 echo "epoch is $SOURCE_DATE_EPOCH"
 
 cd "$ROOT/packages"
-for PKG in *; do
-	cd $PKG
-	PKGLIST="$(makepkg --packagelist)"
-	if ls $PKGLIST 2>/dev/null 1>&2; then
-		SKIP=$((SKIP+1))
-		echo "$PKG fully built, skipping ..."
-		cd ..
-		continue
-	fi
 
-	if makepkg -srcf --noconfirm $MAKEPKG_ARGS; then
-		SUCC=$((SUCC+1))
-	else
-		FAIL=$((FAIL+1))
-		rm -f $PKGLIST
-	fi
-	cd ..
+if [[ -n "$PACKAGE" ]]; then
+    echo "Building package $PACKAGE..."
+    PACKAGES="$PACKAGE"
+else
+    echo "Building all packages..."
+    PACKAGES="$(ls -1)"
+fi
+
+for PKG in $PACKAGES; do
+    cd $PKG
+    PKGLIST="$(makepkg --packagelist)"
+
+    if ls $PKGLIST 2>/dev/null 1>&2; then
+        SKIP=$((SKIP+1))
+        echo "$PKG fully built, skipping ..."
+        cd ..
+        continue
+    fi
+
+    if makepkg -srcf --noconfirm $MAKEPKG_ARGS; then
+        SUCC=$((SUCC+1))
+    else
+        FAIL=$((FAIL+1))
+        rm -f $PKGLIST
+    fi
+
+    cd ..
 done
 
 echo "$SUCC built, $FAIL failed, $SKIP skipped"

@@ -39,7 +39,7 @@ steps:
     commands:
       - pacman -Syyu --noconfirm namcap diffoscope
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
-      - sudo -Eu nobody ./tools/syncdeps-all.sh
+      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE ./tools/syncdeps-all.sh
     depends_on:
       - Remove unmodified packages
 
@@ -52,7 +52,7 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - pacman -S --noconfirm namcap >/dev/null
-      - namcap packages/*/PKGBUILD
+      - if [ -n "$PACKAGE" ]; then namcap packages/$PACKAGE/PKGBUILD; else namcap packages/*/PKGBUILD; fi
     depends_on:
       - Pacman cache
 
@@ -75,7 +75,7 @@ steps:
       - mkdir -p out1 && chmod -R a+w out1
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
-      - sudo -Eu nobody ./tools/clean-build-all.sh
+      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
     depends_on:
       - Pacman cache
 
@@ -127,7 +127,7 @@ steps:
       - mkdir -p out2 && chmod -R a+w out2
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
-      - sudo -Eu nobody ./tools/clean-build-all.sh
+      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
     depends_on:
       - Pacman cache
 
@@ -221,7 +221,7 @@ steps:
       - mkdir -p out
       - chmod -R a+w out
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
-      - sudo -Eu nobody ./tools/clean-build-all.sh -A
+      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh -A
 
   - name: List built packages
     image: alpine
