@@ -46,7 +46,7 @@ sha512sums=('f34b99f121bf27325a7a45dbde650586089662fe5ed7a6d308fdd6bac6c4a77d828
             '93831752368e0f14448409e00db5e674e645e40f65ec9b8aac9b466a328a434396330d8ba0d31939764b9632fd569edf3503234229c3e9ae41d2759ec7cf5024'
             '37aab14325bc061c71c3b0bbaaaf5f97247f5e2a569eb3e56ae71be17cec8b1effd4812a63fe93c572756a8d1e8453a058c4f07b878da083c4ef373e52b33145'
             'ee1de025f2828d0ee47103f83b23163f7f406377e14b9d303124c4e5387d78f7140eb43a20a9f3cacc976b4804b5ec3c6883ceeb491641b4c86dcd49ba7455f2'
-            '1a9f37a482eb073cda53d8bb0c398f34181171fa1082d9a28bebc80e49db3560630f9f9c17b5ff55eaa79e397d4c44ddf1ba97a05cd08d4a4cea342cba600d46'
+            '67af2efbca5a50a92665ca50f9207dae7138ccd5f5e0893749f5d9b0eff4498e140ec492af740fd1cb912023e097149789a27322b36b731a0850f38c12800c29'
             '2ca496c8be8bd8ba5d4afa631cddb585f60f4af022df79eb266fb8be26a987bf1af62b82a9f0d04e6f447086a47fab3ec59d226b1bd76c5de9522a2d9ba18b93'
             '9bb95450080fd19ce2306fbe11845b8b0ba3dfd0daac5ed5881bb1ebed41e240f092b596c9b856289c0945ef8b2ce0ea8c6de39ccc56ff2863c71b36d75a1848')
 _submodule_deps=(nanovg nanosvg osdialog oui-blendish fuzzysearchdatabase filesystem pffft)
@@ -87,7 +87,7 @@ build() {
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS="$LDFLAGS"
   cd ../${_plugin_name}-$_plugin_ver
-  VERSION=$_plugin_ver RACK_DIR=../${_name}-$pkgver make dist LDFLAGS+="$_ldflags"
+  VERSION=$_plugin_ver RACK_DIR=../${_name}-$pkgver make dist
 }
 
 package() {
