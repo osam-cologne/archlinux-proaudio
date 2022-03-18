@@ -2,6 +2,7 @@
 # Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
 
 pkgname=string-machine
+_plugin_uri="http://jpcima.sdf1.org/lv2/$pkgname"
 pkgver=0.1.0
 pkgrel=1
 pkgdesc="A virtual-analog string ensemble synthesizer LV2 and VST2 plugin"
@@ -10,14 +11,30 @@ url="https://github.com/jpcima/string-machine"
 license=(Boost)
 depends=(gcc-libs libx11 cairo)
 makedepends=(boost mesa)
+#checkdepends=(lv2lint)
 groups=(pro-audio lv2-plugins vst-plugins)
-source=("https://github.com/jpcima/string-machine/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
-sha256sums=('5b0d2eb2185199c1de6c7c35700a2caafbc6ba564529a2e7614c15c3aceacc6f')
+source=("https://github.com/jpcima/string-machine/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz"
+        'string-machine-dpf-makefile.diff')
+sha256sums=('5b0d2eb2185199c1de6c7c35700a2caafbc6ba564529a2e7614c15c3aceacc6f'
+            '87d3c13a567ab156b4cc44952b27ed12400f25f5099556d667595f7d2b2492d7')
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  # Update DPF base makefile to
+  # https://github.com/DISTRHO/DPF/blob/05d91f5852f4bccfd2bce1d4d2e2b3036e29db03/Makefile.base.mk
+  patch -p1 -N -r '' -i "$srcdir"/string-machine-dpf-makefile.diff
+}
 
 build() {
   cd "$pkgname-$pkgver"
   make
 }
+
+# generates too many errors, so skip checks
+#check() {
+#  cd "$pkgname-$pkgver"
+#  lv2lint -Mpack -I "bin/$pkgname.lv2/" "$_plugin_uri"
+
 
 package() {
   cd "$pkgname-$pkgver"
