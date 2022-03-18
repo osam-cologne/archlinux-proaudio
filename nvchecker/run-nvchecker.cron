@@ -1,0 +1,11 @@
+#!/bin/bash
+
+PYTHON="python3.9"
+CHECKOUT="$HOME/archlinux-proaudio"
+
+export PATH="$HOME/.local/bin:/usr/bin:/bin"
+
+cd "$CHECKOUT"
+git pull -q
+nvchecker -l warning
+$PYTHON nvchecker/nvchecker-notify-rocketchat.py # --dry-run

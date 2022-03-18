@@ -1,0 +1,17 @@
+[__config__]
+oldver = "old_ver.json"
+newver = "new_ver.json"
+#keyfile = "keyfile.toml"
+
+[mamba]
+source = "github"
+github = "brummer10/Mamba"
+use_max_tag = true
+from_pattern = '^v'
+to_pattern = ""
+
+[tuxguitar]
+source = "regex"
+url = "http://www.tuxguitar.com.ar/download.html"
+regex = 'Latest Version (\d+\.\d+\.\d+)'
+encoding = "utf-8"
