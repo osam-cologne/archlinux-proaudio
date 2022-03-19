@@ -15,3 +15,10 @@ source = "regex"
 url = "http://www.tuxguitar.com.ar/download.html"
 regex = 'Latest Version (\d+\.\d+\.\d+)'
 encoding = "utf-8"
+
+[string-machine]
+source = "github"
+github = "jpcima/string-machine"
+use_max_tag = true
+from_pattern = '^v'
+to_pattern = ""
