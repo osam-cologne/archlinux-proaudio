@@ -10,6 +10,13 @@ use_max_tag = true
 from_pattern = '^v'
 to_pattern = ""
 
+[midiomatic]
+source = "github"
+github = "SpotlightKid/midiomatic"
+use_max_tag = true
+from_pattern = '^v'
+to_pattern = ""
+
 [tuxguitar]
 source = "regex"
 url = "http://www.tuxguitar.com.ar/download.html"
