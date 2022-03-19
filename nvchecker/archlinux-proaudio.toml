@@ -13,7 +13,7 @@ to_pattern = ""
 [tuxguitar]
 source = "regex"
 url = "http://www.tuxguitar.com.ar/download.html"
-regex = 'Latest Version (\d+\.\d+\.\d+)'
+regex = 'Latest Version (\d+\.\d+(?:\.\d+)?)'
 encoding = "utf-8"
 
 [string-machine]
