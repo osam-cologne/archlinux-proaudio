@@ -10,6 +10,14 @@ use_max_tag = true
 from_pattern = '^v'
 to_pattern = ""
 
+[mclk-lv2]
+# note: dots in section names cause errors
+source = "github"
+github = "x42/mclk.lv2"
+use_max_tag = true
+from_pattern = '^v'
+to_pattern = ""
+
 [midiomatic]
 source = "github"
 github = "SpotlightKid/midiomatic"
