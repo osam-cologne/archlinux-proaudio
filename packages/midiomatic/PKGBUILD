@@ -11,6 +11,10 @@ license=(MIT)
 groups=(pro-audio lv2-plugins vst-plugins)
 depends=(gcc-libs)
 checkdepends=(kxstudio-lv2-extensions lv2lint)
+optdepends=(
+  'lv2-host: for LV2 plugins'
+  'vst-host: for VST plugins'
+)
 source=(
   "https://github.com/SpotlightKid/midiomatic/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz"
 )
