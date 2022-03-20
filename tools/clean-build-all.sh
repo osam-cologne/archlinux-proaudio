@@ -26,13 +26,32 @@ else
     PACKAGES="$(ls -1)"
 fi
 
+if [[ -n "$IGNOREDB" ]]; then
+    echo "Ignoring all packages from $IGNOREDB..."
+    IGNOREPKGS=($(bsdtar -xOf "$IGNOREDB" '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
+else
+    IGNOREPKGS=()
+fi
+
 for PKG in $PACKAGES; do
     cd $PKG
-    PKGLIST="$(makepkg --packagelist)"
+    PKGLIST=($(makepkg --packagelist))
 
-    if ls $PKGLIST 2>/dev/null 1>&2; then
+    if ls ${PKGLIST[*]} 2>/dev/null 1>&2; then
         SKIP=$((SKIP+1))
         echo "$PKG fully built, skipping ..."
+        cd ..
+        continue
+    fi
+
+    if ( \
+        set -e; \
+        for PKGFILE in ${PKGLIST[*]}; do \
+            [[ " ${IGNOREPKGS[*]} " =~ " `basename ${PKGFILE}` " ]]; \
+        done \
+    ); then
+        SKIP=$((SKIP+1))
+        echo "$PKG already in repo. Change pkgrel to build updated version."
         cd ..
         continue
     fi

@@ -36,11 +36,12 @@ steps:
       SRCDEST: /tmp/build
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
+      IGNOREDB: /var/lib/pacman/sync/proaudio.db
     commands:
       - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
       - pacman -Syyu --noconfirm namcap diffoscope
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE ./tools/syncdeps-all.sh
+      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,IGNOREDB ./tools/syncdeps-all.sh
     depends_on:
       - Remove unmodified packages
 
@@ -70,6 +71,7 @@ steps:
       SRCDEST: /tmp/build
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
+      IGNOREDB: /var/lib/pacman/sync/proaudio.db
       PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
       - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
@@ -78,7 +80,7 @@ steps:
       - mkdir -p out1 && chmod -R a+w out1
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
-      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
+      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH,IGNOREDB ./tools/clean-build-all.sh
     depends_on:
       - Pacman cache
 
@@ -123,6 +125,7 @@ steps:
       SRCDEST: /tmp/build
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
+      IGNOREDB: /var/lib/pacman/sync/proaudio.db
       PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
       - sleep 9  # backoff to prevent false positives
@@ -132,7 +135,7 @@ steps:
       - mkdir -p out2 && chmod -R a+w out2
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
-      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
+      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH,IGNOREDB ./tools/clean-build-all.sh
     depends_on:
       - Pacman cache
 
@@ -189,8 +192,12 @@ steps:
 
   - name: Create db
     image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
     commands:
       - cd out1
+      - cp /var/lib/pacman/sync/proaudio.db proaudio.db.tar.gz
       - repo-add proaudio.db.tar.gz *.pkg.tar.zst
     depends_on:
       - Sign packages
@@ -267,6 +274,7 @@ steps:
       SRCDEST: /tmp/build
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
+      IGNOREDB: /var/lib/pacman/sync/proaudio.db
       PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
       - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
@@ -275,8 +283,9 @@ steps:
       - pacman -S --noconfirm base-devel
       - mkdir -p out
       - chmod -R a+w out
+      - cp /var/lib/pacman/sync/proaudio.db out/proaudio.db.tar.gz
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
-      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh -A
+      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH,IGNOREDB ./tools/clean-build-all.sh -A
     depends_on:
       - Remove unmodified packages
 

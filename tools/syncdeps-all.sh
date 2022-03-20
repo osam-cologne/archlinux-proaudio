@@ -17,8 +17,27 @@ else
     PACKAGES="$(ls -1)"
 fi
 
+if [[ -n "$IGNOREDB" ]]; then
+    echo "Ignoring all packages from $IGNOREDB..."
+    IGNOREPKGS=($(bsdtar -xOf "$IGNOREDB" '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
+else
+    IGNOREPKGS=()
+fi
+
 for PKG in $PACKAGES; do
     cd $PKG
+    # don't fetch deps if current package version is already in repo
+    PKGLIST=($(makepkg --packagelist))
+    if ( \
+        set -e; \
+        for PKGFILE in ${PKGLIST[*]}; do \
+            [[ " ${IGNOREPKGS[*]} " =~ " `basename ${PKGFILE}` " ]]; \
+        done \
+    ); then
+        cd ..
+        continue
+    fi
+
     makepkg -srcf --verifysource --noconfirm $MAKEPKG_ARGS
     cd ..
 done
