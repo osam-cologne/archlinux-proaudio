@@ -2,17 +2,17 @@
 # Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
 
 pkgname=midiomatic
-pkgver="0.2.1"
+pkgver=0.2.1
 pkgrel=1
-pkgdesc="A collection of MIDI filter, generator and processor LV2 and VST plugins"
+pkgdesc='A collection of MIDI filter, generator and processor LV2 and VST plugins'
 arch=(x86_64 aarch64)
-url="https://github.com/SpotlightKid/midiomatic"
+url='https://github.com/SpotlightKid/midiomatic'
 license=(MIT)
 groups=(pro-audio lv2-plugins vst-plugins)
 depends=(gcc-libs)
 checkdepends=(kxstudio-lv2-extensions lv2lint)
 source=(
-    "https://github.com/SpotlightKid/midiomatic/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz"
+  "https://github.com/SpotlightKid/midiomatic/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz"
 )
 sha256sums=('aed203bde8fd01e279e058d48f084754f50b9fd758d7b56b845f11d8fbdbb1f3')
 
