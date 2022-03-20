@@ -179,24 +179,22 @@ steps:
       detach_sign: true
     depends_on:
       - Build packages
-    #when:
-    #  ref:
-    #    include:
-    #      - refs/heads/master
+    when:
+      ref:
+        include:
+          - refs/heads/master
 
   - name: Create db
     image: archlinux/archlinux:base-devel
     commands:
       - cd out1
       - repo-add proaudio.db.tar.gz *.pkg.tar.zst
-      - ls -1 .
-      - zcat proaudio.db.tar.gz
     depends_on:
       - Sign packages
-    #when:
-    #  ref:
-    #    include:
-    #      - refs/heads/master
+    when:
+      ref:
+        include:
+          - refs/heads/master
 
   - name: Publish
     image: appleboy/drone-scp
@@ -211,10 +209,10 @@ steps:
       overwrite: true
     depends_on:
       - Create db
-    #when:
-    #  ref:
-    #    include:
-    #      - refs/heads/master
+    when:
+      ref:
+        include:
+          - refs/heads/master
 
 # use a shared pacman cache to clean up successive package installs
 volumes:
@@ -275,15 +273,70 @@ steps:
       - chmod -R a+w out
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh -A
+    depends_on:
+      - Remove unmodified packages
 
   - name: List built packages
     image: alpine
     commands:
       - ls -1 out/
+    depends_on:
+      - Build packages
     when:
       status:
         - success
         - failure
+
+  - name: Sign packages
+    image: plugins/gpgsign
+    settings:
+      key:
+        from_secret: pkgsignkey
+      passphrase:
+        from_secret: pkgsignkey-pass
+      files:
+        - out/*.pkg.tar.xz
+      armor: false
+      detach_sign: true
+    depends_on:
+      - Build packages
+    when:
+      #ref:
+      #  include:
+      #    - refs/heads/master
+      status:
+        - success
+        - failure
+
+  - name: Create db
+    image: agners/archlinuxarm
+    commands:
+      - cd out
+      - repo-add proaudio.db.tar.gz *.pkg.tar.xz
+    depends_on:
+      - Sign packages
+    #when:
+    #  ref:
+    #    include:
+    #      - refs/heads/master
+
+  - name: Publish
+    image: appleboy/drone-scp
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out
+      target: /var/www/virtual/aiwahpoo/html/proaudio/aarch64
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Create db
+    #when:
+    #  ref:
+    #    include:
+    #      - refs/heads/master
 
 trigger:
   ref:
