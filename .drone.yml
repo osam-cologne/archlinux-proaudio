@@ -301,9 +301,9 @@ steps:
     depends_on:
       - Build packages
     when:
-      #ref:
-      #  include:
-      #    - refs/heads/master
+      ref:
+        include:
+          - refs/heads/master
       status:
         - success
         - failure
@@ -315,10 +315,10 @@ steps:
       - repo-add proaudio.db.tar.gz *.pkg.tar.xz
     depends_on:
       - Sign packages
-    #when:
-    #  ref:
-    #    include:
-    #      - refs/heads/master
+    when:
+      ref:
+        include:
+          - refs/heads/master
 
   - name: Publish
     image: appleboy/drone-scp
@@ -333,10 +333,10 @@ steps:
       overwrite: true
     depends_on:
       - Create db
-    #when:
-    #  ref:
-    #    include:
-    #      - refs/heads/master
+    when:
+      ref:
+        include:
+          - refs/heads/master
 
 trigger:
   ref:
