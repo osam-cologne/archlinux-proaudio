@@ -69,13 +69,14 @@ steps:
       SRCDEST: /tmp/build
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
+      PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - rm -rf out1  # cleanup, needed for local testing
       - mkdir -p out1 && chmod -R a+w out1
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
+      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
     depends_on:
       - Pacman cache
 
@@ -120,6 +121,7 @@ steps:
       SRCDEST: /tmp/build
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
+      PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
       - sleep 9  # backoff to prevent false positives
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
@@ -127,7 +129,7 @@ steps:
       - mkdir -p out2 && chmod -R a+w out2
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - pacman -Su --noconfirm
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
+      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
     depends_on:
       - Pacman cache
 
@@ -246,6 +248,7 @@ steps:
       SRCDEST: /tmp/build
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
+      PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - pacman -Syyu --noconfirm
@@ -253,7 +256,7 @@ steps:
       - mkdir -p out
       - chmod -R a+w out
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh -A
+      - sudo -u nobody --preserve-env=PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh -A
 
   - name: List built packages
     image: alpine
