@@ -1,5 +1,6 @@
 {
   "mamba": "2.2",
+  "midiomatic": "0.2.1",
   "string-machine": "0.1.0",
   "tuxguitar": "1.5.5"
 }
