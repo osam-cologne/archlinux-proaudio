@@ -198,6 +198,24 @@ steps:
     #    include:
     #      - refs/heads/master
 
+  - name: Publish
+    image: appleboy/drone-scp
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out1
+      target: /var/www/virtual/aiwahpoo/html/proaudio/x86_64
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Create db
+    #when:
+    #  ref:
+    #    include:
+    #      - refs/heads/master
+
 # use a shared pacman cache to clean up successive package installs
 volumes:
   - name: pkgcache
