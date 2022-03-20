@@ -37,6 +37,7 @@ steps:
       SRCPKGDEST: /tmp/build
       BUILDDIR: /tmp/build
     commands:
+      - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
       - pacman -Syyu --noconfirm namcap diffoscope
       - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
       - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE ./tools/syncdeps-all.sh
@@ -71,6 +72,7 @@ steps:
       BUILDDIR: /tmp/build
       PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
+      - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - rm -rf out1  # cleanup, needed for local testing
       - mkdir -p out1 && chmod -R a+w out1
@@ -124,6 +126,7 @@ steps:
       PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
       - sleep 9  # backoff to prevent false positives
+      - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - rm -rf out2  # cleanup, needed for local testing
       - mkdir -p out2 && chmod -R a+w out2
@@ -266,6 +269,7 @@ steps:
       BUILDDIR: /tmp/build
       PACKAGER: 'OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
     commands:
+      - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - pacman -Syyu --noconfirm
       - pacman -S --noconfirm base-devel
