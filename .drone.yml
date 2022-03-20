@@ -164,6 +164,38 @@ steps:
         - success
         - failure
 
+  - name: Sign packages
+    image: plugins/gpgsign
+    settings:
+      key:
+        from_secret: pkgsignkey
+      passphrase:
+        from_secret: pkgsignkey-pass
+      files:
+        - out1/*.pkg.tar.zst
+      armor: false
+      detach_sign: true
+    depends_on:
+      - Build packages
+    #when:
+    #  ref:
+    #    include:
+    #      - refs/heads/master
+
+  - name: Create db
+    image: archlinux/archlinux:base-devel
+    commands:
+      - cd out1
+      - repo-add proaudio.db.tar.gz *.pkg.tar.zst
+      - ls -1 .
+      - zcat proaudio.db.tar.gz
+    depends_on:
+      - Sign packages
+    #when:
+    #  ref:
+    #    include:
+    #      - refs/heads/master
+
 # use a shared pacman cache to clean up successive package installs
 volumes:
   - name: pkgcache
