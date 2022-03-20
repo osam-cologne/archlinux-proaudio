@@ -54,6 +54,12 @@ url = "https://sourceforge.net/projects/tuxguitar/rss?path=/TuxGuitar"
 regex = 'tuxguitar-(\d+\.\d+(?:\.\d+)?)-src.tar.gz'
 encoding = "utf-8"
 
+[vcvrack]
+source = "github"
+github = "VCVRack/Rack"
+use_max_tag = true
+prefix = "v"
+
 [ykchorus]
 source = "github"
 github = "SpotlightKid/ykchorus"
