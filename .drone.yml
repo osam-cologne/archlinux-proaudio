@@ -104,7 +104,8 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - pacman -S --noconfirm namcap >/dev/null
-      - namcap out1/*.pkg.tar.zst
+      - cd out1
+      - if ls -1 *.pkg.tar.zst 2>/dev/null 1>&2; then namcap *.pkg.tar.zst; fi
     depends_on:
       - Build packages
     when:
@@ -142,9 +143,10 @@ steps:
   - name: Check reproduced checksums
     image: alpine:3.15
     commands:
-      - rm -rf out.SHA512  # cleanup, needed for local testing
-      - cd out1 && sha512sum *.pkg.tar.zst > ../out.SHA512
-      - cd ../out2 && sha512sum -c ../out.SHA512
+      - rm -rf out.SHA512 && cd out1  # cleanup, needed for local testing
+      - (if ls -1 *.pkg.tar.zst 2>/dev/null 1>&2; then sha512sum *.pkg.tar.zst; fi) > ../out.SHA512
+      - cd ../out2
+      - if [[ -s ../out.SHA512 ]]; then sha512sum -c ../out.SHA512; fi
     depends_on:
       - Build packages
       - Reproduce packages
@@ -162,7 +164,7 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - pacman -S --noconfirm diffoscope >/dev/null
-      - cd out2
+      - cd out2 && shopt -s nullglob
       - for PKG in *.pkg.tar.zst; do diffoscope ../out1/$PKG $PKG; done
     depends_on:
       - Build packages
@@ -357,7 +359,7 @@ trigger:
       - refs/pull/**
       - refs/tags/**
 
-# CI maintainance pipelines
+# CI maintenance pipelines
 ---
 kind: pipeline
 type: docker
