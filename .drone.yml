@@ -85,7 +85,7 @@ steps:
       - Pacman cache
 
   - name: List built packages
-    image: alpine
+    image: alpine:3.15
     commands:
       - ls -1 out1/
     depends_on:
@@ -140,7 +140,7 @@ steps:
       - Pacman cache
 
   - name: Check reproduced checksums
-    image: alpine
+    image: alpine:3.15
     commands:
       - rm -rf out.SHA512  # cleanup, needed for local testing
       - cd out1 && sha512sum *.pkg.tar.zst > ../out.SHA512
@@ -266,7 +266,7 @@ steps:
           - refs/pull/**
 
   - name: Build packages
-    image: agners/archlinuxarm
+    image: lopsided/archlinux:devel
     failure: ignore  # arm64 is not critical for now
     environment:
       PKGDEST: /drone/src/out
@@ -280,7 +280,6 @@ steps:
       - echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
       - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
       - pacman -Syyu --noconfirm
-      - pacman -S --noconfirm base-devel
       - mkdir -p out
       - chmod -R a+w out
       - cp /var/lib/pacman/sync/proaudio.db out/proaudio.db.tar.gz
@@ -290,7 +289,7 @@ steps:
       - Remove unmodified packages
 
   - name: List built packages
-    image: alpine
+    image: alpine:3.15
     commands:
       - ls -1 out/
     depends_on:
@@ -322,7 +321,7 @@ steps:
         - failure
 
   - name: Create db
-    image: agners/archlinuxarm
+    image: lopsided/archlinux:devel
     commands:
       - cd out
       - repo-add proaudio.db.tar.gz *.pkg.tar.xz
@@ -357,3 +356,44 @@ trigger:
       - refs/heads/master
       - refs/pull/**
       - refs/tags/**
+
+# CI maintainance pipelines
+---
+kind: pipeline
+type: docker
+name: Update amd64 images
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: Update archlinux image
+    image: archlinux/archlinux:base-devel
+    pull: always
+
+trigger:
+  event:
+    - cron
+  cron:
+    - monthly
+
+---
+kind: pipeline
+type: docker
+name: Update arm64 images
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: Update archlinux image
+    image: lopsided/archlinux:devel
+    pull: always
+
+trigger:
+  event:
+    - cron
+  cron:
+    - monthly
