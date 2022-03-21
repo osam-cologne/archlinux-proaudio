@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # makepkg -src installs and removes required dependencies so this can be run on CI,
 # for example the archlinux/archlinux:base-devel image, to build from a clean root.
 
@@ -7,54 +6,18 @@ cd "${0%/*}/.."
 ROOT="$(pwd)"
 MAKEPKG_ARGS="$*"
 
-#export PKGDEST="$ROOT/out"
-#export LOGDEST="$ROOT/out"
-
 SUCC=0
 FAIL=0
-SKIP=0
-
-echo "epoch is $SOURCE_DATE_EPOCH"
 
 cd "$ROOT/packages"
+TOTAL=$(ls -1 | wc -l)
 
-if [[ -n "$PACKAGE" ]]; then
-    echo "Building package $PACKAGE..."
-    PACKAGES="$PACKAGE"
-else
-    echo "Building all packages..."
-    PACKAGES="$(ls -1)"
-fi
-
-if [[ -n "$IGNOREDB" ]]; then
-    echo "Ignoring all packages from $IGNOREDB..."
-    IGNOREPKGS=($(bsdtar -xOf "$IGNOREDB" '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
-else
-    IGNOREPKGS=()
-fi
+echo "Building packages: $PACKAGES"
+echo "Epoch is $SOURCE_DATE_EPOCH"
 
 for PKG in $PACKAGES; do
     cd $PKG
     PKGLIST=($(makepkg --packagelist))
-
-    if ls ${PKGLIST[*]} 2>/dev/null 1>&2; then
-        SKIP=$((SKIP+1))
-        echo "$PKG fully built, skipping ..."
-        cd ..
-        continue
-    fi
-
-    if ( \
-        set -e; \
-        for PKGFILE in ${PKGLIST[*]}; do \
-            [[ " ${IGNOREPKGS[*]} " =~ " `basename ${PKGFILE}` " ]]; \
-        done \
-    ); then
-        SKIP=$((SKIP+1))
-        echo "$PKG already in repo. Change pkgrel to build updated version."
-        cd ..
-        continue
-    fi
 
     if makepkg -srcf --noconfirm $MAKEPKG_ARGS; then
         SUCC=$((SUCC+1))
@@ -66,6 +29,6 @@ for PKG in $PACKAGES; do
     cd ..
 done
 
-echo "$SUCC built, $FAIL failed, $SKIP skipped"
+echo "$SUCC built, $FAIL failed, $((TOTAL-SUCC-FAIL)) skipped"
 
 [ $FAIL -eq 0 ] || exit 1

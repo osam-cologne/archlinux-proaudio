@@ -33,10 +33,9 @@ build() {
 # generates too many errors, so ignore check failures
 check() {
   cd "$pkgname-$pkgver"
-  lv2lint -Mpack -I "bin/$pkgname.lv2/" "$_plugin_uri" || \
-  echo "Ignoring lv2lint errors (known to fail)."
+  lv2lint -Mpack -I "bin/$pkgname.lv2/" "$_plugin_uri" ||
+    echo "Ignoring lv2lint errors (known to fail)."
 }
-
 
 package() {
   cd "$pkgname-$pkgver"
