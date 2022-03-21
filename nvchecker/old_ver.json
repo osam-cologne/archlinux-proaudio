@@ -2,6 +2,7 @@
   "mamba": "2.2",
   "mclk-lv2": "0.2.1",
   "midiomatic": "0.2.1",
+  "python-rtmidi": "1.4.9",
   "string-machine": "0.1.0",
   "tuxguitar": "1.5.5"
 }
