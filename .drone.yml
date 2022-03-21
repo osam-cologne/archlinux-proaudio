@@ -151,16 +151,14 @@ steps:
         include:
           - refs/heads/master
 
-  - name: Create db
+  - name: Update db
     image: archlinux/archlinux:base-devel
     volumes:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - cd out
-      - cp /var/lib/pacman/sync/proaudio.db proaudio.db.tar.gz
-      - repo-add proaudio.db.tar.gz *$PKGEXT
+      - tools/update-db.sh
     depends_on:
       - Sign packages
     when:
@@ -180,7 +178,7 @@ steps:
       strip_components: 1
       overwrite: true
     depends_on:
-      - Create db
+      - Update db
     when:
       ref:
         include:
@@ -274,12 +272,11 @@ steps:
         - success
         - failure
 
-  - name: Create db
+  - name: Update db
     image: lopsided/archlinux:devel
     commands:
       - source tools/build-env.sh
-      - cd out
-      - repo-add proaudio.db.tar.gz *$PKGEXT
+      - tools/update-db.sh
     depends_on:
       - Sign packages
     when:
@@ -299,7 +296,7 @@ steps:
       strip_components: 1
       overwrite: true
     depends_on:
-      - Create db
+      - Update db
     when:
       ref:
         include:
