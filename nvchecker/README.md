@@ -15,7 +15,7 @@ Install `nvchecker`, e.g. via `pipx`:
 ```con
 PYTHON=python3.9
 $PYTHON -m pip install --user pipx
-pipx install nvchecker
+pipx install "nvchecker[pypi]"
 ```
 
 Install Python dependencies:
