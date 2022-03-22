@@ -1,5 +1,6 @@
 #!/bin/bash
-set -x
+set -e
+shopt -s nullglob
 if [ -z $CI ]; then
     echo "Only run in CI"
     exit 1
