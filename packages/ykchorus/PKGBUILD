@@ -23,7 +23,7 @@ sha256sums=('c7a4a980d892ba150efe09496f55ee407713a596e4fb7664cc859fdc9ffedcf6')
 
 prepare() {
   cd "$pkgname"
-  # Don't include DSSI version
+  # We don't want the DSSI version:
   sed -i -e '/ykchorus-dssi/d' Makefile
   sed -i -e '/dssi_dsp$/d' plugins/YKChorus/Makefile
 }
