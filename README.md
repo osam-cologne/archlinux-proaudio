@@ -1,7 +1,7 @@
 # archlinux-proaudio
 [![Build Status](https://ci.cbix.de/api/badges/osam-cologne/archlinux-proaudio/status.svg)](https://ci.cbix.de/osam-cologne/archlinux-proaudio)
-![x86_64](https://arch.osamc.de/proaudio/x86_64/badge-count.svg)
-![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)
+[![x86_64](https://arch.osamc.de/proaudio/x86_64/badge-count.svg)](https://arch.osamc.de/proaudio/x86_64/?P=*.pkg.tar.zst)
+[![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)](https://arch.osamc.de/proaudio/aarch64/?P=*.pkg.tar.xz)
 
 PKGBUILD files for the binary archlinux pro-audio OSAMC repository.
 
