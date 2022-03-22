@@ -15,3 +15,5 @@ src/
 /.secrets.env
 /.drone.env
 /.tmp
+/out
+/out2

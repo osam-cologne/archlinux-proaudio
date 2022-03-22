@@ -26,6 +26,10 @@ Remember to update the `pkgrel` so your package update reaches the users!
 This step also fetches all required dependencies to a shared pacman cache in order to speed up successive
 package installs.
 
+The output of `makepkg --packagelist` is also used to create a list of all potential
+package files of all packages in the repo, which is [later used](#update-database)
+to remove old packages from the database.
+
 ### Build packages
 This builds all packages determined by the prepare step.
 
@@ -63,10 +67,11 @@ The public key is exported using
 gpg --export --armor $KEY_ID > osamc.gpg
 ```
 and can be [downloaded from the repo server](https://arch.osamc.de/proaudio/osamc.gpg)
-```
 
 ### Update database
 This is basically using the stock `repo-add` and `repo-remove` which are shipped with Pacman.
+To keep the database clean, all entries which are not built by any PKGBUILD are
+removed. This prevents leftover entries from removed, renamed or merged packages.
 
 ### Publish
 The [Drone SCP Plugin](https://plugins.drone.io/appleboy/drone-scp/) is used to push the resulting files to
