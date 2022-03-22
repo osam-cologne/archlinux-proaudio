@@ -63,7 +63,6 @@ The public key is exported using
 gpg --export --armor $KEY_ID > osamc.gpg
 ```
 and can be [downloaded from the repo server](https://arch.osamc.de/proaudio/osamc.gpg)
-```
 
 ### Update database
 This is basically using the stock `repo-add` and `repo-remove` which are shipped with Pacman.
