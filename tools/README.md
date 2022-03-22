@@ -2,8 +2,8 @@
 
 ## Continuous Integration
 
-Most of the tools in this directory are being used by the CI Build / Check / Publish pipeline, so here's a rough
-outline of how that works:
+Most of the tools in this directory are being used by the CI Build / Check / Publish pipeline,
+which uses [Drone.io](https://www.drone.io/), so here's a rough outline of how that works:
 Taking a look at the `.drone.yml` in the root directory, we can see several actions that are automatically
 triggered by Git pushes / PRs:
 
@@ -47,7 +47,17 @@ Then the secret key is exported
 ```
 gpg --export-secret-key $KEY_ID | base64 -w0
 ```
-and stored as a Drone secret. The public key is exported using
+and stored as a Drone secret (without PR permission!) using the Drone settings dashboard:
+
+![Drone secrets screenshot](https://user-images.githubusercontent.com/1295945/159436898-1fff2b57-1277-4cbe-92b0-8dbeaf3f6c2b.png)
+
+Alternatively [use the drone cli](https://docs.drone.io/cli/secret/drone-secret-add/):
+```
+$ drone secret add --name pkgsignkey --data '...5LAqcQp6zTA5lIc2tQpVf3F8+c=' osam-cologne/archlinux-proaudio
+```
+If you added a passphrase in the gpg step, also create a secret for that (`pkgsignkey-pass`).
+
+The public key is exported using
 ```
 gpg --export --armor $KEY_ID > osamc.gpg
 ```
@@ -63,4 +73,18 @@ the server. This needs a private SSH key stored as another Drone secret:
 ```
 ssh-keygen -t ed25519 -C ci@osamc -f ./id_osamc -N ""
 ```
-The server is a simple web server and only requires all published files to sit in the same directory.
+Store the content of `id_osamc` as another drone secret as described above
+```
+$ drone secret add --name ssh-key --data '-----BEGIN OPENSSH PRIVATE KEY...' osam-cologne/archlinux-proaudio
+```
+and append the public key in `id_osamc.pub` to `~/.ssh/authorized_keys` on the server for the desired user.
+
+The server is a simple web server and only requires all published files for a repo and architecture
+to sit in the same directory, for example `/var/www/proaudio/x86_64` and `/var/www/proaudio/aarch64`.
+Users can then use the repo in their `/etc/pacman.conf` by adding
+```
+[proaudio]
+Server = https://example.com/$repo/$arch
+```
+and manually using the provided signing key as described in the
+[Arch Wiki](https://wiki.archlinux.org/title/Pacman/Package_signing#Adding_unofficial_keys).

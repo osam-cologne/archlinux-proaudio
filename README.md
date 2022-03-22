@@ -8,6 +8,10 @@ The repository is maintained and tested for both `x86_64` and `aarch64` (Arch Li
 Contributions are welcome!
 
 ## How to use
+_As we're still working on the setup, this information maybe subject to change without notice!
+We try to announce important changes on IRC ([#archlinux-proaudio](https://web.libera.chat/#archlinux-proaudio) on irc.libera.chat)
+and reflect the current information on the [Arch Wiki](https://wiki.archlinux.org/title/Unofficial_user_repositories)._
+
 Add the repo to your `/etc/pacman.conf`:
 ```
 [proaudio]
