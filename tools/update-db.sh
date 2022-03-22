@@ -12,16 +12,23 @@ TMP="${ROOT}/.tmp"
 
 source /etc/makepkg.conf
 
-# Fetch current database
+# Fetch current database and extract
 cd "$ROOT"/out
 curl -fO "https://arch.osamc.de/proaudio/${CARCH}/proaudio.{db,files}.tar.gz"
+mkdir -p "$TMP"/repo
+bsdtar -xf proaudio.db.tar.gz -C "$TMP"/repo
 
-# Cleanup old packages from db
+# Cleanup old packages from db. $TMP/packagelist was created in the earlier
+# prepare step and contains a list of package files built from all packages
+# in this repo. This allows checking (and removing) packages simply by removing
+# their PKGBUILD from this repo.
+# This also covers renaming packages or merging split packages.
 REMOVAL=()
-for PKGPATH in $(bsdtar -tf proaudio.db.tar.gz '*/desc'); do
-    FILENAME="$(bsdtar -xOqf proaudio.db.tar.gz "$PKGPATH" | sed -n '/^%FILENAME%$/ {n;p}')"
+for PKGPATH in "$TMP"/repo/*/desc; do
+    FILENAME="$(sed -n '/^%FILENAME%$/ {n;p}' "$PKGPATH")"
     if ! grep -qxF "$FILENAME" "$TMP"/packagelist; then
-        PKGNAME="$(bsdtar -xOqf proaudio.db.tar.gz "$PKGPATH" | sed -n '/^%NAME%$/ {n;p}')"
+        # $FILENAME is not built by any of our packages, let's remove it from the db
+        PKGNAME="$(sed -n '/^%NAME%$/ {n;p}' "$PKGPATH")"
         REMOVAL+=(${PKGNAME})
     fi
 done
