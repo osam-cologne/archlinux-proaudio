@@ -13,7 +13,7 @@ source /etc/makepkg.conf
 
 # Fetch current database
 cd "$ROOT"/out
-curl -fOs "https://arch.osamc.de/proaudio/${CARCH}/proaudio.{db,files}.tar.gz"
+curl -fO "https://arch.osamc.de/proaudio/${CARCH}/proaudio.{db,files}.tar.gz"
 
 # Cleanup old packages from db
 REMOVAL=()
@@ -34,4 +34,4 @@ repo-add proaudio.db.tar.gz *$PKGEXT
 # Generate badge
 COUNT=$(bsdtar -tf proaudio.db.tar.gz '*/desc' | wc -l)
 BADGE="${CARCH/_/__}_packages-${COUNT}-informational"
-curl -fso badge-count.svg https://img.shields.io/badge/${BADGE}
+curl -fo badge-count.svg https://img.shields.io/badge/${BADGE}
