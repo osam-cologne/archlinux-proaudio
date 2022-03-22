@@ -29,15 +29,22 @@ to_pattern = ""
 source = "pypi"
 pypi = "python-rtmidi"
 
+[string-machine]
+source = "github"
+github = "jpcima/string-machine"
+use_max_tag = true
+from_pattern = '^v'
+to_pattern = ""
+
 [tuxguitar]
 source = "regex"
 url = "http://www.tuxguitar.com.ar/download.html"
 regex = 'Latest Version (\d+\.\d+(?:\.\d+)?)'
 encoding = "utf-8"
 
-[string-machine]
+[ykchorus]
 source = "github"
-github = "jpcima/string-machine"
+github = "SpotlightKid/ykchorus"
 use_max_tag = true
 from_pattern = '^v'
 to_pattern = ""
