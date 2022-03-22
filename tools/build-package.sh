@@ -7,6 +7,7 @@ fi
 
 ENV_FILE="$(mktemp XXXXXX.env)"
 echo "PACKAGE=$1" > "$ENV_FILE"
+echo "CI=true" >> "$ENV_FILE"
 
 cleanup() {
     rm -f "$ENV_FILE"

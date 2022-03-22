@@ -12,3 +12,6 @@
 pkg/
 src/
 /out.SHA512
+/.secrets.env
+/.drone.env
+/.tmp

@@ -8,40 +8,16 @@ platform:
   arch: amd64
 
 steps:
-  - name: Remove unmodified packages
-    image: alpine/git
-    failure: ignore  # build all packages if none are modified
-    commands:
-      - if git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} ./packages;
-        then false; else true; fi
-      - for PKG in ./packages/*; do
-        git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} "$PKG" &&
-        echo rm -rf "$PKG" && rm -rf "$PKG" || true;
-        done
-    when:
-      ref:
-        include:
-          - refs/pull/**
-
-  - name: Pacman cache
+  - name: Prepare
     image: archlinux/archlinux:base-devel
     volumes:
       - name: pkgcache
         path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
-    environment:
-      PKGDEST: /tmp/build
-      LOGDEST: /tmp/build
-      SRCDEST: /tmp/build
-      SRCPKGDEST: /tmp/build
-      BUILDDIR: /tmp/build
     commands:
-      - pacman -Syyu --noconfirm namcap diffoscope
-      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE ./tools/syncdeps-all.sh
-    depends_on:
-      - Remove unmodified packages
+      - source tools/build-env.sh
+      - run_nobody tools/prepare-build.sh namcap diffoscope
 
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
@@ -52,9 +28,11 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - pacman -S --noconfirm namcap >/dev/null
-      - if [ -n "$PACKAGE" ]; then namcap packages/$PACKAGE/PKGBUILD; else namcap packages/*/PKGBUILD; fi
+      - if [ -n "$PACKAGE" ]; then
+        namcap packages/$PACKAGE/PKGBUILD;
+        else namcap packages/*/PKGBUILD; fi
     depends_on:
-      - Pacman cache
+      - Prepare
 
   - name: Build packages
     image: archlinux/archlinux:base-devel
@@ -64,25 +42,18 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
-      PKGDEST: /drone/src/out1
-      LOGDEST: /drone/src/out1
-      SRCDEST: /tmp/build
-      SRCPKGDEST: /tmp/build
-      BUILDDIR: /tmp/build
+      PKGDEST: /drone/src/out
     commands:
-      - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
-      - rm -rf out1  # cleanup, needed for local testing
-      - mkdir -p out1 && chmod -R a+w out1
-      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
+      - source tools/build-env.sh
       - pacman -Su --noconfirm
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
+      - run_nobody tools/clean-build-all.sh
     depends_on:
-      - Pacman cache
+      - Prepare
 
   - name: List built packages
-    image: alpine
+    image: alpine:3.15
     commands:
-      - ls -1 out1/
+      - ls -1 out/
     depends_on:
       - Build packages
     when:
@@ -98,8 +69,10 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
+      - source tools/build-env.sh
       - pacman -S --noconfirm namcap >/dev/null
-      - namcap out1/*.pkg.tar.zst
+      - cd out
+      - if ls -1 *$PKGEXT 2>/dev/null 1>&2; then namcap *$PKGEXT; fi
     depends_on:
       - Build packages
     when:
@@ -116,27 +89,22 @@ steps:
         path: /var/lib/pacman/sync
     environment:
       PKGDEST: /drone/src/out2
-      LOGDEST: /drone/src/out2
-      SRCDEST: /tmp/build
-      SRCPKGDEST: /tmp/build
-      BUILDDIR: /tmp/build
     commands:
       - sleep 9  # backoff to prevent false positives
-      - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
-      - rm -rf out2  # cleanup, needed for local testing
-      - mkdir -p out2 && chmod -R a+w out2
-      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
+      - source ./tools/build-env.sh
       - pacman -Su --noconfirm
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh
+      - run_nobody tools/clean-build-all.sh
     depends_on:
-      - Pacman cache
+      - Prepare
 
   - name: Check reproduced checksums
-    image: alpine
+    image: alpine:3.15
     commands:
-      - rm -rf out.SHA512  # cleanup, needed for local testing
-      - cd out1 && sha512sum *.pkg.tar.zst > ../out.SHA512
-      - cd ../out2 && sha512sum -c ../out.SHA512
+      - cd out
+      - (if ls -1 *.pkg.tar.zst 2>/dev/null 1>&2; then
+        sha512sum *.pkg.tar.zst; fi) > ../out.SHA512
+      - cd ../out2
+      - if [[ -s ../out.SHA512 ]]; then sha512sum -c ../out.SHA512; fi
     depends_on:
       - Build packages
       - Reproduce packages
@@ -153,9 +121,10 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
+      - source tools/build-env.sh
       - pacman -S --noconfirm diffoscope >/dev/null
-      - cd out2
-      - for PKG in *.pkg.tar.zst; do diffoscope ../out1/$PKG $PKG; done
+      - cd out2 && shopt -s nullglob
+      - for PKG in *$PKGEXT; do diffoscope ../out/$PKG $PKG; done
     depends_on:
       - Build packages
       - Reproduce packages
@@ -164,7 +133,58 @@ steps:
         - success
         - failure
 
-# use a shared pacman cache to clean up successive package installs
+  - name: Sign packages
+    image: plugins/gpgsign
+    settings:
+      key:
+        from_secret: pkgsignkey
+      passphrase:
+        from_secret: pkgsignkey-pass
+      files:
+        - out/*.pkg.tar.*
+      armor: false
+      detach_sign: true
+    depends_on:
+      - Build packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+  - name: Update db
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - source tools/build-env.sh
+      - tools/update-db.sh
+    depends_on:
+      - Sign packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+  - name: Publish
+    image: appleboy/drone-scp
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out
+      target: /var/www/virtual/aiwahpoo/html/proaudio/x86_64
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Update db
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+# use a shared pacman cache to speed up successive package installs
 volumes:
   - name: pkgcache
     temp: {}
@@ -190,47 +210,106 @@ platform:
   arch: arm64
 
 steps:
-  - name: Remove unmodified packages
-    image: alpine/git
-    failure: ignore  # build all packages if none are modified
-    commands:
-      - if git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} ./packages;
-        then false; else true; fi
-      - for PKG in ./packages/*; do
-        git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} "$PKG" &&
-        echo rm -rf "$PKG" && rm -rf "$PKG" || true;
-        done
-    when:
-      ref:
-        include:
-          - refs/pull/**
-
-  - name: Build packages
-    image: agners/archlinuxarm
+  - name: Prepare
+    image: lopsided/archlinux:devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
     failure: ignore  # arm64 is not critical for now
     environment:
       PKGDEST: /drone/src/out
-      LOGDEST: /drone/src/out
-      SRCDEST: /tmp/build
-      SRCPKGDEST: /tmp/build
-      BUILDDIR: /tmp/build
+      MAKEPKG_ARGS: -A
     commands:
-      - export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-$DRONE_BUILD_STARTED}
-      - pacman -Syyu --noconfirm
-      - pacman -S --noconfirm base-devel
-      - mkdir -p out
-      - chmod -R a+w out
-      - "echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/sudo-build"
-      - sudo -u nobody --preserve-env=PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,SOURCE_DATE_EPOCH ./tools/clean-build-all.sh -A
+      - source tools/build-env.sh
+      - run_nobody tools/prepare-build.sh
+
+  - name: Build packages
+    image: lopsided/archlinux:devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    failure: ignore
+    environment:
+      PKGDEST: /drone/src/out
+      MAKEPKG_ARGS: -A
+    commands:
+      - source tools/build-env.sh
+      - run_nobody tools/clean-build-all.sh
+    depends_on:
+      - Prepare
 
   - name: List built packages
-    image: alpine
+    image: alpine:3.15
     commands:
       - ls -1 out/
+    depends_on:
+      - Build packages
     when:
       status:
         - success
         - failure
+
+  - name: Sign packages
+    image: plugins/gpgsign
+    settings:
+      key:
+        from_secret: pkgsignkey
+      passphrase:
+        from_secret: pkgsignkey-pass
+      files:
+        - out/*.pkg.tar.*
+      armor: false
+      detach_sign: true
+    depends_on:
+      - Build packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+      status:
+        - success
+        - failure
+
+  - name: Update db
+    image: lopsided/archlinux:devel
+    commands:
+      - source tools/build-env.sh
+      - tools/update-db.sh
+    depends_on:
+      - Sign packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+  - name: Publish
+    image: appleboy/drone-scp
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out
+      target: /var/www/virtual/aiwahpoo/html/proaudio/aarch64
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Update db
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+# use a shared pacman cache to speed up successive package installs
+volumes:
+  - name: pkgcache
+    temp: {}
+  - name: pkgdb
+    temp: {}
 
 trigger:
   ref:
@@ -238,3 +317,48 @@ trigger:
       - refs/heads/master
       - refs/pull/**
       - refs/tags/**
+
+# CI maintenance pipelines
+---
+kind: pipeline
+type: docker
+name: Update amd64 images
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: Update archlinux image
+    image: archlinux/archlinux:base-devel
+    pull: always
+    commands:
+      - echo Image updated
+
+trigger:
+  event:
+    - cron
+  cron:
+    - monthly
+
+---
+kind: pipeline
+type: docker
+name: Update arm64 images
+
+platform:
+  os: linux
+  arch: arm64
+
+steps:
+  - name: Update archlinux image
+    image: lopsided/archlinux:devel
+    pull: always
+    commands:
+      - echo Image updated
+
+trigger:
+  event:
+    - cron
+  cron:
+    - monthly
