@@ -57,7 +57,7 @@ final() {
 
 cd "$ROOT"/packages
 ALLPKGS="$(ls -1)"
-enable_pkgs "" $ALLPKGS
+enable_pkgs "new" $ALLPKGS
 trap final EXIT
 
 # If a single package is provided in the PACKAGE variable, ignore all others

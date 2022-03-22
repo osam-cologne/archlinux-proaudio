@@ -18,6 +18,7 @@ Packages to skip:
 
 Packages to build:
  mamba: modified
+ python-rtmidi: new
  string-machine: modified
 ```
 Remember to update the `pkgrel` so your package update reaches the users!

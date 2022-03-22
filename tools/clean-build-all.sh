@@ -4,7 +4,7 @@
 
 cd "${0%/*}/.."
 ROOT="$(pwd)"
-MAKEPKG_ARGS="$*"
+MAKEPKG_ARGS="$* $MAKEPKG_ARGS"
 
 SUCC=0
 FAIL=0
