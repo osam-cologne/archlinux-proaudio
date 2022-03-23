@@ -3,7 +3,7 @@
 
 pkgname=ykchorus
 _plugin_uri="https://chrisarndt.de/plugins/$pkgname"
-pkgver=0.2.2
+pkgver=0.2.3
 pkgrel=1
 pkgdesc='A stereo dual-chorus audio effect LV2, LADSPA and VST2 plugin and JACK application'
 arch=(x86_64)
@@ -18,29 +18,27 @@ optdepends=(
   'vst-host: for VST plugin'
 )
 groups=(ladspa-plugins lv2-plugins vst-plugins)
-source=("https://github.com/SpotlightKid/$pkgname/releases/download/v$pkgver/$pkgname-v$pkgver-source.tar.gz")
-sha256sums=('c7a4a980d892ba150efe09496f55ee407713a596e4fb7664cc859fdc9ffedcf6')
+source=("https://github.com/SpotlightKid/$pkgname/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
+sha256sums=('f1783e5fe73efb695fe9eeb298c0494030deb4ed29a048374f6b6ea412826716')
 
 prepare() {
-  cd "$pkgname"
+  cd $pkgname-$pkgver
   # We don't want the DSSI version:
   sed -i -e '/ykchorus-dssi/d' Makefile
   sed -i -e '/dssi_dsp$/d' plugins/YKChorus/Makefile
 }
 
 build() {
-  cd "$pkgname"
+  cd $pkgname-$pkgver
   make
 }
 
 check() {
-  cd "$pkgname"
-  lv2lint -Mpack -q -s lv2_generate_ttl -t "Plugin Author Email" \
-    -I "bin/$pkgname.lv2/" "$_plugin_uri" ||
-    echo "Ignoring lv2lint errors (known to fail)."
+  cd $pkgname-$pkgver
+  make check
 }
 
 package() {
-  cd "$pkgname"
+  cd $pkgname-$pkgver
   make DESTDIR="$pkgdir/" install
 }
