@@ -13,7 +13,7 @@ depends=(gcc-libs libglvnd)
 checkdepends=(kxstudio-lv2-extensions lv2lint)
 optdepends=(
   'jack: for stand-alone JACK client program'
-  'ladspa-host: for LV2 plugin'
+  'ladspa-host: for LADSPA plugin'
   'lv2-host: for LV2 plugin'
   'vst-host: for VST plugin'
 )
