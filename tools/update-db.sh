@@ -39,7 +39,20 @@ printf " %s\n" "${REMOVAL[@]}"
 # Add newly built packages to db
 repo-add proaudio.db.tar.gz *$PKGEXT
 
+# Extract new db
+rm -rf "$TMP"/repo/*
+bsdtar -xf proaudio.db.tar.gz -C "$TMP"/repo
+
 # Generate badge
-COUNT=$(bsdtar -tf proaudio.db.tar.gz '*/desc' | wc -l)
+COUNT=$(ls -1 "$TMP"/repo/ | wc -l)
 BADGE="${CARCH/_/__}_packages-${COUNT}-informational"
 curl -fo badge-count.svg https://img.shields.io/badge/${BADGE}
+
+# Generate descriptions for apache directory listing
+> .htaccess
+for PKGPATH in "$TMP"/repo/*/desc; do
+    FILENAME="$(sed -n '/^%FILENAME%$/ {n;p}' "$PKGPATH")"
+    # get description but remove double quotes
+    DESC="$(sed -n '/^%DESC%$/ {n;s/"//g;p}' "$PKGPATH")"
+    echo "AddDescription \"${DESC}\" ${FILENAME}" >> .htaccess
+done
