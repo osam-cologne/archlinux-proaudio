@@ -17,7 +17,7 @@ optdepends=(
   'lv2-host: for LV2 plugin'
   'vst-host: for VST plugin'
 )
-groups=(ladspa-plugins lv2-plugins vst-plugins)
+groups=(ladspa-plugins lv2-plugins pro-audio vst-plugins)
 source=("https://github.com/SpotlightKid/$pkgname/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz")
 sha256sums=('f1783e5fe73efb695fe9eeb298c0494030deb4ed29a048374f6b6ea412826716')
 
