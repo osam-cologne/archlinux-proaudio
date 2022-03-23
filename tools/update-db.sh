@@ -49,10 +49,15 @@ BADGE="${CARCH/_/__}_packages-${COUNT}-informational"
 curl -fo badge-count.svg https://img.shields.io/badge/${BADGE}
 
 # Generate descriptions for apache directory listing
-> .htaccess
-for PKGPATH in "$TMP"/repo/*/desc; do
-    FILENAME="$(sed -n '/^%FILENAME%$/ {n;p}' "$PKGPATH")"
-    # get description but remove double quotes
-    DESC="$(sed -n '/^%DESC%$/ {n;s/"//g;p}' "$PKGPATH")"
-    echo "AddDescription \"${DESC}\" ${FILENAME}" >> .htaccess
-done
+# https://httpd.apache.org/docs/2.4/mod/mod_autoindex.html
+(
+    for PKGPATH in "$TMP"/repo/*/desc; do
+        FILENAME="$(sed -n '/^%FILENAME%$/ {n;p}' "$PKGPATH")"
+        # get description but remove double quotes
+        DESC="$(sed -n '/^%DESC%$/ {n;s/"//g;p}' "$PKGPATH")"
+        # the filename length is used for sorting to prevent false matches
+        # because apache will match partial names and use the first match
+        # (e.g. python-alsa-1.2-3 =~ alsa-1.2-3)
+        echo ${#FILENAME} AddDescription \"${DESC}\" ${FILENAME}
+    done
+) | sort -nrs | cut -d " " -f2- > .htaccess
