@@ -25,6 +25,10 @@ use_max_tag = true
 from_pattern = '^v'
 to_pattern = ""
 
+[python-pyjacklib]
+source = "pypi"
+pypi = "pyjacklib"
+
 [python-rtmidi]
 source = "pypi"
 pypi = "python-rtmidi"
