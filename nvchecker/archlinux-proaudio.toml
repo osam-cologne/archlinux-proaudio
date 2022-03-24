@@ -33,6 +33,10 @@ pypi = "pyjacklib"
 source = "pypi"
 pypi = "python-rtmidi"
 
+[qjackcapture]
+source = "pypi"
+pypi = "QJackCapture"
+
 [string-machine]
 source = "github"
 github = "jpcima/string-machine"
