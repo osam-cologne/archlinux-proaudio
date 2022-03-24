@@ -20,6 +20,12 @@ build() {
   make
 }
 
+check() {
+  cd $_project-$pkgver
+  # smoke test to check runtime environment is ok
+  python -m qjackcapture --help > /dev/null
+}
+
 package() {
   cd $_project-$pkgver
   make PREFIX=/usr DESTDIR="$pkgdir/" install
