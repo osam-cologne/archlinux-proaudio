@@ -24,6 +24,12 @@ github = "x42/mclk.lv2"
 use_max_tag = true
 prefix = "v"
 
+[midimonster]
+source = "github"
+github = "cbdevnet/midimonster"
+use_max_tag = true
+prefix = "v"
+
 [midiomatic]
 source = "github"
 github = "SpotlightKid/midiomatic"
