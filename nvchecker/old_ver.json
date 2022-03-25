@@ -4,6 +4,7 @@
   "midiomatic": "0.2.1",
   "python-pyjacklib": "0.1.1",
   "python-rtmidi": "1.4.9",
+  "qjackcapture": "0.1.2",
   "string-machine": "0.1.0",
   "tuxguitar": "1.5.5",
   "ykchorus": "0.2.3"
