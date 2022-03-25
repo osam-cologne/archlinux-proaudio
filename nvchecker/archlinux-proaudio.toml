@@ -43,7 +43,7 @@ prefix = "v"
 [tuxguitar]
 source = "regex"
 url = "https://sourceforge.net/projects/tuxguitar/rss?path=/TuxGuitar"
-regex = 'tuxguitar-(.+)-src.tar.gz'
+regex = 'tuxguitar-(\d+\.\d+(?:\.\d+)?)-src.tar.gz'
 encoding = "utf-8"
 
 [ykchorus]
