@@ -135,6 +135,7 @@ steps:
 
   - name: Sign packages
     image: plugins/gpgsign
+    pull: if-not-exists
     settings:
       key:
         from_secret: pkgsignkey
@@ -168,6 +169,7 @@ steps:
 
   - name: Publish
     image: appleboy/drone-scp
+    pull: if-not-exists
     settings:
       host: arch.osamc.de
       user: aiwahpoo
@@ -255,6 +257,7 @@ steps:
 
   - name: Sign packages
     image: plugins/gpgsign
+    pull: if-not-exists
     settings:
       key:
         from_secret: pkgsignkey
@@ -288,6 +291,7 @@ steps:
 
   - name: Publish
     image: appleboy/drone-scp
+    pull: if-not-exists
     settings:
       host: arch.osamc.de
       user: aiwahpoo
@@ -317,48 +321,3 @@ trigger:
       - refs/heads/master
       - refs/pull/**
       - refs/tags/**
-
-# CI maintenance pipelines
----
-kind: pipeline
-type: docker
-name: Update amd64 images
-
-platform:
-  os: linux
-  arch: amd64
-
-steps:
-  - name: Update archlinux image
-    image: archlinux/archlinux:base-devel
-    pull: always
-    commands:
-      - echo Image updated
-
-trigger:
-  event:
-    - cron
-  cron:
-    - monthly
-
----
-kind: pipeline
-type: docker
-name: Update arm64 images
-
-platform:
-  os: linux
-  arch: arm64
-
-steps:
-  - name: Update archlinux image
-    image: lopsided/archlinux:devel
-    pull: always
-    commands:
-      - echo Image updated
-
-trigger:
-  event:
-    - cron
-  cron:
-    - monthly

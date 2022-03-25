@@ -7,23 +7,20 @@ newver = "new_ver.json"
 source = "github"
 github = "brummer10/Mamba"
 use_max_tag = true
-from_pattern = '^v'
-to_pattern = ""
+prefix = "v"
 
-[mclk-lv2]
-# note: dots in section names cause errors
+# note: unquoted dots in section names cause errors
+["mclk.lv2"]
 source = "github"
 github = "x42/mclk.lv2"
 use_max_tag = true
-from_pattern = '^v'
-to_pattern = ""
+prefix = "v"
 
 [midiomatic]
 source = "github"
 github = "SpotlightKid/midiomatic"
 use_max_tag = true
-from_pattern = '^v'
-to_pattern = ""
+prefix = "v"
 
 [python-pyjacklib]
 source = "pypi"
@@ -41,18 +38,16 @@ pypi = "QJackCapture"
 source = "github"
 github = "jpcima/string-machine"
 use_max_tag = true
-from_pattern = '^v'
-to_pattern = ""
+prefix = "v"
 
 [tuxguitar]
 source = "regex"
-url = "http://www.tuxguitar.com.ar/download.html"
-regex = 'Latest Version (\d+\.\d+(?:\.\d+)?)'
+url = "https://sourceforge.net/projects/tuxguitar/rss?path=/TuxGuitar"
+regex = 'tuxguitar-(\d+\.\d+(?:\.\d+)?)-src.tar.gz'
 encoding = "utf-8"
 
 [ykchorus]
 source = "github"
 github = "SpotlightKid/ykchorus"
 use_max_tag = true
-from_pattern = '^v'
-to_pattern = ""
+prefix = "v"
