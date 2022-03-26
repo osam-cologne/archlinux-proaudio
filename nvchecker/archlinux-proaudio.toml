@@ -30,6 +30,11 @@ github = "SpotlightKid/midiomatic"
 use_max_tag = true
 prefix = "v"
 
+[ola]
+source = "github"
+github = "OpenLightingProject/ola"
+use_max_tag = true
+
 [python-pyjacklib]
 source = "pypi"
 pypi = "pyjacklib"
