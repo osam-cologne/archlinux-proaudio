@@ -1,0 +1,26 @@
+[Unit]
+Description=Jamulus headless server
+After=network.target
+
+[Service]
+Type=simple
+User=jamulus
+Group=nobody
+NoNewPrivileges=true
+ProtectSystem=true
+ProtectHome=true
+Nice=-20
+IOSchedulingClass=realtime
+IOSchedulingPriority=0
+Environment="extra_flags=--fastupdate --multithreading"
+
+ExecStart=/usr/bin/jamulus -s -n -e "${central_server}" -o "${server_info}" -m "${status_file}" -w "${welcome_message}" $extra_flags
+
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=inherit
+SyslogIdentifier=jamulus
+
+[Install]
+WantedBy=multi-user.target
