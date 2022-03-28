@@ -1,3 +1,5 @@
+# To modify the server configuration, run `sudo systemctl edit jamulus-server` and change
+# the environment variables.
 [Unit]
 Description=Jamulus headless server
 After=network.target
