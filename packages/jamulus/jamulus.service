@@ -1,4 +1,4 @@
-# To modify the server configuration, run `sudo systemctl edit jamulus-server` and change
+# To modify the server configuration, run `sudo systemctl edit jamulus` and change
 # the environment variables.
 [Unit]
 Description=Jamulus headless server
