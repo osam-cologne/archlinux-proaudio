@@ -1,0 +1,43 @@
+{{/*
+  This partial template parses the desc/files entries from the pacman databases.
+*/}}
+{{ $root := default ".tmp/db" . }}
+{{ $packages := newScratch }}
+
+{{ range where (os.ReadDir $root) "IsDir" true }}
+  {{ $dir := path.Join $root .Name }}
+  {{ range os.ReadDir $dir }}
+    {{ $pkgPath := path.Join $dir .Name }}
+
+    {{ $lines := (append
+      (split (os.ReadFile (path.Join $pkgPath "files")) "\n")
+      (split (os.ReadFile (path.Join $pkgPath "desc")) "\n")
+    ) | complement (slice "") }}
+
+    {{ $pkg := newScratch }}
+    {{ $key := "none" }}
+    {{ range $line := $lines }}
+      {{ if (findRE "^%.*%$" $line 1) }}
+        {{/* section key */}}
+        {{ $key = (lower (trim $line "%")) }}
+      {{ else if (in (slice "groups" "provides" "conflicts" "replaces" "license" "depends" "optdepends" "makedepends" "checkdepends" "files") $key) }}
+        {{/* array type */}}
+        {{ $pkg.Add $key (slice $line) }}
+      {{ else if (in (slice "csize" "isize") $key) }}
+        {{/* int type */}}
+        {{ $pkg.Set $key (int $line) }}
+      {{ else if (in (slice "builddate") $key) }}
+        {{/* timestamp */}}
+        {{ $pkg.Set $key (time (int $line)) }}
+      {{ else }}
+        {{/* string type */}}
+        {{ $pkg.Set $key $line }}
+      {{ end }}
+    {{ end }}
+
+    {{ with $pkg.Values }}
+      {{ $packages.Set (printf "%s-%s-%s" .name .version .arch) . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $packages.Values }}

@@ -1,0 +1,25 @@
+# Hugo static site generator config
+---
+baseURL: https://arch.osamc.de/
+languageCode: en-us
+title: Arch Linux Pro-Audio Repo
+publishDir: .tmp/public
+resourceDir: .tmp/resources
+module:
+  mounts:
+    - source: web/content
+      target: content
+    - source: web/static
+      target: static
+    - source: web/layouts
+      target: layouts
+    - source: web/data
+      target: data
+    - source: web/assets
+      target: assets
+    - source: web/i18n
+      target: i18n
+    - source: web/archetypes
+      target: archetypes
+minify:
+  minifyOutput: true

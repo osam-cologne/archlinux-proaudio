@@ -1,5 +1,17 @@
 # Behind the scenes
 
+## Guidelines
+This project closely follows the [Arch package guidelines](https://wiki.archlinux.org/title/Arch_package_guidelines).
+To support packaging, convenient tools are being maintained in this repo.
+- [`.editorconfig`](https://editorconfig.org/) to ensure consistent formatting of PKGBUILDs in your editor (may need a plugin)
+- `tools/fmt.sh` to manually format the PKGBUILD files (needs [`shfmt`](https://archlinux.org/packages/community/x86_64/shfmt/) installed)
+- An [nvchecker](https://nvchecker.readthedocs.io/en/latest/) config with patterns for all included packages.
+- check the CI logs for hints:
+  - [`namcap`](https://wiki.archlinux.org/title/Namcap) analysis of PKGBUILD
+  - full build of the package in a [clean environment](https://wiki.archlinux.org/title/DeveloperWiki:Building_in_a_clean_chroot#Why)
+  - `namcap` analysis of the built package
+  - rebuild and basic analysis of [reproducibility](https://reproducible-builds.org/) using [`diffoscope`](https://diffoscope.org/)
+
 ## Continuous Integration
 
 Most of the tools in this directory are being used by the CI Build / Check / Publish pipeline,

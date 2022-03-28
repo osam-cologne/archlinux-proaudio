@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
+  </head>
+  <body>
+    {{ $packages := partial "get-packages" }}
+    {{ .RenderString (os.ReadFile "README.md") }}
+    <h1 id="packages">List of packages</h1>
+    <style>
+      tr.summary:hover {
+        background-color: var(--background-alt);
+      }
+      tr.detail:not(:target) {
+        display: none;
+      }
+      tr.detail:target {
+        display: table-row;
+      }
+      th.desc {
+        width: 320px;
+      }
+      .dir, .makedep, .checkdep {
+        color: var(--text-muted);
+      }
+      table.details th {
+        width: 200px;
+      }
+    </style>
+    <table>
+      <thead>
+        <tr>
+          <th>Arch</th>
+          <th>Name</th>
+          <th>Version</th>
+          <th class="desc">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range $packages }}
+        <tr class="summary {{ .arch }}">
+          <td>{{ .arch }}</td>
+          <td><a href="#{{ .arch }}/{{ .name }}">{{ .name }}</a></td>
+          <td>{{ .version }}</td>
+          <td>{{ .desc }}</td>
+        </tr>
+        <tr class="detail" id="{{ .arch }}/{{ .name }}">
+          <td colspan="4">
+            {{ partial "package-details" . }}
+          </td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </body>
+</html>

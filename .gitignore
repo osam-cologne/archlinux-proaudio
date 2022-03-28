@@ -17,3 +17,4 @@ src/
 /.tmp
 /out
 /out2
+/.hugo_build.lock
