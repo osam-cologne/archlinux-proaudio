@@ -5,6 +5,8 @@
 # Contributor: Miroslav Koškár <http://mkoskar.com/>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
+# Note (2022-03-25): VCV gave trademark permission to Arch Linux.
+
 _name=Rack
 pkgname=vcvrack
 pkgver=2.1.0
@@ -49,8 +51,9 @@ sha256sums=('c3a30105d673733698fca934a4287728c1eb49d76204f76d6e8152b4cc940594'
             'ca077ad436bcb5ffe579ee886b8e61c87e2ebd81fc762be02a9ca07235e219ff'
             'a81220cd78a29b7897597860f6d9d4af21fc28a15873e14dff66eb7b0ca17f17'
             'b5b33ecb74123bd24029a7936d48d93c8be441dac8258c81f07c780a2efa692f'
-            'aac76c1bf103862722dd958dc3523370b6a9471cdf9745e44fe554a19995a9b2'
+            '21ac35c6ad4e5a29c32939b17baaf7ac1936077eda2214e28675eefcf2021db8'
             'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f')
+# extract the submodules ourselves so we have control over the unpacked top-level directory name
 noextract=($(for _i in ${!_submodules[@]}; do \
   echo "${_submodules[$_i]}-${_commits[$_i]}.tar.gz"; done))
 
