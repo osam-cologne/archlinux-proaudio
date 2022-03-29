@@ -16,9 +16,8 @@ arch=(x86_64)
 _plugin_name=Fundamental
 _plugin_ver=$pkgver
 _plugin_pkg=${pkgname}-${_plugin_name,,}
-makedepends=(curl glew glfw-x11 jansson libarchive \
-  openssl rtaudio rtmidi speexdsp zstd gendesk jq)
-provides=($_plugin_pkg)
+makedepends=(curl glew glfw-x11 jansson libarchive openssl rtaudio rtmidi speexdsp zstd gendesk jq)
+provides=(libRack.so $_plugin_pkg)
 conflicts=($_plugin_pkg)
 groups=(pro-audio)
 # use submodule_commits.sh to update this
@@ -50,7 +49,7 @@ sha256sums=('c3a30105d673733698fca934a4287728c1eb49d76204f76d6e8152b4cc940594'
             'ca077ad436bcb5ffe579ee886b8e61c87e2ebd81fc762be02a9ca07235e219ff'
             'a81220cd78a29b7897597860f6d9d4af21fc28a15873e14dff66eb7b0ca17f17'
             'b5b33ecb74123bd24029a7936d48d93c8be441dac8258c81f07c780a2efa692f'
-            '2753b8cb66151370425af440ddfbc88697df8127f16082e46bb402b9334e1f0c'
+            'aac76c1bf103862722dd958dc3523370b6a9471cdf9745e44fe554a19995a9b2'
             'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f')
 noextract=($(for _i in ${!_submodules[@]}; do \
   echo "${_submodules[$_i]}-${_commits[$_i]}.tar.gz"; done))
@@ -102,9 +101,7 @@ package() {
   install -vDm755 Rack -t "$pkgdir"/usr/lib/${pkgname}
   install -vDm755 libRack.so -t "$pkgdir"/usr/lib
   install -vDm755 "$srcdir"/vcvrack.sh "$pkgdir"/usr/bin/Rack
-  install -vDm644 -t "$pkgdir"/usr/lib/$pkgname template.vcv
-  install -vDm644 -t "$pkgdir"/usr/lib/$pkgname Core.json
-  install -vDm644 -t "$pkgdir"/usr/lib/$pkgname cacert.pem
+  install -vDm644 template.vcv Core.json cacert.pem -t "$pkgdir"/usr/lib/$pkgname
 
   # resources
   cp -dr --preserve=mode res -t "$pkgdir"/usr/lib/$pkgname
@@ -130,7 +127,6 @@ package() {
   install -d "$pkgdir"/usr/lib/${pkgname}/plugins
   cp -a dist/$_plugin_name -t "$pkgdir"/usr/lib/${pkgname}/plugins/
 
-  cd ..
   # RACK_DIR environment variable
-  install -vDm644 profile.sh "$pkgdir"/etc/profile.d/vcvrack.sh
+  install -vDm644 "$srcdir"/profile.sh "$pkgdir"/etc/profile.d/vcvrack.sh
 }
