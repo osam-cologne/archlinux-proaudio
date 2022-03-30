@@ -1,0 +1,31 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Nils Hilbricht <nils -at- hilbricht -dot- net>
+
+_projectname=lpd8editor
+pkgname="${_projectname,,}"
+pkgver=0.0.15
+pkgrel=1
+pkgdesc="A Linux editor for the Akai LPD8 pad controller."
+arch=(x86_64 aarch64)
+url="https://github.com/charlesfleche/${_projectname}"
+license=('MIT')
+depends=('alsa-lib' 'qt5-base' 'qt5-tools' 'qt5-svg' 'qt5-translations')
+makedepends=('cmake' 'pkgconf')
+groups=('pro-audio')
+source=("https://github.com/charlesfleche/lpd8editor/archive/refs/tags/v${pkgver}.tar.gz")
+sha256sums=('613767596f5ffb36aab6f548e888143df514af0de21d21e757c50dbdd2228829')
+
+build() {
+  cd "${srcdir}/${_projectname}-${pkgver}"
+  mkdr "build-lpd8editor"
+  cd "build-lpd8editor"
+  cmake ../
+
+}
+
+package() {
+  cd "${srcdir}/${_projectname}-${pkgver}"
+#  cmake --build . --target install
+  make DESTDIR="${pkgdir}" PREFIX=/usr install
+  install -Dm644 LICENSE.md "$pkgdir/usr/share/licenses/$pkgname/LICENSE.md"
+}
