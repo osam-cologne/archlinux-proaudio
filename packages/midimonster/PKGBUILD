@@ -10,11 +10,12 @@ arch=(x86_64 aarch64)
 url='https://midimonster.net/'
 license=(BSD)
 depends=()
-makedepends=(alsa-lib jack libevdev lua openssl python)
+makedepends=(alsa-lib jack libevdev lua ola openssl python)
 optdepends=('alsa-lib: for the ALSA MIDI backend'
             'jack: for the JACK backend'
             'libevdev: for the evdev backend'
             'lua: for the lua backend'
+            'ola: for the OLA backend'
             'openssl: for the MA Web Remote backend'
             'python: for the Python backend')
 groups=(pro-audio)
@@ -24,7 +25,10 @@ backup=("etc/$pkgname/$pkgname.cfg")
 
 build() {
   cd $pkgname-$pkgver
-  make PLUGINS=/usr/lib/$pkgname DEFAULT_CFG=/etc/$pkgname/$pkgname.cfg # full
+  # https://github.com/cbdevnet/midimonster/pull/110
+  CPPFLAGS="$CXXFLAGS -std=c++11" \
+    make PLUGINS=/usr/lib/$pkgname DEFAULT_CFG=/etc/$pkgname/$pkgname.cfg \
+    full
 }
 
 package() {
