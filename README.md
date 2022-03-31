@@ -1,11 +1,11 @@
 # archlinux-proaudio
 [![Build Status](https://ci.cbix.de/api/badges/osam-cologne/archlinux-proaudio/status.svg)](https://ci.cbix.de/osam-cologne/archlinux-proaudio)
-[![x86_64](https://arch.osamc.de/proaudio/x86_64/badge-count.svg)](https://arch.osamc.de/proaudio/x86_64/?P=*.pkg.tar.zst)
-[![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)](https://arch.osamc.de/proaudio/aarch64/?P=*.pkg.tar.xz)
+[![x86\_64](https://arch.osamc.de/proaudio/x86_64/badge-count.svg)](https://arch.osamc.de/#packages)
+[![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)](https://arch.osamc.de/#packages)
 
 PKGBUILD files for the binary archlinux pro-audio OSAMC repository.
 
-[**List of packages**](https://arch.osamc.de/#packages)
+[**List of packages**](https://arch.osamc.de/#packages) | [**GitHub repo**](https://github.com/osam-cologne/archlinux-proaudio/)
 
 The repository is maintained and tested for both `x86_64` and `aarch64` (Arch Linux ARM) architectures.
 
@@ -21,13 +21,9 @@ Add the repo to your `/etc/pacman.conf`:
 [proaudio]
 Server = https://arch.osamc.de/$repo/$arch
 ```
-Download the current signing key:
+Download, import and sign the current signing key:
 ```
-$ wget https://arch.osamc.de/proaudio/osamc.gpg
-```
-Import and sign locally:
-```
-# pacman-key --add osamc.gpg
+# curl https://arch.osamc.de/proaudio/osamc.gpg | pacman-key --add -
 # pacman-key --lsign-key 762AE5DB2B38786364BD81C4B9141BCC62D38EE5
 ```
 You can now install packages from the repo using `pacman -Sy`.

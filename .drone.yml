@@ -353,6 +353,20 @@ steps:
       key:
         from_secret: ssh-key
       source: .tmp/public
-      target: /var/www/virtual/aiwahpoo/html/hugo-test
+      target: /var/www/virtual/aiwahpoo/html
       strip_components: 2
       overwrite: true
+
+depends_on:
+  - Build and check
+  - Build arm64
+
+trigger:
+  ref:
+    include:
+      - refs/heads/master
+
+when:
+  status:
+    - success
+    - failure
