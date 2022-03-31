@@ -2,6 +2,7 @@
   "jamulus": "3.8.2",
   "mamba": "2.2",
   "mclk.lv2": "0.2.1",
+  "midimonster": "0.6",
   "midiomatic": "0.2.1",
   "ola": "0.10.8",
   "python-pyjacklib": "0.1.1",

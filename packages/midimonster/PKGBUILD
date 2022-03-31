@@ -1,0 +1,41 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: BrainDamage
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+pkgname=midimonster
+pkgver=0.6
+pkgrel=3
+pkgdesc='Multi-protocol control & translation software'
+arch=(x86_64 aarch64)
+url='https://midimonster.net/'
+license=(BSD)
+depends=()
+makedepends=(alsa-lib jack libevdev lua ola openssl python)
+optdepends=('alsa-lib: for the ALSA MIDI backend'
+            'jack: for the JACK backend'
+            'libevdev: for the evdev backend'
+            'lua: for the lua backend'
+            'ola: for the OLA backend'
+            'openssl: for the MA Web Remote backend'
+            'python: for the Python backend')
+groups=(pro-audio)
+source=("$pkgname-$pkgver.tar.gz::https://github.com/cbdevnet/$pkgname/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('69d4450e1f341975b79b248931a6d4f959f1f979f8845e4eb4ffc179b6de9ae4')
+backup=("etc/$pkgname/$pkgname.cfg")
+
+build() {
+  cd $pkgname-$pkgver
+  # https://github.com/cbdevnet/midimonster/pull/110
+  CPPFLAGS="$CXXFLAGS -std=c++11" \
+    make PLUGINS=/usr/lib/$pkgname DEFAULT_CFG=/etc/$pkgname/$pkgname.cfg \
+    full
+}
+
+package() {
+  cd $pkgname-$pkgver
+  make DESTDIR="$pkgdir" install
+  install -vDm644 LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname
+  install -vDm644 assets/$pkgname.1 -t "$pkgdir"/usr/share/man/man1
+  # workaround for https://github.com/cbdevnet/midimonster/pull/109
+  install -vDm644 monster.cfg "$pkgdir"/etc/${pkgname}/${pkgname}.cfg
+}
