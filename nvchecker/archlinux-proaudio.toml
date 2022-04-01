@@ -53,6 +53,12 @@ pypi = "python-rtmidi"
 source = "pypi"
 pypi = "QJackCapture"
 
+[stone-phaser]
+source = "github"
+github = "jpcima/stone-phaser"
+use_max_tag = true
+prefix = "v"
+
 [string-machine]
 source = "github"
 github = "jpcima/string-machine"
