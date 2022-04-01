@@ -324,3 +324,49 @@ trigger:
       - refs/heads/master
       - refs/pull/**
       - refs/tags/**
+
+---
+kind: pipeline
+type: docker
+name: Website
+
+steps:
+  - name: Fetch databases
+    image: archlinux/archlinux:base-devel
+    commands:
+      - for ARCH in x86_64 aarch64; do
+        mkdir -p .tmp/db/$ARCH &&
+        curl https://arch.osamc.de/proaudio/$ARCH/proaudio.files.tar.gz |
+        bsdtar -xC .tmp/db/$ARCH; done
+
+  - name: Build site
+    image: klakegg/hugo:busybox
+    commands:
+      - hugo
+
+  - name: Publish
+    image: appleboy/drone-scp
+    pull: if-not-exists
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: .tmp/public
+      target: /var/www/virtual/aiwahpoo/html
+      strip_components: 2
+      overwrite: true
+
+depends_on:
+  - Build and check
+  - Build arm64
+
+trigger:
+  ref:
+    include:
+      - refs/heads/master
+
+when:
+  status:
+    - success
+    - failure

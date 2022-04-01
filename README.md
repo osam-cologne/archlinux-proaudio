@@ -1,9 +1,11 @@
 # archlinux-proaudio
 [![Build Status](https://ci.cbix.de/api/badges/osam-cologne/archlinux-proaudio/status.svg)](https://ci.cbix.de/osam-cologne/archlinux-proaudio)
-[![x86_64](https://arch.osamc.de/proaudio/x86_64/badge-count.svg)](https://arch.osamc.de/proaudio/x86_64/?P=*.pkg.tar.zst)
-[![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)](https://arch.osamc.de/proaudio/aarch64/?P=*.pkg.tar.xz)
+[![x86\_64](https://arch.osamc.de/proaudio/x86_64/badge-count.svg)](https://arch.osamc.de/#packages)
+[![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)](https://arch.osamc.de/#packages)
 
-PKGBUILD files for the binary archlinux pro-audio OSAMC repository.
+Actively maintained binary package repo for Arch Linux of free and open source pro-audio software.
+
+[**List of packages**](https://arch.osamc.de/#packages) | [**GitHub repo**](https://github.com/osam-cologne/archlinux-proaudio/)
 
 The repository is maintained and tested for both `x86_64` and `aarch64` (Arch Linux ARM) architectures.
 
@@ -19,25 +21,9 @@ Add the repo to your `/etc/pacman.conf`:
 [proaudio]
 Server = https://arch.osamc.de/$repo/$arch
 ```
-Download the current signing key:
+Download, import and sign the current signing key:
 ```
-$ wget https://arch.osamc.de/proaudio/osamc.gpg
-```
-Import and sign locally:
-```
-# pacman-key --add osamc.gpg
+# curl https://arch.osamc.de/proaudio/osamc.gpg | pacman-key --add -
 # pacman-key --lsign-key 762AE5DB2B38786364BD81C4B9141BCC62D38EE5
 ```
 You can now install packages from the repo using `pacman -Sy`.
-
-## Guidelines
-This project closely follows the [Arch package guidelines](https://wiki.archlinux.org/title/Arch_package_guidelines).
-To support packaging, convenient tools are being maintained in this repo.
-- [`.editorconfig`](https://editorconfig.org/) to ensure consistent formatting of PKGBUILDs in your editor (may need a plugin)
-- `tools/fmt.sh` to manually format the PKGBUILD files (needs [`shfmt`](https://archlinux.org/packages/community/x86_64/shfmt/) installed)
-- An [nvchecker](https://nvchecker.readthedocs.io/en/latest/) config with patterns for all included packages.
-- check the CI logs for hints:
-  - [`namcap`](https://wiki.archlinux.org/title/Namcap) analysis of PKGBUILD
-  - full build of the package in a [clean environment](https://wiki.archlinux.org/title/DeveloperWiki:Building_in_a_clean_chroot#Why)
-  - `namcap` analysis of the built package
-  - rebuild and basic analysis of [reproducibility](https://reproducible-builds.org/) using [`diffoscope`](https://diffoscope.org/)
