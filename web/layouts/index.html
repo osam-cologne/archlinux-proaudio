@@ -18,17 +18,19 @@
       tr.detail:target {
         display: table-row;
       }
-      th.desc {
-        width: 320px;
+      table.packages, table.details {
+        table-layout: auto;
+      }
+      @media(max-width: 576px) {
+        .desc {
+          display: none;
+        }
       }
       .dir, .makedep, .checkdep {
         color: var(--text-muted);
       }
-      table.details th {
-        width: 200px;
-      }
     </style>
-    <table>
+    <table class="packages">
       <thead>
         <tr>
           <th>Arch</th>
@@ -43,7 +45,7 @@
           <td>{{ .arch }}</td>
           <td><a href="#{{ .arch }}/{{ .name }}">{{ .name }}</a></td>
           <td>{{ .version }}</td>
-          <td>{{ .desc }}</td>
+          <td class="desc">{{ .desc }}</td>
         </tr>
         <tr class="detail" id="{{ .arch }}/{{ .name }}">
           <td colspan="4">
