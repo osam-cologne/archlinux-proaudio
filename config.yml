@@ -1,5 +1,10 @@
 # Hugo static site generator config
 ---
+params:
+  bannerImage: https://unsplash.com/photos/19u5e9oSrlU/download
+  repoUrl: https://arch.osamc.de/proaudio/%s/%s
+  pkgbuildUrl: https://github.com/osam-cologne/archlinux-proaudio/blob/master/packages/%s/PKGBUILD
+
 baseURL: https://arch.osamc.de/
 languageCode: en-us
 title: Arch Linux Pro-Audio Repo

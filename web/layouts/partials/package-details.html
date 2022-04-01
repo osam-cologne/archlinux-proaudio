@@ -9,7 +9,7 @@
     <th>Base Package:</th>
     <td>
       {{ .base }}
-      (<a href="https://github.com/osam-cologne/archlinux-proaudio/blob/master/packages/{{ .base }}/PKGBUILD" target="_blank">PKGBUILD</a>)
+      (<a href="{{ printf site.Params.pkgbuildUrl .base }}" target="_blank">PKGBUILD</a>)
     </td>
   </tr>
   <tr>
@@ -58,7 +58,7 @@
           {{ $dlarch = "aarch64" }}
         {{ end }}
       {{ end }}
-      (<a href="https://arch.osamc.de/proaudio/{{ $dlarch }}/{{ .filename }}">Download</a>)
+      (<a href="{{ printf site.Params.repoUrl $dlarch .filename }}">Download</a>)
     </td>
   </tr>
   <tr>

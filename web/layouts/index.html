@@ -6,9 +6,6 @@
     <link rel="stylesheet" href="{{ $water.RelPermalink }}">
   </head>
   <body>
-    {{ $packages := partial "get-packages" }}
-    {{ .RenderString (os.ReadFile "README.md") }}
-    <h2 id="packages">List of packages</h2>
     <style>
       tr.summary:hover {
         background-color: var(--background-alt);
@@ -39,6 +36,12 @@
         color: var(--text-muted);
       }
     </style>
+    {{ $banner := resources.GetRemote .Site.Params.bannerImage }}
+    {{ $banner = $banner.Fill "800x200 Center" }}
+    <img class="banner" src="{{ $banner.RelPermalink }}" />
+    {{ $packages := partial "get-packages" }}
+    {{ .RenderString (os.ReadFile "README.md") }}
+    <h2 id="packages">List of packages</h2>
     <table class="packages">
       <thead>
         <tr>
@@ -64,5 +67,10 @@
         {{ end }}
       </tbody>
     </table>
+    <footer>
+      <small>
+        {{ .RenderString (os.ReadFile "web/content/_footer.md") }}
+      </small>
+    </footer>
   </body>
 </html>

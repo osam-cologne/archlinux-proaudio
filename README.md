@@ -3,7 +3,7 @@
 [![x86\_64](https://arch.osamc.de/proaudio/x86_64/badge-count.svg)](https://arch.osamc.de/#packages)
 [![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)](https://arch.osamc.de/#packages)
 
-PKGBUILD files for the binary archlinux pro-audio OSAMC repository.
+Actively maintained binary package repo for Arch Linux of free and open source pro-audio software.
 
 [**List of packages**](https://arch.osamc.de/#packages) | [**GitHub repo**](https://github.com/osam-cologne/archlinux-proaudio/)
 
