@@ -4,6 +4,7 @@
 [![aarch64](https://arch.osamc.de/proaudio/aarch64/badge-count.svg)](https://arch.osamc.de/#packages)
 
 Actively maintained binary package repo for Arch Linux of free and open source pro-audio software.
+This repository only provides packages that are not already in the official [Arch Linux repository](https://archlinux.org/groups/x86_64/pro-audio/).
 
 [**List of packages**](https://arch.osamc.de/#packages) | [**GitHub repo**](https://github.com/osam-cologne/archlinux-proaudio/)
 
