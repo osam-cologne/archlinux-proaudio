@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {{ $water := resources.GetRemote "https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" }}
-    <link rel="stylesheet" href="{{ $water.Permalink }}">
+    <link rel="stylesheet" href="{{ $water.RelPermalink }}">
   </head>
   <body>
     {{ $packages := partial "get-packages" }}
