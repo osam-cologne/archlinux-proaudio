@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css">
+    {{ $water := resources.GetRemote "https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" }}
+    <link rel="stylesheet" href="{{ $water.Permalink }}">
   </head>
   <body>
     {{ $packages := partial "get-packages" }}
@@ -25,6 +26,14 @@
         .desc {
           display: none;
         }
+      }
+      .files {
+        max-height: 500px;
+        overflow: auto;
+        word-break: break-all;
+      }
+      .dir,.file {
+        display: block;
       }
       .dir, .makedep, .checkdep {
         color: var(--text-muted);

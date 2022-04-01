@@ -25,25 +25,25 @@
   {{ if .groups }}
   <tr>
     <th>Groups:</th>
-    <td>{{ range .groups }}{{ . }}<br/>{{ end }}</td>
+    <td>{{ range sort .groups }}{{ . }}<br/>{{ end }}</td>
   </tr>
   {{ end }}
   {{ if .provides }}
   <tr>
     <th>Provides:</th>
-    <td>{{ range .provides }}{{ . }}<br/>{{ end }}</td>
+    <td>{{ range sort .provides }}{{ . }}<br/>{{ end }}</td>
   </tr>
   {{ end }}
   {{ if .conflicts }}
   <tr>
     <th>Conflicts:</th>
-    <td>{{ range .conflicts }}{{ . }}<br/>{{ end }}</td>
+    <td>{{ range sort .conflicts }}{{ . }}<br/>{{ end }}</td>
   </tr>
   {{ end }}
   {{ if .replaces }}
   <tr>
     <th>Replaces:</th>
-    <td>{{ range .replaces }}{{ . }}<br/>{{ end }}</td>
+    <td>{{ range sort .replaces }}{{ . }}<br/>{{ end }}</td>
   </tr>
   {{ end }}
   <tr>
@@ -68,7 +68,7 @@
   <tr>
     <th>License{{ if gt (len .license) 1 }}s{{ end }}:</th>
     <td>
-      {{ range .license }}
+      {{ range sort .license }}
         {{ . }}<br/>
       {{ end }}
     </td>
@@ -81,22 +81,22 @@
     <th>Dependencies:</th>
     <td>
       {{ if .depends }}
-        {{ range .depends }}
+        {{ range sort .depends }}
           {{ . }}<br/>
         {{ end }}
       {{ end }}
       {{ if .optdepends }}
-        {{ range .optdepends }}
+        {{ range sort .optdepends }}
           {{ . }} <em>(optional)</em><br/>
         {{ end }}
       {{ end }}
       {{ if .makedepends }}
-        {{ range .makedepends }}
+        {{ range sort .makedepends }}
           <span class="makedep">{{ . }} <em>(make)</em></span><br/>
         {{ end }}
       {{ end }}
       {{ if .checkdepends }}
-        {{ range .checkdepends }}
+        {{ range sort .checkdepends }}
           <span class="checkdep">{{ . }} <em>(check)</em></span><br/>
         {{ end }}
       {{ end }}
@@ -105,7 +105,9 @@
 </table>
 <details>
   <summary><strong>Package Contents</strong></summary>
-  {{ range .files }}
-  <span class="{{ cond (strings.HasSuffix . `/`) `dir` `file` }}">{{ . }}</span><br/>
-  {{ end }}
+  <div class="files">
+    {{ range sort .files }}
+    <span class="{{ cond (strings.HasSuffix . `/`) `dir` `file` }}">{{ . }}</span>
+    {{ end }}
+  </div>
 </details>
