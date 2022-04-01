@@ -35,6 +35,12 @@
       .dir, .makedep, .checkdep {
         color: var(--text-muted);
       }
+      tr.summary.aarch64 {
+        display: none;
+      }
+      #aarch64:checked ~ table.packages tr.summary.aarch64 {
+        display: table-row;
+      }
     </style>
     {{ $banner := resources.GetRemote .Site.Params.bannerImage }}
     {{ $banner = $banner.Fill "800x200 Center" }}
@@ -42,6 +48,8 @@
     {{ $packages := partial "get-packages" }}
     {{ .RenderString (os.ReadFile "README.md") }}
     <h2 id="packages">List of packages</h2>
+    <input type="checkbox" name="aarch64" id="aarch64"/>
+    <label for="aarch64">Show aarch64 packages</label>
     <table class="packages">
       <thead>
         <tr>
