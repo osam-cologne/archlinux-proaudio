@@ -77,7 +77,7 @@
     </table>
     <footer>
       <small>
-        {{ .RenderString (os.ReadFile "web/content/_footer.md") }}
+        © {{ now.Format "2006" }} {{ .RenderString (os.ReadFile "web/content/_footer.md") }}
       </small>
     </footer>
   </body>
