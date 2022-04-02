@@ -200,7 +200,6 @@ trigger:
     include:
       - refs/heads/master
       - refs/pull/**
-      - refs/tags/**
 
 ---
 kind: pipeline
@@ -323,7 +322,6 @@ trigger:
     include:
       - refs/heads/master
       - refs/pull/**
-      - refs/tags/**
 
 ---
 kind: pipeline
@@ -356,6 +354,10 @@ steps:
       target: /var/www/virtual/aiwahpoo/html
       strip_components: 2
       overwrite: true
+    when:
+      ref:
+        include:
+          - refs/heads/master
 
 depends_on:
   - Build and check
@@ -365,6 +367,7 @@ trigger:
   ref:
     include:
       - refs/heads/master
+      - refs/pull/**
 
 when:
   status:
