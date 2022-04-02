@@ -10,7 +10,8 @@ This repository only provides packages that are not already in the official [Arc
 
 The repository is maintained and tested for both `x86_64` and `aarch64` (Arch Linux ARM) architectures.
 
-Contributions are welcome!
+Contributions are welcome! To suggest software for inclusion in the repo open a
+[GitHub issue](https://github.com/osam-cologne/archlinux-proaudio/issues/new?labels=package&template=new-package.md&title=Package%20%3Cname%3E).
 
 ## How to use
 _As we're still working on the setup, this information maybe subject to change without notice!
