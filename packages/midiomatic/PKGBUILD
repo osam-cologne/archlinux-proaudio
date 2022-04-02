@@ -22,7 +22,7 @@ sha256sums=('aed203bde8fd01e279e058d48f084754f50b9fd758d7b56b845f11d8fbdbb1f3')
 
 build() {
   cd "$pkgname-$pkgver"
-  make
+  make -j1
 }
 
 check() {
