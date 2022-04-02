@@ -15,12 +15,13 @@ Make sure the software
 3. is released under a free software license
 -->
 
-- Project name: 
-- Suggested package name: 
-- Website: 
-- Source code: 
+- Project name:
+- Suggested [package name](https://wiki.archlinux.org/title/PKGBUILD#pkgname):
+- [Description](https://wiki.archlinux.org/title/PKGBUILD#pkgdesc):
+- Website:
+- Source code:
 - Existing AUR: https://aur.archlinux.org/packages/name
-- License(s): 
+- License(s):
 - Is the project active? yes/no
 - I have successfully compiled this myself on Arch: yes/no
 
