@@ -54,8 +54,9 @@ sha256sums=('c3a30105d673733698fca934a4287728c1eb49d76204f76d6e8152b4cc940594'
             '21ac35c6ad4e5a29c32939b17baaf7ac1936077eda2214e28675eefcf2021db8'
             'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f')
 # extract the submodules ourselves so we have control over the unpacked top-level directory name
-noextract=($(for _i in ${!_submodules[@]}; do \
-  echo "${_submodules[$_i]}-${_commits[$_i]}.tar.gz"; done))
+noextract=($(for _i in ${!_submodules[@]}; do
+  echo "${_submodules[$_i]}-${_commits[$_i]}.tar.gz"
+done))
 
 prepare() {
   cd "${_name}-$pkgver"
@@ -98,7 +99,7 @@ build() {
 
 package() {
   # Rack does not start with glfw-wayland
-  depends=(libcurl.so libGLEW.so glfw-x11 jansson libarchive.so \
+  depends=(libcurl.so libGLEW.so glfw-x11 jansson libarchive.so
     openssl librtaudio.so librtmidi.so libsamplerate.so speexdsp zenity)
   cd "${_name}-$pkgver"
   install -vDm755 Rack -t "$pkgdir"/usr/lib/${pkgname}

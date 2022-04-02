@@ -17,8 +17,8 @@ conflicts=(jamulus-git)
 makedepends=(jack)
 groups=(pro-audio)
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/jamulussoftware/$pkgbase/archive/r${pkgver//./_}.tar.gz"
-'jamulus.service'
-'jamulus.sysusers')
+  'jamulus.service'
+  'jamulus.sysusers')
 sha256sums=('4c323db21c896c711f726319b40114d1a0b5a374fd25eb43d9af52c19fc3d55e'
             '98e45f7f877dbc9f8113d63b6e009ff1025e73e1cce86f671b57474a4764e11f'
             '4117ad3a93b3211f679f93794b308ad292d1799a86f85a6b353cfdff8515e2f9')
