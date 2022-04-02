@@ -14,7 +14,7 @@ Make sure the software
 2. does not already exist in this repo: https://arch.osamc.de/#packages
 3. is released under a free software license
 4. has released a stable version (otherwise ask the developer to tag a release!)
-5. (if possible) successfully compiles on a x86_64/amd64 machine
+5. (if possible) can be successfully built on a x86_64/amd64 machine
 -->
 
 - Name:
@@ -26,7 +26,7 @@ Make sure the software
 - AUR (if exists): https://aur.archlinux.org/packages/name
 - License(s):
 - Is the project active? yes/no
-- I have successfully compiled this myself on Arch: yes/no
+- I have successfully built this myself on Arch: yes/no
 
 ## Packaging hints
 <!-- if possible, list any tools and extra steps that are required to compile the software -->
