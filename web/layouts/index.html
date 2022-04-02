@@ -16,6 +16,9 @@
       tr.detail:target {
         display: table-row;
       }
+      .close {
+        float: right;
+      }
       table.packages, table.details {
         table-layout: auto;
       }
@@ -31,9 +34,6 @@
       }
       .dir,.file {
         display: block;
-      }
-      .dir, .makedep, .checkdep {
-        color: var(--text-muted);
       }
       tr.summary.aarch64 {
         display: none;
@@ -77,7 +77,7 @@
     </table>
     <footer>
       <small>
-        {{ .RenderString (os.ReadFile "web/content/_footer.md") }}
+        © {{ now.Format "2006" }} {{ .RenderString (os.ReadFile "web/content/_footer.md") }}
       </small>
     </footer>
   </body>
