@@ -2,6 +2,7 @@
 # Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
 
 pkgname=stone-phaser
+_plugin_uri="http://jpcima.sdf1.org/lv2/$pkgname"
 pkgver=0.1.2
 pkgrel=1
 pkgdesc='A classic analog phaser effect LADSPA, LV2 and VST2 plugin'
@@ -10,6 +11,7 @@ url='https://github.com/jpcima/stone-phaser'
 license=(Boost)
 depends=(cairo glibc gcc-libs)
 makedepends=(libglvnd)
+checkdepends=(lv2lint)
 optdepends=(
   'ladspa-host: for LADSPA plugin'
   'lv2-host: for LV2 plugin'
@@ -33,6 +35,15 @@ prepare() {
 build() {
   cd $pkgname-$pkgver
   make
+}
+
+check() {
+  cd "$pkgname-$pkgver"
+  lv2lint -Mpack -q \
+    -s lv2_generate_ttl \
+    -t "Plugin Author Email" \
+    -t "UI Idle Interface" \
+    -I "bin/$pkgname.lv2/" "$_plugin_uri"
 }
 
 package() {
