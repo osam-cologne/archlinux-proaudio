@@ -3,6 +3,12 @@ oldver = "old_ver.json"
 newver = "new_ver.json"
 #keyfile = "keyfile.toml"
 
+[jalv-select]
+source = "github"
+github = "brummer10/jalv_select"
+use_max_tag = true
+prefix = "v"
+
 [jamulus]
 source = "github"
 github = "jamulussoftware/jamulus"
