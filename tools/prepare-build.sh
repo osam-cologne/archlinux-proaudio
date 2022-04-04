@@ -7,12 +7,22 @@ fi
 cd "${0%/*}/.."
 ROOT="$(pwd)"
 TMP="${ROOT}/.tmp"
+CACHE="${TMP}/cache"
 PACMAN_EXTRA="$*"
 
 # Prepare directories
-sudo rm -rf "$ROOT"/{out,out2,out.SHA512} "$TMP"
+sudo rm -rf "$ROOT"/{out,out2,out.SHA512}
 sudo install -o nobody -d "$ROOT"/{out,out2}
 sudo install -o nobody -d "$TMP"{,/pkgs,/ignore}
+sudo install -o nobody -d "$CACHE"/srcdest
+
+# Restore pacman cache if exists
+if [ -d "$CACHE"/pkgcache ]; then
+    sudo cp "$CACHE"/pkgcache/* /var/cache/pacman/pkg
+fi
+if [ -d "$CACHE"/pkgdb ]; then
+    sudo cp "$CACHE"/pkgdb/* /var/lib/pacman/sync
+fi
 
 # Update pacman cache
 sudo pacman -Syyu --noconfirm git $PACMAN_EXTRA
@@ -45,7 +55,13 @@ final() {
 
     # fetch all dependencies to pacman cache
     export PACKAGES="$(get_pkgs)"
+    export SRCDEST="$CACHE"/srcdest
     "$ROOT"/tools/syncdeps-all.sh $MAKEPKG_ARGS
+
+    # Save pacman cache
+    sudo mkdir -p "$CACHE"/{pkgcache,pkgdb}
+    sudo cp -r /var/cache/pacman/pkg/* "$CACHE"/pkgcache
+    sudo cp -r /var/lib/pacman/sync/* "$CACHE"/pkgdb
 
     # print report
     echo -e "\nPackages to skip:"

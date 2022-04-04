@@ -7,7 +7,7 @@ echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/nobody-sudo
 echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
 source /etc/makepkg.conf
 export PACKAGER='OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
-export SRCDEST=/tmp/build
+export SRCDEST=${SRCDEST:-/tmp/build}
 export SRCPKGDEST=/tmp/build
 export BUILDDIR=/tmp/build
 export PKGDEST=${PKGDEST:-/tmp/build}

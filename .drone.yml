@@ -42,6 +42,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
+      SRCDEST: /drone/src/.tmp/cache/srcdest
       PKGDEST: /drone/src/out
       MAKEFLAGS: -j4
     commands:
@@ -89,6 +90,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
+      SRCDEST: /drone/src/.tmp/cache/srcdest
       PKGDEST: /drone/src/out2
       MAKEFLAGS: -j4
     commands:
