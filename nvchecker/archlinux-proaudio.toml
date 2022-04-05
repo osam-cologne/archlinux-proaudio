@@ -3,6 +3,14 @@ oldver = "old_ver.json"
 newver = "new_ver.json"
 #keyfile = "keyfile.toml"
 
+# note: unquoted dots in section names cause errors
+["aether.lv2"]
+source = "github"
+github = "Dougal-s/Aether"
+use_max_tag = true
+include_regex = '^v[\.\d]+$'
+prefix = "v"
+
 [jalv-select]
 source = "github"
 github = "brummer10/jalv_select"
@@ -29,7 +37,6 @@ github = "brummer10/Mamba"
 use_max_tag = true
 prefix = "v"
 
-# note: unquoted dots in section names cause errors
 ["mclk.lv2"]
 source = "github"
 github = "x42/mclk.lv2"
