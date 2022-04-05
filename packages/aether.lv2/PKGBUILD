@@ -11,7 +11,7 @@ url='https://dougal-s.github.io/Aether'
 license=(MIT)
 groups=(lv2-plugins pro-audio)
 depends=(gcc-libs libglvnd libx11)
-makedepends=(cmake glu)
+makedepends=(cmake glu md4c)
 checkdepends=(lv2lint)
 optdepends=('lv2-host: for running the plugin')
 _pugl_ref=9fd2cd2
@@ -43,6 +43,9 @@ build() {
     -DCMAKE_INSTALL_PREFIX='/usr' \
     -Wno-dev
   cmake --build build
+
+  cd $_projectname-$pkgver/usermanual
+  md2html -f --github USERMANUAL.md > index.html
 }
 
 check() {
