@@ -18,18 +18,11 @@ source=("$pkgname-$pkgver.tar.gz::https://github.com/olegkapitonov/$_projectname
 sha256sums=('056c152ee72c5a0cfd45ca0cd848ff13b098c8f58b14c26ad06d7ef49c792b40')
 
 build() {
-  cd $_projectname-$pkgver
-  # default flags are 'auto' so build wouldn't fail if dependencies are missing
-  meson build \
-    --prefix /usr \
-    -Dladspa=enabled \
-    -Dlv2=enabled \
-    -Dgui=enabled
-  ninja -C build
+  arch-meson $_projectname-$pkgver build
+  meson compile -C build
 }
 
 package() {
   depends+=(libzita-convolver.so libzita-resampler.so)
-  cd $_projectname-$pkgver/build
-  DESTDIR="$pkgdir" meson install
+  meson install -C build --destdir "$pkgdir"
 }
