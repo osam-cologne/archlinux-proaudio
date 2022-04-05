@@ -17,7 +17,7 @@ include_regex = '^r(\d+)_(\d+)_(\d+)$'
 from_pattern = '^r(\d+)_(\d+)_(\d+)$'
 to_pattern = '\1.\2.\3'
 
-[kpp]
+[kapitonov-plugins-pack]
 source = "github"
 github = "olegkapitonov/Kapitonov-Plugins-Pack"
 use_max_tag = true

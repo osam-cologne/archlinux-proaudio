@@ -2,10 +2,10 @@
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
 _projectname='Kapitonov-Plugins-Pack'
-pkgname=kpp
+pkgname=${_projectname,,}
 pkgver=1.2.1
 pkgrel=1
-pkgdesc='Kapitonov Plugins Pack for guitar sound processing'
+pkgdesc='LV2 and LADSPA plugins for guitar sound processing'
 arch=(x86_64 aarch64)
 url='https://kpp-tubeamp.com/'
 license=(GPL3)
