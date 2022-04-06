@@ -1,12 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <title>{{ .Site.Title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     {{ $water := resources.GetRemote "https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" }}
     <link rel="stylesheet" href="{{ $water.RelPermalink }}">
   </head>
   <body>
     <style>
+      body {
+        max-width: {{ default 800 .Site.Params.maxWidth }}px;
+      }
       tr.summary:hover {
         background-color: var(--background-alt);
       }
@@ -43,7 +47,7 @@
       }
     </style>
     {{ $banner := resources.GetRemote .Site.Params.bannerImage }}
-    {{ $banner = $banner.Fill "800x200 Center" }}
+    {{ $banner = $banner.Fill (printf "%dx200 Center" (default 800 .Site.Params.maxWidth )) }}
     <img class="banner" src="{{ $banner.RelPermalink }}" />
     {{ $packages := partial "get-packages" }}
     {{ .RenderString (os.ReadFile "README.md") }}

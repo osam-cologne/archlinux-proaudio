@@ -4,10 +4,11 @@ params:
   bannerImage: https://unsplash.com/photos/19u5e9oSrlU/download
   repoUrl: https://arch.osamc.de/proaudio/%s/%s
   pkgbuildUrl: https://github.com/osam-cologne/archlinux-proaudio/blob/master/packages/%s/PKGBUILD
+  maxWidth: 1000
 
 baseURL: https://arch.osamc.de/
 languageCode: en-us
-title: Arch Linux Pro-Audio Repo
+title: Arch Linux Pro-Audio Binary Repo
 publishDir: .tmp/public
 resourceDir: .tmp/resources
 module:
