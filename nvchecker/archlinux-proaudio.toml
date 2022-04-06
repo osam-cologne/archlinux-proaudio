@@ -3,6 +3,12 @@ oldver = "old_ver.json"
 newver = "new_ver.json"
 #keyfile = "keyfile.toml"
 
+[abcm2ps]
+source = "github"
+github = "lewdlime/abcm2ps"
+use_max_tag = true
+prefix = "v"
+
 # note: unquoted dots in section names cause errors
 ["aether.lv2"]
 source = "github"
