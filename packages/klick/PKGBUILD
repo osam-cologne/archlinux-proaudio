@@ -25,6 +25,6 @@ build() {
 package() {
   depends+=(libjack.so liblo.so librubberband.so libsamplerate.so libsndfile.so)
   cd $pkgname-$pkgver
-  scons DESTDIR="${pkgdir}" install
+  scons DESTDIR="$pkgdir" install
   install -Dm644 doc/manual.html -t "$pkgdir"/usr/share/doc/$pkgname
 }
