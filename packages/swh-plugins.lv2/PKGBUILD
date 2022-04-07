@@ -18,7 +18,7 @@ provides=(swh-plugins)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/swh/$_name/archive/refs/tags/v$pkgver.tar.gz"
         'fix-segfaults.patch::https://github.com/cbix/swh-lv2/compare/master...fix/activation-malloc.patch')
 sha256sums=('bc24512de6e2fb7a493226e2e01a80ba8462a318b15c3b0fd0cd914b018c3548'
-            '529f886dee087beee11c5fdf052389c4efb6a1dbbc318821ba0571938282717b')
+            '41cf240a090c4bb094ec11b03ce3e2cc520856bac294cc144ab5ad7e30cb68f0')
 
 prepare() {
   cd $_name-$pkgver
@@ -28,13 +28,23 @@ prepare() {
 build() {
   cd $_name-$pkgver
   make
+  # prevent lilv errors during check by removing unbuilt plugins
+  for _dir in plugins/*.lv2; do
+    if [ ! -e $_dir/manifest.ttl ]; then
+      rm -rf $_dir
+    fi
+  done
 }
 
 check() {
   _lv2path="$srcdir"/$_name-$pkgver/plugins
-  for _plugin in $(LV2_PATH="$_lv2path" lv2ls 2>/dev/null); do
-    LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack $_plugin \
-      2>/dev/null || echo "Ignoring error (known to fail)"
+  for _plugin in $(LV2_PATH="$_lv2path" lv2ls); do
+    LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack \
+      -t "Plugin Symbols" \
+      -t "Plugin Version *" \
+      -t "Port Properties" \
+      -t "Port Range" \
+      $_plugin
   done
 }
 
