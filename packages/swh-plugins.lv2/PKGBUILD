@@ -18,7 +18,7 @@ provides=(swh-plugins)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/swh/$_name/archive/refs/tags/v$pkgver.tar.gz"
         'fix-segfaults.patch::https://github.com/cbix/swh-lv2/compare/master...fix/activation-malloc.patch')
 sha256sums=('bc24512de6e2fb7a493226e2e01a80ba8462a318b15c3b0fd0cd914b018c3548'
-            '41cf240a090c4bb094ec11b03ce3e2cc520856bac294cc144ab5ad7e30cb68f0')
+            '0650535d69700da06b9887f715c5689327d5f4df0ed8c2292b0cb0092d3f807e')
 
 prepare() {
   cd $_name-$pkgver
@@ -39,7 +39,7 @@ build() {
 check() {
   _lv2path="$srcdir"/$_name-$pkgver/plugins
   for _plugin in $(LV2_PATH="$_lv2path" lv2ls); do
-    LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack \
+    LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack -q \
       -t "Plugin Symbols" \
       -t "Plugin Version *" \
       -t "Port Properties" \
