@@ -12,11 +12,18 @@ license=(GPL3)
 groups=(lv2-plugins pro-audio)
 depends=()
 makedepends=(fftw libxslt)
-checkdepends=(kxstudio-lv2-extensions lilv lv2lint)
+checkdepends=(lilv lv2lint)
 optdepends=('lv2-host: for running the plugins')
 provides=(swh-plugins)
-source=("$pkgname-$pkgver.tar.gz::https://github.com/swh/$_name/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('bc24512de6e2fb7a493226e2e01a80ba8462a318b15c3b0fd0cd914b018c3548')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/swh/$_name/archive/refs/tags/v$pkgver.tar.gz"
+        'fix-segfaults.patch::https://github.com/cbix/swh-lv2/compare/master...fix/activation-malloc.patch')
+sha256sums=('bc24512de6e2fb7a493226e2e01a80ba8462a318b15c3b0fd0cd914b018c3548'
+            '529f886dee087beee11c5fdf052389c4efb6a1dbbc318821ba0571938282717b')
+
+prepare() {
+  cd $_name-$pkgver
+  patch -p1 -i ../fix-segfaults.patch
+}
 
 build() {
   cd $_name-$pkgver
@@ -26,7 +33,6 @@ build() {
 check() {
   _lv2path="$srcdir"/$_name-$pkgver/plugins
   for _plugin in $(LV2_PATH="$_lv2path" lv2ls 2>/dev/null); do
-    # several plugins are segfaulting in lv2lint
     LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack $_plugin \
       2>/dev/null || echo "Ignoring error (known to fail)"
   done
