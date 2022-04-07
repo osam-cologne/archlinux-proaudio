@@ -10,7 +10,7 @@ arch=(x86_64 aarch64)
 url='http://plugin.org.uk/'
 license=(GPL3)
 groups=(lv2-plugins pro-audio)
-depends=()
+depends=(glibc)
 makedepends=(fftw libxslt)
 checkdepends=(lilv lv2lint)
 optdepends=('lv2-host: for running the plugins')
@@ -18,7 +18,7 @@ provides=(swh-plugins)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/swh/$_name/archive/refs/tags/v$pkgver.tar.gz"
         'fix-segfaults.patch::https://github.com/cbix/swh-lv2/compare/master...fix/activation-malloc.patch')
 sha256sums=('bc24512de6e2fb7a493226e2e01a80ba8462a318b15c3b0fd0cd914b018c3548'
-            '0650535d69700da06b9887f715c5689327d5f4df0ed8c2292b0cb0092d3f807e')
+            '901bf0bb87d0cba518661f80bf64dc1e467629a59622a80b90c437674ada9f0c')
 
 prepare() {
   cd $_name-$pkgver
