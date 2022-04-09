@@ -95,6 +95,12 @@ github = "jpcima/string-machine"
 use_max_tag = true
 prefix = "v"
 
+["swh-plugins.lv2"]
+source = "github"
+github = "swh/lv2"
+use_max_tag = true
+prefix = "v"
+
 [tuxguitar]
 source = "regex"
 url = "https://sourceforge.net/projects/tuxguitar/rss?path=/TuxGuitar"
