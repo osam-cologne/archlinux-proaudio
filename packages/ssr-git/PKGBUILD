@@ -2,27 +2,32 @@
 # Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
 # Contributor: Milkii Brewster <milkii on Freenode IRC>
 
-_pkgname=ssr
-pkgname="$_pkgname-git"
-pkgdesc="A sympathetic string resonator plugin and JACK application (git version)."
+_gitname=ssr
+_pkgname=sympathetic-string-resonator
+pkgname=$_pkgname-git
+pkgdesc='A sympathetic string resonator plugin and JACK application (git version)'
 pkgver=r10.e1999da
 pkgrel=1
 arch=(x86_64)
-url="https://github.com/jpcima/ssr"
+url='https://github.com/jpcima/ssr'
 license=(MIT)
 groups=(lv2-plugins pro-audio vst-plugins)
-depends=(cairo)
+depends=(cairo gcc-libs)
 makedepends=(git mesa jack)
-optdepends=('jack: stand-alone JACK application')
-provides=("$_pkgname" "$_pkgname.lv2")
-conflicts=("$_pkgname" "$_pkgname.lv2" "$_pkgname.lv2-git")
-source=("$_pkgname::git+https://github.com/jpcima/ssr"
+optdepends=(
+  'jack: stand-alone JACK application'
+  'lv2-host: for LV2 plugin'
+  'vst-host: for VST plugin'
+)
+provides=($_gitname.lv2 $_pkgname)
+conflicts=($_gitname.lv2 $_gitname.lv2-git)
+source=("$_gitname::git+https://github.com/jpcima/$_gitname"
         'dpf::git+https://github.com/DISTRHO/DPF.git'
 )
 sha256sums=(SKIP SKIP)
 
 pkgver() {
-  cd $_pkgname
+  cd $_gitname
   ( set -o pipefail
     git describe --long 2>/dev/null | sed 's/\([^-]*-g\)/r\1/;s/-/./g' ||
     printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
@@ -30,20 +35,20 @@ pkgver() {
 }
 
 prepare() {
-  cd $_pkgname
+  cd $_gitname
   git submodule init
   git config submodule.dpf.url "$srcdir/dpf"
   git submodule update
 }
 
 build() {
-  cd $_pkgname
+  cd $_gitname
   make PREFIX=/usr BUILD_VST2=true
 }
 
 package() {
   depends+=(libjack.so)
-  cd $_pkgname
-  make PREFIX=/usr DESTDIR="$pkgdir/" BUILD_VST2=true install
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/${pkgname}
+  cd $_gitname
+  make PREFIX=/usr DESTDIR="$pkgdir" BUILD_VST2=true install
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
