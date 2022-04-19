@@ -20,7 +20,7 @@ Taking a look at the `.drone.yml` in the root directory, we can see several acti
 triggered by Git pushes / PRs:
 
 ### Prepare
-This step determines which packages to build based on `git diff`, latest live versions etc. At the end of the
+This step determines which packages to build based on latest live versions etc. At the end of the
 CI log for this step you'll see a summary like
 ```
 Packages to skip:
@@ -29,9 +29,9 @@ Packages to skip:
  tuxguitar: unsupported architecture
 
 Packages to build:
- mamba: modified
+ mamba: new
  python-rtmidi: new
- string-machine: modified
+ string-machine: new
 ```
 Remember to update the `pkgrel` so your package update reaches the users!
 
