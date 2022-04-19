@@ -118,12 +118,3 @@ for PKG in $(get_pkgs); do
         disable_pkgs "unsupported architecture" $PKG
     fi
 done
-
-# always build modified packages
-if ! (git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} .); then
-    for PKG in *; do
-        if ! (git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} "$PKG"); then
-            enable_pkgs "modified" $PKG
-        fi
-    done
-fi
