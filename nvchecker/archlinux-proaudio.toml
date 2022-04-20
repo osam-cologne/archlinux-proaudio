@@ -17,6 +17,10 @@ use_max_tag = true
 include_regex = '^v[\.\d]+$'
 prefix = "v"
 
+[jack-matchmaker]
+source = "pypi"
+pypi = "jack-matchmaker"
+
 [jalv-select]
 source = "github"
 github = "brummer10/jalv_select"
