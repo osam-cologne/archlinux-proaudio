@@ -37,7 +37,7 @@ ARM) architectures.
    guidance of [dvzrv](https://archlinux.org/people/developers/#dvzrv).
 6. Reproducible, trustworthy binary packages are fast to install and convenient
    to update with just pacman; not requiring unsupported AUR helper programs.
-   Also keep in mind hat a rebuild of package may be required when its shared
+   Also keep in mind that a rebuild of package may be required when its shared
    library dependencies are updated, not only when the package itself is updated,
    which can only be offered by a binary repository.
 
