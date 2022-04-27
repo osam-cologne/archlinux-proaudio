@@ -1,0 +1,32 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+pkgname=hpklinux
+_fullver=4.20.36-g76c09bc
+pkgver=${_fullver%-*}
+pkgrel=1
+pkgdesc='AudioScience HPI (ASIHPI) user space libraries'
+arch=(x86_64 aarch64)
+url='https://www.audioscience.com/internet/download/linux_drivers.htm'
+license=(GPL2)
+groups=(pro-audio)
+provides=(python-hpi)
+depends=()
+makedepends=(python-setuptools)
+optdepends=('python')
+source=("$pkgname-$pkgver.tar.gz::https://www.audioscience.com/internet/download/drivers/released/v${pkgver//./\/}/${pkgname}_$_fullver.tar.gz")
+sha256sums=('3d3795b01f6181d8e51f78ca888519023cbdc1d83dac2fe0ae74fd6c43c7331d')
+
+build() {
+  cd ${pkgname}_$_fullver
+  make -C hpi-lib
+  make -C hpi-cli-apps
+  make -C asi-python build
+}
+
+package() {
+  cd ${pkgname}_$_fullver
+  make DESTDIR="$pkgdir" install-prefix=/usr -C hpi-lib install
+  make DESTDIR="$pkgdir" install-prefix=/usr -C hpi-cli-apps install
+  CMD_OPTS="--root='$pkgdir' --skip-build --optimize=1" make -C asi-python install
+}
