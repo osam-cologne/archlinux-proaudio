@@ -4,26 +4,23 @@
 pkgname=glasscoder
 pkgver=1.0.4
 pkgrel=1
-pkgdesc="Minimalist audio encoder for IceCast and Shoutcast streaming
-servers as well as HTTP Live Streaming (HLS)"
+pkgdesc='Minimalist audio encoder for IceCast and Shoutcast streaming servers as well as HTTP Live Streaming (HLS)'
 arch=(x86_64)
-url="https://github.com/ElvishArtisan/GlassCoder"
+url='https://github.com/ElvishArtisan/GlassCoder'
 license=(GPL2)
 depends=(alsa-lib jack2 curl lame libfdk-aac libogg libsamplerate libsndfile libvorbis openssl opus python qt5-tools taglib twolame)
 makedepends=(docbook-xsl docbook5-xml libxslt)
-source=(https://github.com/ElvishArtisan/GlassCoder/releases/download/v1.0.4/glasscoder-1.0.4.tar.gz)
+source=(https://github.com/ElvishArtisan/GlassCoder/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz)
 sha256sums=('350714c1cf23caf1e2f12431385a946ef8ca4a585329a399cebcf5ad598ee7c8')
 
 build() {
+  cd $pkgname-$pkgver
   export DOCBOOK_STYLESHEETS="/usr/share/xml/docbook/xsl-stylesheets-1.79.2"
-  cd "$pkgname-$pkgver"
-
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd "$pkgname-$pkgver"
-
+  cd $pkgname-$pkgver
   make DESTDIR="$pkgdir" install
 }
