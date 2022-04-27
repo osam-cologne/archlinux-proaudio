@@ -4,7 +4,7 @@
 pkgname=glasscoder
 pkgver=1.0.4
 pkgrel=1
-pkgdesc='Minimalist audio encoder for IceCast and Shoutcast streaming servers as well as HTTP Live Streaming (HLS)'
+pkgdesc='Minimalist audio encoder for IceCast, Shoutcast and HLS'
 arch=(x86_64)
 url='https://github.com/ElvishArtisan/GlassCoder'
 license=(GPL2)
