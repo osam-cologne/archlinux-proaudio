@@ -28,8 +28,8 @@ build() {
 check() {
   mkdir -p "$srcdir"/test
   DESTDIR="$srcdir"/test make -C build/lv2 install
-  _lv2path="$srcdir"/test/usr/lib/lv2
-  _plugins=($(LV2_PATH="$_lv2path" lv2ls))
+  local _lv2path="$srcdir"/test/usr/lib/lv2
+  local _plugins=($(LV2_PATH="$_lv2path" lv2ls))
   LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack -q \
     -t "Plugin Symbols" \
     ${_plugins[@]} || echo 'https://github.com/Stazed/rakarrack-plus/issues/34'
