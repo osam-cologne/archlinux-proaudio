@@ -8,8 +8,8 @@
 
 pkgbase=tuxguitar
 pkgname=tuxguitar
-pkgver=1.5.5
-pkgrel=2
+pkgver=1.5.6
+pkgrel=1
 pkgdesc='Multitrack guitar tablature editor and player'
 arch=(x86_64 i686)
 url='https://sourceforge.net/projects/tuxguitar/'
@@ -19,19 +19,23 @@ depends=()
 _java_ver=11
 _swt_rel='4.22-202111241800'
 _swt_rel_i686='4.9-201809060745'
-makedepends=(alsa-lib fluidsynth jack "java-environment-openjdk=${_java_ver}" maven)
+makedepends=(alsa-lib fluidsynth jack "java-environment-openjdk=${_java_ver}" lilv maven qt5-base
+  suil)
 optdepends=('alsa-lib: playback with ALSA'
             'fluidsynth: alternative synthesizer for playback'
             'jack: playback and MIDI support with JACK'
-            'pulseaudio: playback with PulseAudio')
+            'lilv: for LV2 extension'
+            'pulseaudio: playback with PulseAudio'
+            'qt5-base: for LV2 extension'
+            'suil: for LV2 extension')
 conflicts=(tuxguitar-common tuxguitar-gtk2)
 source=("https://downloads.sourceforge.net/tuxguitar/tuxguitar-${pkgver}-src.tar.gz"
         'dep-versions.patch'
         'tuxguitar.sh')
 source_i686=("https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel_i686}/swt-${_swt_rel_i686%-*}-gtk-linux-x86.zip")
 source_x86_64=("https://archive.eclipse.org/eclipse/downloads/drops4/R-${_swt_rel}/swt-${_swt_rel%-*}-gtk-linux-x86_64.zip")
-sha256sums=('2e855500d9cea6987962a851d7e3fcb144e3220b10f71fba1514913e70542398'
-            'ff3c39a1a287fe0679f429aea682361963b0662a49a6088542dd429aa64441b0'
+sha256sums=('441e561ffbb9d91470f255c817f6c30300f579bf9013032615efe3f6701af274'
+            '058bce97ccbdc0de348bd919a3122434424bde29421153e030f4762efff5c432'
             '8a5eccd2dca5a02580ccca3838db2220cabbb0a4b080030ea361efbafd7737aa')
 sha256sums_x86_64=('55b46b575e8c93172be81e096fb72bce83b60df8087b4863a1a057aaead30b1f')
 sha256sums_i686=('5317a8e30121a1c7b6da743bdd658b13491889d95158352de0de16831e5b5a5f')
@@ -64,8 +68,6 @@ prepare() {
     -Dversion=${_swt_rel_i686:0:-13} \
     -Dpackaging=jar
 
-  # https://sourceforge.net/p/tuxguitar/feature-requests/96/
-  # https://sourceforge.net/p/tuxguitar/patches/45/
   # Reproducible build; pinned SWT versions; use https for swt-repo
   patch -p1 -i ../dep-versions.patch
 
@@ -82,7 +84,7 @@ build() {
     -P platform-linux-$_arch \
     -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH \
     clean install
-  for _module in build-scripts/{tuxguitar,native-modules/tuxguitar-{alsa,fluidsynth,jack}}-linux-$_arch; do (
+  for _module in build-scripts/{tuxguitar,native-modules/tuxguitar-{alsa,fluidsynth,jack,synth-lv2}}-linux-$_arch; do (
     cd $_module
     MAVEN_OPTS="$MAVEN_OPTS -Duser.home=$srcdir" \
       PATH="$_javapath" \
@@ -101,10 +103,14 @@ package() {
   # plugins
   install -Dm644 share/plugins/*.jar -t "$pkgdir"/usr/share/java/$pkgname
   cd "$srcdir"/tuxguitar-${pkgver}-src/build-scripts/native-modules
-  install -Dm644 tuxguitar-{alsa,fluidsynth,jack}-linux-${_arch}/target/build/share/plugins/*.jar \
+  install -Dm644 tuxguitar-{alsa,fluidsynth,jack,synth-lv2}-linux-${_arch}/target/build/share/plugins/*.jar \
     -t "$pkgdir"/usr/share/java/$pkgname
-  install -Dm755 tuxguitar-{alsa,fluidsynth,jack}-linux-${_arch}/target/build/lib/*.so \
+  install -Dm755 tuxguitar-{alsa,fluidsynth,jack,synth-lv2}-linux-${_arch}/target/build/lib/*.so \
     -t "$pkgdir"/usr/lib/$pkgname
+  install -Dm644 tuxguitar-synth-lv2-linux-${_arch}/target/build/lv2-client/*.png \
+    -t "$pkgdir"/usr/share/$pkgname/lv2-client
+  install -Dm755 tuxguitar-synth-lv2-linux-${_arch}/target/build/lv2-client/*.bin \
+    -t "$pkgdir"/usr/share/$pkgname/lv2-client
 
   # Application data and docs
   cd "$srcdir"/tuxguitar-${pkgver}-src/build-scripts/tuxguitar-linux-${_arch}/target/tuxguitar-${pkgver}-linux-${_arch}
@@ -113,7 +119,7 @@ package() {
   rm -r "${pkgdir}"/usr/share/${pkgname}/share/{help,plugins,soundfont,lang/toutf.pl}
   cp -a share/help "${pkgdir}"/usr/share/doc/$pkgname
   # ensure correct permissions for data
-  find "$pkgdir"/usr/share/{,doc/}$pkgname -type f -exec chmod 644 {} \;
+  find "$pkgdir"/usr/share/{,doc/}$pkgname -type f -not -name *.bin -exec chmod 644 {} \;
 
   # icons
   cd "$srcdir"/tuxguitar-${pkgver}-src
