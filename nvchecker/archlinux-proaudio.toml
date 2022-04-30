@@ -17,6 +17,11 @@ use_max_tag = true
 include_regex = '^v[\.\d]+$'
 prefix = "v"
 
+[hpklinux]
+source = "regex"
+url = "https://www.audioscience.com/internet/download/linux_drivers.htm"
+regex = 'hpklinux_(.*).tar.gz'
+
 [jack-matchmaker]
 source = "pypi"
 pypi = "jack-matchmaker"
