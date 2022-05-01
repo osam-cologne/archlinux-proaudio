@@ -8,8 +8,19 @@ pkgdesc='Minimalist audio encoder for IceCast, Shoutcast and HLS'
 arch=(x86_64 aarch64)
 url='https://github.com/ElvishArtisan/GlassCoder'
 license=(GPL2)
-depends=(alsa-lib curl hicolor-icon-theme jack lame libfdk-aac libogg libsamplerate libsndfile libvorbis openssl opus python qt5-tools taglib twolame)
-makedepends=(docbook-xsl docbook5-xml libxslt)
+depends=(curl hicolor-icon-theme openssl qt5-tools taglib)
+makedepends=(alsa-lib flac jack docbook-xsl docbook5-xml lame libfdk-aac
+             libogg libsamplerate libsndfile libvorbis libxslt opus python
+             twolame)
+optdepends=('lame: for MP3 output support'
+            'libfdk-aac: for AAC output support'
+            'libogg: for OGG Opus/Vorbis output support'
+            'libvorbis: for OGG Vorbis output support'
+            'opus: for OGG Opus output support'
+            #'python: for rivendell integration'
+            #'python-requests: for rivendell integration'
+            #'rivendell: for rivendell integration'
+            'twolame: for MP2 output support')
 source=(https://github.com/ElvishArtisan/GlassCoder/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz)
 sha256sums=('350714c1cf23caf1e2f12431385a946ef8ca4a585329a399cebcf5ad598ee7c8')
 
