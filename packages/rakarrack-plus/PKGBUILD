@@ -2,8 +2,8 @@
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
 pkgname=rakarrack-plus
-pkgver=1.2.0
-pkgrel=2
+pkgver=1.2.1
+pkgrel=1
 pkgdesc='Guitar Effects Processor'
 arch=(x86_64 aarch64)
 url='https://github.com/Stazed/rakarrack-plus'
@@ -14,16 +14,8 @@ checkdepends=(lilv lv2lint)
 optdepends=('lv2-host: for running LV2 plugins'
             'new-session-manager: for NSM support')
 groups=(lv2-plugins pro-audio)
-source=("$pkgname-$pkgver.tar.gz::https://github.com/Stazed/$pkgname/archive/refs/tags/$pkgver.tar.gz"
-        "midic-features.patch::https://patch-diff.githubusercontent.com/raw/Stazed/$pkgname/pull/36.patch")
-sha256sums=('0244b91dcf0b65bd49f1c6cb4b1c2267ae0083cc7049f393b7bef927c9545cbd'
-            '9d1791aa314149bd5c1bb1de778eaa595b2a4d751dcc073d6d066caf234a8f0b')
-
-prepare() {
-  cd $pkgname-$pkgver
-  # https://github.com/Stazed/rakarrack-plus/pull/36
-  patch -p1 -i ../midic-features.patch
-}
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Stazed/$pkgname/archive/refs/tags/$pkgver.tar.gz")
+sha256sums=('bb583a4474409b4dcde40b1bbf06366067ccbd5f2a1e66ef6bbf8ff57a19c4c1')
 
 build() {
   cmake -B build -S $pkgname-$pkgver \
