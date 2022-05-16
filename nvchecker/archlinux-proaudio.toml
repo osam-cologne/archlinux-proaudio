@@ -103,6 +103,10 @@ source = "github"
 github = "Stazed/rakarrack-plus"
 use_max_tag = true
 
+[rtcqs]
+source = "pypi"
+pypi = "rtcqs"
+
 [stone-phaser]
 source = "github"
 github = "jpcima/stone-phaser"
