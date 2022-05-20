@@ -90,6 +90,10 @@ use_max_tag = true
 source = "pypi"
 pypi = "pyjacklib"
 
+[python-pysimplegui]
+source = "pypi"
+pypi = "PySimpleGUI"
+
 [python-rtmidi]
 source = "pypi"
 pypi = "python-rtmidi"
