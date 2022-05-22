@@ -4,7 +4,7 @@
 _name=PaulXStretch
 pkgname=${_name,,}
 pkgver=1.5.3
-pkgrel=1
+pkgrel=2
 pkgdesc='Extreme time stretching application and plugin'
 arch=(x86_64 aarch64)
 url='https://sonosaurus.com/paulxstretch/'

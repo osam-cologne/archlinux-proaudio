@@ -13,7 +13,7 @@ PACMAN_EXTRA="$*"
 # Prepare directories
 sudo rm -rf "$ROOT"/{out,out2,out.SHA512}
 sudo install -o nobody -d "$ROOT"/{out,out2}
-sudo install -o nobody -d "$TMP"{,/pkgs,/ignore}
+sudo install -o nobody -d "$TMP"{,/pkgs,/ignore,/aur}
 sudo install -o nobody -d "$CACHE"/srcdest
 
 # Restore pacman cache if exists
