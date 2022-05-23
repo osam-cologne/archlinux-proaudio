@@ -4,7 +4,7 @@
 _name=PySimpleGUI
 pkgname=python-pysimplegui
 pkgdesc='Python library to create simple GUIs on top of Tk'
-pkgver=4.60.0
+pkgver=4.60.1
 pkgrel=1
 arch=(any)
 url='http://pysimplegui.org/'
@@ -12,7 +12,7 @@ license=(LGPL3)
 depends=(python tk)
 makedepends=(python-build python-installer python-setuptools python-wheel)
 source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
-sha256sums=('72a9c7617317dca1aacb7e7af2a678eb70113842fe9cd03d5ec6ff9f530c7fcf')
+sha256sums=('3ea18e3aaea515bdf40e7d73015d101d92abddf214b134ae7674e99c58b96598')
 
 build() {
   cd $_name-$pkgver
