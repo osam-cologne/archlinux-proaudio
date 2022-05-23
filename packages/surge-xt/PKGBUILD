@@ -26,6 +26,7 @@ makedepends=('cmake' 'freetype2' 'libsndfile' 'python' 'libxrandr' 'libxinerama'
 optdepends=(
   # 'lv2-host: for the LV2 plugin'
   'vst3-host: for the VST3 plugin'
+  'jack: backend for standalone'
 )
 # checkdepends=('lv2lint')
 source=("${pkgname}-${pkgver}.tgz::https://github.com/surge-synthesizer/releases-xt/releases/download/${pkgver}/surge-src-${pkgver}.tar.gz")
