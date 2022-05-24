@@ -48,7 +48,7 @@ build() {
   # https://github.com/surge-synthesizer/surge/issues/1701
   export LDFLAGS="$LDFLAGS,-z,noexecstack"
   cmake -DCMAKE_INSTALL_PREFIX='/usr' \
-        -DCMAKE_BUILD_TYPE='None' \
+        -DCMAKE_BUILD_TYPE=Release \
         -W no-dev \
         -B build \
         -S .
