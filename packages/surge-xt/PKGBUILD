@@ -58,7 +58,7 @@ build() {
 
 package() {
   depends+=('libfreetype.so')
-  cd "$pkgname-$pkgver"
+  cd $pkgname-$pkgver
   DESTDIR="$pkgdir" cmake --install build
   install -vDm 644 AUTHORS -t "${pkgdir}/usr/share/doc/${pkgname}"
 }
