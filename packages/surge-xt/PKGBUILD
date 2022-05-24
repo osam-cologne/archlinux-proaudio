@@ -29,7 +29,7 @@ optdepends=(
   'jack: backend for standalone'
 )
 # checkdepends=('lv2lint')
-source=("${pkgname}-${pkgver}.tgz::https://github.com/surge-synthesizer/releases-xt/releases/download/${pkgver}/surge-src-${pkgver}.tar.gz")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/surge-synthesizer/releases-xt/releases/download/$pkgver/surge-src-$pkgver.tar.gz")
 sha256sums=('100b536f741c62529800fc26e3773567591385d4152db305382b4315f6e39c55')
 
 prepare() {
