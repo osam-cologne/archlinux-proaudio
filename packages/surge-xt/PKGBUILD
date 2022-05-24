@@ -11,7 +11,7 @@ _name="Surge XT"
 _repo_name="surge"
 pkgname=surge-xt
 pkgver=1.0.1
-pkgrel=2
+pkgrel=3
 pkgdesc="An Open Source Digital Synthesizer"
 arch=(x86_64 aarch64)
 url="https://surge-synthesizer.github.io/"
@@ -21,13 +21,10 @@ depends=('cairo' 'fontconfig' 'gcc-libs' 'glibc' 'libx11' 'libxcb'
 'libxkbcommon-x11' 'xcb-util' 'xcb-util-cursor' 'xcb-util-image'
 'xcb-util-keysyms' 'xcb-util-renderutil' 'xdg-utils')
 makedepends=('cmake' 'freetype2' 'libsndfile' 'python' 'libxrandr' 'libxinerama' 'libxcursor' 'alsa-lib' 'jack')
-# makedepends=('cmake' 'freetype2' 'libsndfile' 'lv2' 'python')
 optdepends=(
-  # 'lv2-host: for the LV2 plugin'
   'vst3-host: for the VST3 plugin'
   'jack: backend for standalone'
 )
-# checkdepends=('lv2lint')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/surge-synthesizer/releases-xt/releases/download/$pkgver/surge-src-$pkgver.tar.gz")
 sha256sums=('100b536f741c62529800fc26e3773567591385d4152db305382b4315f6e39c55')
 
@@ -58,17 +55,6 @@ build() {
         -S .
   make VERBOSE=1 -C build
 }
-
-# check() {
-#   cd "$pkgname-$pkgver"
-#   lv2lint -Mpack -I "build-test/surge_xt_products/${_name}.lv2" \
-#     "https://surge-synthesizer.github.io/lv2/surge" \
-#     || echo "Known to fail: https://github.com/surge-synthesizer/surge/issues/2392"
-# 
-#   mkdir -vp test_data/${pkgname}
-#   cp -av resources/data/* test_data/${pkgname}
-#   XDG_DATA_HOME=test_data build/surge-headless
-# }
 
 package() {
   depends+=('libfreetype.so')
