@@ -8,7 +8,7 @@
 # or simply wait for JUCE 7 release which will officially support lv2
 
 _name="Surge XT"
-_repo_name="surge"
+_repo_name=surge
 pkgname=surge-xt
 pkgver=1.0.1
 pkgrel=3
