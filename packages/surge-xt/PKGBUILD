@@ -73,31 +73,6 @@ build() {
 package() {
   depends+=('libfreetype.so')
   cd "$pkgname-$pkgver"
-
-  # install lv2
-#   install -vDm 755 "build/surge_xt_products/${_name}.lv2/${_name}.so" \
-#     -t "${pkgdir}/usr/lib/lv2/${_name}.lv2/"
-#   install -vDm 644 "build/surge_xt_products/${_name}.lv2/"*.ttl \
-#     -t "${pkgdir}/usr/lib/lv2/${_name}.lv2/"
-#   install -vDm 755 "build/surge_xt_products/${_name} Effects.lv2/${_name} Effects.so" \
-#     -t "${pkgdir}/usr/lib/lv2/${_name} Effects.lv2/"
-#   install -vDm 644 "build/surge_xt_products/${_name} Effects.lv2/"*.ttl \
-#     -t "${pkgdir}/usr/lib/lv2/${_name} Effects.lv2/"
-
-  # install vst3
-  install -vDm 755 "build/surge_xt_products/${_name}.vst3/Contents/${CARCH}-linux/${_name}.so" \
-    -t "${pkgdir}/usr/lib/vst3/${_name}.vst3/Contents/${CARCH}-linux/"
-  install -vDm 755 "build/surge_xt_products/${_name} Effects.vst3/Contents/${CARCH}-linux/${_name} Effects.so" \
-    -t "${pkgdir}/usr/lib/vst3/${_name} Effects.vst3/Contents/${CARCH}-linux/"
-
-  # install standalone
-  install -vDm 755 "build/surge_xt_products/${_name}" \
-    -t "${pkgdir}/usr/bin/"
-  install -vDm 755 "build/surge_xt_products/${_name} Effects" \
-    -t "${pkgdir}/usr/bin/"
-
-  # install resources
-  install -vdm 755 "${pkgdir}/usr/share/${pkgname}"
-  cp -av resources/data/* "${pkgdir}/usr/share/${pkgname}"
+  DESTDIR="$pkgdir" cmake --install build
   install -vDm 644 {AUTHORS,README.md} -t "${pkgdir}/usr/share/doc/${pkgname}"
 }
