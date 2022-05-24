@@ -47,7 +47,6 @@ build() {
   # binaries and shared libs have executable stack:
   # https://github.com/surge-synthesizer/surge/issues/1701
   export LDFLAGS="$LDFLAGS,-z,noexecstack"
-  # build surge-headless
   cmake -DCMAKE_INSTALL_PREFIX='/usr' \
         -DCMAKE_BUILD_TYPE='None' \
         -W no-dev \
