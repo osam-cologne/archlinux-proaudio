@@ -15,12 +15,12 @@ pkgrel=3
 pkgdesc="An Open Source Digital Synthesizer"
 arch=(x86_64 aarch64)
 url="https://surge-synthesizer.github.io/"
-license=('GPL3')
-groups=('pro-audio' 'vst3-plugins')
-depends=('cairo' 'fontconfig' 'gcc-libs' 'glibc' 'libx11' 'libxcb'
-'libxkbcommon-x11' 'xcb-util' 'xcb-util-cursor' 'xcb-util-image'
-'xcb-util-keysyms' 'xcb-util-renderutil' 'xdg-utils')
-makedepends=('cmake' 'freetype2' 'libsndfile' 'python' 'libxrandr' 'libxinerama' 'libxcursor' 'alsa-lib' 'jack')
+license=(GPL3)
+groups=(pro-audio vst3-plugins)
+depends=(cairo fontconfig gcc-libs glibc libx11 libxcb
+  libxkbcommon-x11 xcb-util xcb-util-cursor xcb-util-image
+  xcb-util-keysyms xcb-util-renderutil xdg-utils)
+makedepends=(cmake freetype2 libsndfile python libxrandr libxinerama libxcursor alsa-lib jack)
 optdepends=(
   'vst3-host: for the VST3 plugin'
   'jack: backend for standalone'
