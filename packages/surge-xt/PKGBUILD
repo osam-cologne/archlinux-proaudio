@@ -17,7 +17,6 @@ arch=(x86_64 aarch64)
 url="https://surge-synthesizer.github.io/"
 license=('GPL3')
 groups=('pro-audio' 'vst3-plugins')
-# groups=('lv2-plugins' 'pro-audio' 'vst3-plugins')
 depends=('cairo' 'fontconfig' 'gcc-libs' 'glibc' 'libx11' 'libxcb'
 'libxkbcommon-x11' 'xcb-util' 'xcb-util-cursor' 'xcb-util-image'
 'xcb-util-keysyms' 'xcb-util-renderutil' 'xdg-utils')
