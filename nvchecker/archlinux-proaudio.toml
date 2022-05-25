@@ -86,6 +86,12 @@ source = "github"
 github = "OpenLightingProject/ola"
 use_max_tag = true
 
+[paulxstretch]
+source = "github"
+github = "essej/paulxstretch"
+use_max_tag = true
+prefix = "v"
+
 [python-pyjacklib]
 source = "pypi"
 pypi = "pyjacklib"
@@ -123,7 +129,7 @@ github = "jpcima/string-machine"
 use_max_tag = true
 prefix = "v"
 
-["surge-xt"]
+[surge-xt]
 source = "github"
 github = "surge-synthesizer/releases-xt"
 use_max_tag = true
