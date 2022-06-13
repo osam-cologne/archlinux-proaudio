@@ -17,7 +17,7 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - run_nobody tools/prepare-build.sh namcap diffoscope
+      - run_nobody tools/prepare-build.sh namcap diffoscope openssh
 
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
@@ -185,6 +185,28 @@ steps:
       overwrite: true
     depends_on:
       - Update db
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+  - name: Push to AUR
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    environment:
+      SSH_KEY:
+        from_secret: ssh-key
+    commands:
+      - source tools/build-env.sh
+      - echo "$${SSH_KEY}" > aur/.ssh/id_osamc
+      - cp -a aur/.ssh /root && chmod 600 ~/.ssh/*
+      - tools/push-aur.sh
+    depends_on:
+      - Build packages
     when:
       ref:
         include:

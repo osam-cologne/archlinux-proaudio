@@ -6,7 +6,7 @@
 
 pkgname=klick
 pkgver=0.14.2
-pkgrel=1
+pkgrel=2
 pkgdesc='An advanced command line based metronome for JACK'
 arch=(x86_64 aarch64)
 url='http://das.nasophon.de/klick/'
