@@ -44,7 +44,6 @@ steps:
     environment:
       SRCDEST: /drone/src/.tmp/cache/srcdest
       PKGDEST: /drone/src/out
-      MAKEFLAGS: -j4
     commands:
       - source tools/build-env.sh
       - pacman -Su --noconfirm
@@ -92,7 +91,6 @@ steps:
     environment:
       SRCDEST: /drone/src/.tmp/cache/srcdest
       PKGDEST: /drone/src/out2
-      MAKEFLAGS: -j4
     commands:
       - sleep 9  # backoff to prevent false positives
       - source ./tools/build-env.sh
@@ -262,7 +260,6 @@ steps:
     failure: ignore
     environment:
       PKGDEST: /drone/src/out
-      MAKEFLAGS: -j4
       MAKEPKG_ARGS: -A
     commands:
       - source tools/build-env.sh

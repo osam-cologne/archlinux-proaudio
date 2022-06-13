@@ -98,7 +98,8 @@ if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
     for PKG in $ALLPKGS; do
         IGN=true
         PKGFILES=($(cd $PKG; makepkg --packagelist))
-        for PKGPATH in "${PKGFILES[@]}"; do
+        # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
+        for PKGPATH in "${PKGFILES[@]/\-debug}"; do
             PKGFILE=$(basename $PKGPATH)
             echo $PKGFILE >> "$TMP"/packagelist
             if [[ ! " ${DB_PKGS[@]} " =~ " $PKGFILE " ]]; then

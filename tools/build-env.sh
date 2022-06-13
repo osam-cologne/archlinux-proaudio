@@ -4,9 +4,9 @@ if [ -z $CI ]; then
     exit 1
 fi
 echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/nobody-sudo
-echo -e '[proaudio]\nSigLevel = Never\nServer = https://arch.osamc.de/$repo/$arch' >> /etc/pacman.conf
+cat tools/pacman.conf >> /etc/pacman.conf
+cat tools/makepkg.conf >> /etc/makepkg.conf
 source /etc/makepkg.conf
-export PACKAGER='OSAMC <https://github.com/osam-cologne/archlinux-proaudio>'
 export SRCDEST=${SRCDEST:-/tmp/build}
 export SRCPKGDEST=/tmp/build
 export BUILDDIR=/tmp/build
