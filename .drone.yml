@@ -238,7 +238,7 @@ platform:
 
 steps:
   - name: Prepare
-    image: lopsided/archlinux:devel
+    image: lopsided/archlinux-arm64v8:devel
     volumes:
       - name: pkgcache
         path: /var/cache/pacman/pkg
@@ -253,7 +253,7 @@ steps:
       - run_nobody tools/prepare-build.sh
 
   - name: Build packages
-    image: lopsided/archlinux:devel
+    image: lopsided/archlinux-arm64v8:devel
     volumes:
       - name: pkgcache
         path: /var/cache/pacman/pkg
@@ -304,7 +304,7 @@ steps:
         - failure
 
   - name: Update db
-    image: lopsided/archlinux:devel
+    image: lopsided/archlinux-arm64v8:devel
     commands:
       - source tools/build-env.sh
       - tools/update-db.sh
