@@ -5,8 +5,6 @@
 # Contributor: Miroslav Koškár <http://mkoskar.com/>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
-# Note (2022-03-25): VCV gave trademark permission to Arch Linux.
-
 _name=Rack
 pkgname=vcvrack
 pkgver=2.1.1
@@ -42,6 +40,7 @@ source=(
   'plugins.patch'
   'vcvrack.sh'
   'profile.sh'
+  'trademark.eml'
 )
 sha256sums=('09ba76fc1461b969507a732d7c8d3a338e39abfdb84bfde4b0a88fefd0c0e899'
             'ad431dfed9655e5af202403ef9e61d4b68d0861b2fe5de5a724242cac0a3eef5'
@@ -56,7 +55,8 @@ sha256sums=('09ba76fc1461b969507a732d7c8d3a338e39abfdb84bfde4b0a88fefd0c0e899'
             'a81220cd78a29b7897597860f6d9d4af21fc28a15873e14dff66eb7b0ca17f17'
             'b5b33ecb74123bd24029a7936d48d93c8be441dac8258c81f07c780a2efa692f'
             '21ac35c6ad4e5a29c32939b17baaf7ac1936077eda2214e28675eefcf2021db8'
-            'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f')
+            'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f'
+            '1159629aa90abb7c972c0f630d55d018b88a6b3bc3ff0bb9466cc06982f38641')
 # extract the submodules ourselves so we have control over the unpacked top-level directory name
 noextract=($(for _i in ${!_submodules[@]}; do
   echo "${_submodules[$_i]}-${_commits[$_i]}.tar.gz"
@@ -131,7 +131,7 @@ package() {
   install -vDm644 ${pkgname}.desktop -t "$pkgdir"/usr/share/applications/
   install -vDm644 res/icon.png "$pkgdir"/usr/share/pixmaps/${pkgname}.png
   # licenses
-  install -vDm644 LICENSE.md -t "$pkgdir"/usr/share/licenses/$pkgname
+  install -vDm644 LICENSE.md "$srcdir"/trademark.eml -t "$pkgdir"/usr/share/licenses/$pkgname
 
   # Fundamental plugin
   cd ../${_plugin_name}-$_plugin_ver
