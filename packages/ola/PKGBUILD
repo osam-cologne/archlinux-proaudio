@@ -20,7 +20,7 @@ build() {
   # some basic assertions seem to crash olad
   # https://github.com/osam-cologne/archlinux-proaudio/issues/73
   # https://github.com/OpenLightingProject/ola/issues/1726
-  export CXXFLAGS=${CXXFLAGS/-Wp,-D_GLIBCXX_ASSERTIONS}
+  export CXXFLAGS=${CXXFLAGS/-Wp,-D_GLIBCXX_ASSERTIONS/}
   autoreconf -i
   ./configure --prefix=/usr \
     --enable-silent-rules \
