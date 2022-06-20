@@ -17,6 +17,11 @@ use_max_tag = true
 include_regex = '^v[\.\d]+$'
 prefix = "v"
 
+[clap]
+source = "github"
+github = "free-audio/clap"
+use_max_tag = true
+
 [faustlive]
 source = "github"
 github = "grame-cncm/faustlive"
