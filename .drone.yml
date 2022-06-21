@@ -48,6 +48,8 @@ steps:
       - source tools/build-env.sh
       - pacman -Su --noconfirm
       - run_nobody tools/clean-build-all.sh
+      - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
+        mv out/*-debug-*$PKGEXT out-debug/; fi
     depends_on:
       - Prepare
 
@@ -55,6 +57,7 @@ steps:
     image: alpine:3.15
     commands:
       - ls -1 out/
+      - ls -1 out-debug/
     depends_on:
       - Build packages
     when:
@@ -125,8 +128,8 @@ steps:
     commands:
       - source tools/build-env.sh
       - pacman -S --noconfirm diffoscope >/dev/null
-      - cd out2 && shopt -s nullglob
-      - for PKG in *$PKGEXT; do diffoscope ../out/$PKG $PKG; done
+      - cd out && shopt -s nullglob
+      - for PKG in *$PKGEXT; do diffoscope $PKG ../out2/$PKG; done
     depends_on:
       - Build packages
       - Reproduce packages
@@ -145,6 +148,7 @@ steps:
         from_secret: pkgsignkey-pass
       files:
         - out/*.pkg.tar.*
+        - out-debug/*.pkg.tar.*
       armor: false
       detach_sign: true
     depends_on:
@@ -264,6 +268,8 @@ steps:
     commands:
       - source tools/build-env.sh
       - run_nobody tools/clean-build-all.sh
+      - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
+        mv out/*-debug-*$PKGEXT out-debug/; fi
     depends_on:
       - Prepare
 
@@ -271,6 +277,7 @@ steps:
     image: alpine:3.15
     commands:
       - ls -1 out/
+      - ls -1 out-debug/
     depends_on:
       - Build packages
     when:
@@ -288,6 +295,7 @@ steps:
         from_secret: pkgsignkey-pass
       files:
         - out/*.pkg.tar.*
+        - out-debug/*.pkg.tar.*
       armor: false
       detach_sign: true
     depends_on:
