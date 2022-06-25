@@ -43,7 +43,7 @@ build() {
 
 check() {
   cd $pkgbase-$pkgver
-  make check
+  make check || (cat ./test-suite.log && false)
 }
 
 package_ola() {
