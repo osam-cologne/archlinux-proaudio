@@ -50,11 +50,11 @@ and have joined the `archlinux-proaudio` room).
 
 ```
 {
-    "room_id": "!AkWpRHuPJQwVbEpayh:sonoj.org",
     "homeserver": "https://sonoj.org",
-    "user_id": "@bot-archlinux-proaudio:sonoj.org",
     "password": "<change here>",
+    "room_id": "!AkWpRHuPJQwVbEpayh:sonoj.org",
     "template": "{table}"
+    "user_id": "@bot-archlinux-proaudio:sonoj.org",
 }
 ```
 
