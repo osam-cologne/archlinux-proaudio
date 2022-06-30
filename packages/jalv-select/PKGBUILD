@@ -3,11 +3,11 @@
 
 pkgname=jalv-select
 pkgver=1.3
-pkgrel=3
+pkgrel=4
 pkgdesc='A small GUI to select installed LV2 plugins and run them with jalv'
 arch=(x86_64 aarch64)
 url='https://github.com/brummer10/jalv_select'
-license=('custom:Public Domain')
+license=(Unlicense)
 depends=(gtkmm jalv)
 makedepends=(lilv serd sord sratom)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/brummer10/${pkgname/-/_}/archive/v$pkgver.tar.gz")
@@ -30,6 +30,4 @@ package() {
   make install DESTDIR="$pkgdir"
   # readme
   install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname
-  # license
-  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
