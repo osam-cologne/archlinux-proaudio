@@ -92,6 +92,13 @@ github = "SpotlightKid/midiomatic"
 use_max_tag = true
 prefix = "v"
 
+[ninjamsrv]
+source = "github"
+github = "cbix/ninjam"
+use_max_tag = true
+include_regex = '^ninjamsrv\/v[\.\d]+$'
+prefix = "ninjamsrv/v"
+
 [ola]
 source = "github"
 github = "OpenLightingProject/ola"

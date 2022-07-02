@@ -1,0 +1,42 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: jakob <grandchild@gmx.net>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+_name=ninjam
+pkgname=ninjamsrv
+pkgver=0.080
+pkgrel=1
+pkgdesc='Ninjam online jamming server'
+arch=(x86_64 aarch64)
+url='https://cockos.com/ninjam/'
+license=(GPL2)
+depends=(gcc-libs)
+groups=(pro-audio)
+conflicts=(ninjam-server-git)
+source=("$pkgname-$pkgver.tar.gz::https://github.com/cbix/$_name/archive/refs/tags/$pkgname/v$pkgver.tar.gz"
+        "$pkgname.service"
+        "$pkgname.sysusers")
+sha256sums=('64a5e2745ed335cc3e750dafde4f5b80405762cbda4def534486ea081adf3eac'
+            '9e792189730aad4fc2552dbce077efd8574fb83c8b4a73442d26090715d719f0'
+            '3956bf8d41b3df633b257e5fb9141a5e30da3229cc81ec8345ae37ca903a8066')
+backup=("etc/$pkgname.cfg")
+
+prepare() {
+  cd $_name-$pkgname-v$pkgver/$_name/server
+  sed -i 's:cclicense\.txt:/usr/share/ninjamsrv/cclicense.txt:' example.cfg
+}
+
+build() {
+  cd $_name-$pkgname-v$pkgver/$_name/server
+  # Makefile is not including outside flags
+  make CXXFLAGS="$CXXFLAGS $LDFLAGS"
+}
+
+package() {
+  install -vDm644 $pkgname.sysusers "$pkgdir"/usr/lib/sysusers.d/$pkgname.conf
+  install -vDm644 $pkgname.service -t "$pkgdir"/usr/lib/systemd/system
+  cd $_name-$pkgname-v$pkgver/$_name/server
+  install -vDm755 $pkgname -t "$pkgdir"/usr/bin
+  install -vDm644 example.cfg "$pkgdir"/etc/$pkgname.cfg
+  install -vDm644 cclicense.txt -t "$pkgdir"/usr/share/$pkgname
+}
