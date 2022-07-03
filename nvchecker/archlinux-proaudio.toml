@@ -92,7 +92,7 @@ github = "SpotlightKid/midiomatic"
 use_max_tag = true
 prefix = "v"
 
-[ninjamsrv]
+[ninjam-server]
 source = "github"
 github = "cbix/ninjam"
 use_max_tag = true

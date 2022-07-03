@@ -4,9 +4,9 @@ After=network.target
 
 [Service]
 Type=simple
-User=ninjamsrv
+User=ninjam
 Group=nobody
-ExecStart=/usr/bin/ninjamsrv /etc/ninjamsrv.cfg
+ExecStart=/usr/bin/ninjamsrv /etc/ninjam.cfg
 
 [Install]
 WantedBy=multi-user.target
