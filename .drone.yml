@@ -192,6 +192,25 @@ steps:
         include:
           - refs/heads/master
 
+  - name: Publish debug packages
+    image: appleboy/drone-scp
+    pull: if-not-exists
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out-debug
+      target: /var/www/virtual/aiwahpoo/html/debug-archive
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Sign packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
   - name: Push to AUR
     image: archlinux/archlinux:base-devel
     volumes:
@@ -334,6 +353,25 @@ steps:
       overwrite: true
     depends_on:
       - Update db
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+  - name: Publish debug packages
+    image: appleboy/drone-scp
+    pull: if-not-exists
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out-debug
+      target: /var/www/virtual/aiwahpoo/html/debug-archive
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Sign packages
     when:
       ref:
         include:
