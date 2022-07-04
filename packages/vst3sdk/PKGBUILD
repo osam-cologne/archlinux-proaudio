@@ -1,0 +1,44 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+pkgbase=vst3sdk
+pkgname=(vst3sdk vst3sdk-docs)
+# find latest version: curl -I https://www.steinberg.net/vst3sdk | grep -i location
+_fullver=3.7.5_build-44_2022-05-19
+pkgver=${_fullver%%_*}
+pkgrel=1
+pkgdesc='Steinberg VST3 SDK'
+arch=(any)
+url='https://steinbergmedia.github.io/vst3_dev_portal/pages/'
+license=(custom GPL3)
+groups=(pro-audio)
+depends=()
+makedepends=(cmake)
+options=(staticlibs)
+source=(
+  "$pkgname-$pkgver.zip::https://download.steinberg.net/sdk_downloads/vst-sdk_$_fullver.zip"
+  )
+sha256sums=('c671e31e71613d1de4205e9bb2dfe2a7c83582b6c410ee23cdf2fc5bbd600537')
+
+prepare() {
+  # remove unnecessary files
+  rm -r VST_SDK/{copy*,my_plugins,vst2sdk,VST3_Project_Generator,vst3sdk/bin}
+}
+
+build() {
+  cd VST_SDK
+}
+
+package_vst3sdk() {
+  cd VST_SDK/vst3sdk
+  install -vDm644 LICENSE.txt VST3_{License_Agreement,Usage_Guidelines}.pdf \
+    -t "$pkgdir"/usr/share/licenses/$pkgbase
+  install -d "$pkgdir"/usr/share/$pkgbase
+  cp -va CMakeLists.txt base cmake pluginterfaces public.sdk vstgui4 "$pkgdir"/usr/share/$pkgbase
+}
+
+package_vst3sdk-docs() {
+  pkgdesc+=' (documentation)'
+  cd VST_SDK/vst3sdk/doc
+  find . -type f -exec install -vDm644 {} "$pkgdir"/usr/share/doc/$pkgbase/{} \;
+}
