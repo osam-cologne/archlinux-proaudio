@@ -34,6 +34,17 @@ ln -s ../archlinux-proaudio/nvchecker ~/.config
 ln -s archlinux-proaudio.toml ~/.config/nvchecker/nvchecker.toml
 ```
 
+Create a `keyfile.toml` file with an empty `[keys]` section for nvchecker:
+
+```con
+echo -e `[keys]\n` > ~/.config/nvchecker/keyfile.toml`
+```
+
+You can add a Github API key to this file, if you want `nvchecker` to
+authenticate to the Github API service using this key. See the `nvchecker`
+[documentation](https://nvchecker.readthedocs.io/en/latest/usage.html#configuration-table)
+for more information.
+
 Copy the configuration file template for the `nvchecker-notify-matrixchat.py`
 script and make it user-read- and -writeable only:
 
