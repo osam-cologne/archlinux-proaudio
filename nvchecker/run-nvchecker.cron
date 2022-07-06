@@ -6,6 +6,8 @@ CHECKOUT="$HOME/archlinux-proaudio"
 export PATH="$HOME/.local/bin:/usr/bin:/bin"
 
 cd "$CHECKOUT"
+git stash
 git pull -q
+git stash pop
 nvchecker -l warning
 $PYTHON nvchecker/nvchecker-notify-matrixchat.py # --dry-run

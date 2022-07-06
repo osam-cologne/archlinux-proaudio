@@ -1,7 +1,7 @@
 [__config__]
 oldver = "old_ver.json"
 newver = "new_ver.json"
-#keyfile = "keyfile.toml"
+keyfile = "keyfile.toml"
 
 [abcm2ps]
 source = "github"
