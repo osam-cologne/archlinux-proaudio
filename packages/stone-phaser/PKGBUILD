@@ -4,7 +4,7 @@
 pkgname=stone-phaser
 _plugin_uri="http://jpcima.sdf1.org/lv2/$pkgname"
 pkgver=0.1.2
-pkgrel=2
+pkgrel=3
 pkgdesc='A classic analog phaser effect LADSPA, LV2 and VST2 plugin'
 arch=(x86_64 aarch64)
 url='https://github.com/jpcima/stone-phaser'
@@ -18,7 +18,7 @@ optdepends=(
   'vst-host: for VST plugin'
 )
 groups=(ladspa-plugins lv2-plugins pro-audio vst-plugins)
-_dpf_commit="05d91f5852f4bccfd2bce1d4d2e2b3036e29db03"
+_dpf_commit='05d91f5852f4bccfd2bce1d4d2e2b3036e29db03'
 source=("https://github.com/jpcima/stone-phaser/releases/download/v${pkgver}/${pkgname}-${pkgver}.tar.gz"
         "${pkgname}-Makefile.base.mk::https://raw.githubusercontent.com/DISTRHO/DPF/$_dpf_commit/Makefile.base.mk")
 sha256sums=('cd19c588469125e4aff3add2a570b4b2d9dc98ef37ccc2785636a0b52df86ddf'
@@ -38,7 +38,7 @@ build() {
 }
 
 check() {
-  cd "$pkgname-$pkgver"
+  cd $pkgname-$pkgver
   lv2lint -Mpack -q \
     -s lv2_generate_ttl \
     -t "Plugin Author Email" \
