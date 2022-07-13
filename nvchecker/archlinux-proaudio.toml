@@ -43,7 +43,7 @@ prefix = "v"
 [hpklinux]
 source = "regex"
 url = "https://www.audioscience.com/internet/download/linux_drivers.htm"
-regex = 'hpklinux_(.*).tar.gz'
+regex = 'hpklinux_(.*).tar.gz.*stable'
 
 [jack-matchmaker]
 source = "pypi"
