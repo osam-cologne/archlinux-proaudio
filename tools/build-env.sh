@@ -7,6 +7,7 @@ echo '%nobody ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/nobody-sudo
 cat tools/pacman.conf >> /etc/pacman.conf
 cat tools/makepkg.conf >> /etc/makepkg.conf
 source /etc/makepkg.conf
+export PACKAGER
 export SRCDEST=${SRCDEST:-/tmp/build}
 export SRCPKGDEST=/tmp/build
 export BUILDDIR=/tmp/build
