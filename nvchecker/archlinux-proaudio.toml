@@ -22,6 +22,12 @@ source = "github"
 github = "free-audio/clap"
 use_max_tag = true
 
+[elephantdsp-roomreverb]
+source = "github"
+github = "cvde/RoomReverb"
+use_max_tag = true
+prefix = "v"
+
 [faustlive]
 source = "github"
 github = "grame-cncm/faustlive"
