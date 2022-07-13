@@ -76,13 +76,6 @@ ALLPKGS="$(ls -1)"
 enable_pkgs "new" $ALLPKGS
 trap final EXIT
 
-# If a single package is provided in the PACKAGE variable, ignore all others
-if [[ -n "$PACKAGE" && -e $PACKAGE ]]; then
-    disable_pkgs "not selected" $ALLPKGS
-    enable_pkgs "building single selected package" $PACKAGE
-    exit 0
-fi
-
 source /etc/makepkg.conf
 
 # Fetch current database
@@ -110,6 +103,13 @@ if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
             disable_pkgs "current version already in repo" $PKG
         fi
     done
+fi
+
+# If a single package is provided in the PACKAGE variable, ignore all others
+if [[ -n "$PACKAGE" && -e $PACKAGE ]]; then
+    disable_pkgs "not selected" $ALLPKGS
+    enable_pkgs "building single selected package" $PACKAGE
+    exit 0
 fi
 
 # ignore packages that don't support our architecture
