@@ -40,6 +40,12 @@ github = "ElvishArtisan/GlassCoder"
 use_latest_release = true
 prefix = "v"
 
+[gnome-shell-extension-gsjackctl]
+source = "github"
+github = "cbix/gsjackctl"
+use_max_tag = true
+prefix = "v"
+
 [hpklinux]
 source = "regex"
 url = "https://www.audioscience.com/internet/download/linux_drivers.htm"
