@@ -188,6 +188,23 @@ github = "VCVRack/Rack"
 use_max_tag = true
 prefix = "v"
 
+[vcvrack-ahornberg]
+source = "github"
+github = "Ahornberg/Ahornberg-VCV-Modules"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-sonusmodular]
+source = "gitlab"
+gitlab = "sonusdept/sonusmodular"
+use_max_tag = true
+
+[vcvrack-zetacarinae]
+source = "github"
+github = "mhampton/ZetaCarinaeModules"
+use_max_tag = true
+prefix = "v"
+
 [ykchorus]
 source = "github"
 github = "SpotlightKid/ykchorus"

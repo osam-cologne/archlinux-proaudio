@@ -32,5 +32,8 @@
   "tuxguitar": "1.5.6",
   "vcf-lv2": "0.0.2",
   "vcvrack": "2.1.2",
+  "vcvrack-ahornberg": "2.1.6",
+  "vcvrack-sonusmodular": "2.0.0",
+  "vcvrack-zetacarinae": "2.0.4",
   "ykchorus": "0.2.3"
 }
