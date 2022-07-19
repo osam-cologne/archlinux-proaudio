@@ -18,11 +18,7 @@ sha256sums=('24e4b92fdccd4fbce41df833daf5c366c9032075ac57e39a5cee52421592ee3b')
 
 build() {
   cd $_name-$pkgver
-  # vcvrack make flags
-  export SLUG=$_slug
-  export VERSION=$pkgver
-  export RACK_DIR=/usr/share/vcvrack
-  make dist
+  make SLUG=$_slug VERSION=$pkgver RACK_DIR=/usr/share/vcvrack dist
 }
 
 package() {
