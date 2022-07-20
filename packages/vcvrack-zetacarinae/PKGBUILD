@@ -25,4 +25,6 @@ package() {
   cd $_name-$pkgver
   install -d "$pkgdir"/usr/lib/vcvrack/plugins
   cp -va dist/$_slug -t "$pkgdir"/usr/lib/vcvrack/plugins
+  # remove common license
+  rm "$pkgdir"/usr/lib/vcvrack/plugins/$_slug/LICENSE
 }
