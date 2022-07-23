@@ -1,20 +1,20 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
-_slug=ZetaCarinae
-_name=ZetaCarinaeModules
-pkgname=vcvrack-zetacarinae
-pkgver=2.0.4
-pkgrel=2
-pkgdesc='ZetaCarinae VCV Rack modules'
+_slug=cvly
+_name=cvly-modules
+pkgname=vcvrack-cvly
+pkgver=2.0.1
+pkgrel=1
+pkgdesc='Cvly VCV Rack modules'
 arch=(x86_64 aarch64)
-url='https://github.com/mhampton/ZetaCarinaeModules'
+url='https://github.com/Lyqst/cvly-modules'
 license=(GPL3)
 groups=(proaudio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(simde zstd)
-source=("$pkgname-$pkgver.tar.gz::https://github.com/mhampton/$_name/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('24e4b92fdccd4fbce41df833daf5c366c9032075ac57e39a5cee52421592ee3b')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/Lyqst/$_name/archive/refs/tags/$pkgver.tar.gz")
+sha256sums=('3bc765ba6d4a011e2c594ea6d05cdc28f65fb71dde0ec9adc7534139e35da6f6')
 
 build() {
   cd $_name-$pkgver

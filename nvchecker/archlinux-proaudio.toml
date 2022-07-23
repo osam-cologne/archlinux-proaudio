@@ -188,11 +188,61 @@ github = "VCVRack/Rack"
 use_max_tag = true
 prefix = "v"
 
+[vcvrack-21khz]
+source = "github"
+github = "netboy3/21kHz-rack-plugins"
+use_max_tag = true
+
+[vcvrack-8mode]
+source = "github"
+github = "8Mode/8Mode-VCV_Modules"
+use_max_tag = true
+
+[vcvrack-aaronstatic]
+source = "github"
+github = "aaronstatic/AaronStatic_modules"
+use_max_tag = true
+prefix = "v"
+
 [vcvrack-ahornberg]
 source = "github"
 github = "Ahornberg/Ahornberg-VCV-Modules"
 use_max_tag = true
 prefix = "v"
+
+[vcvrack-alikins]
+source = "github"
+github = "alikins/Alikins-rack-plugins"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-collection-one]
+source = "github"
+github = "scanner-darkly/vcv-collection-one"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-computerscare]
+source = "github"
+github = "freddyz/computerscare-vcv-modules"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-cvly]
+source = "github"
+github = "Lyqst/cvly-modules"
+use_max_tag = true
+
+[vcvrack-freesurface]
+source = "github"
+github = "freesurfacemodules/FreeSurface"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-goodsheperd]
+source = "github"
+github = "jensschulze/GoodSheperd"
+use_max_tag = true
 
 [vcvrack-sonusmodular]
 source = "gitlab"
