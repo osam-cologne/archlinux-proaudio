@@ -159,11 +159,6 @@ github = "jpcima/string-machine"
 use_max_tag = true
 prefix = "v"
 
-[surge-xt]
-source = "github"
-github = "surge-synthesizer/releases-xt"
-use_max_tag = true
-
 ["swh-plugins.lv2"]
 source = "github"
 github = "swh/lv2"
