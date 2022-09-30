@@ -122,6 +122,10 @@ github = "essej/paulxstretch"
 use_max_tag = true
 prefix = "v"
 
+[python-mido]
+source = "pypi"
+pypi = "mido"
+
 [python-pyjacklib]
 source = "pypi"
 pypi = "pyjacklib"
