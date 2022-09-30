@@ -19,6 +19,7 @@
   "ninjam-server": "0.080",
   "ola": "0.10.8",
   "paulxstretch": "1.6.0",
+  "python-mido": "1.2.10",
   "python-pyjacklib": "0.1.1",
   "python-pysimplegui": "4.60.3",
   "python-rtmidi": "1.4.9",
