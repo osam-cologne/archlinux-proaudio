@@ -86,6 +86,13 @@ github = "olegkapitonov/Kapitonov-Plugins-Pack"
 use_max_tag = true
 include_regex = '^\d+(\.\d+)+$'
 
+[linux-show-player]
+source = "github"
+github = "FrancescoCeruti/linux-show-player"
+use_max_tag = true
+include_regex = '^\d+(\.\d+)+$'
+prefix = "v"
+
 [mamba]
 source = "github"
 github = "brummer10/Mamba"
