@@ -157,6 +157,10 @@ pypi = "PySimpleGUI"
 source = "pypi"
 pypi = "python-rtmidi"
 
+[python-soundfile]
+source = "pypi"
+pypi = "soundfile"
+
 [qjackcapture]
 source = "pypi"
 pypi = "QJackCapture"
