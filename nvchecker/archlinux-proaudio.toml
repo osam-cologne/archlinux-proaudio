@@ -22,6 +22,12 @@ source = "github"
 github = "free-audio/clap"
 use_max_tag = true
 
+[die-plugins]
+source = "github"
+github = "DISTRHO/DIE-Plugins"
+use_max_tag = true
+prefix = "v"
+
 [elephantdsp-roomreverb]
 source = "github"
 github = "cvde/RoomReverb"
