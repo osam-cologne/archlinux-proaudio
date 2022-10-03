@@ -51,6 +51,12 @@ source = "regex"
 url = "https://www.audioscience.com/internet/download/linux_drivers.htm"
 regex = 'hpklinux_(.*).tar.gz.*stable'
 
+[ildaeil]
+source = "github"
+github = "DISTRHO/Ildaeil"
+use_max_tag = true
+prefix = "v"
+
 [jack-matchmaker]
 source = "pypi"
 pypi = "jack-matchmaker"
