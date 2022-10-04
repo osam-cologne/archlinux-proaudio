@@ -26,7 +26,7 @@
   "python-pyjacklib": "0.1.1",
   "python-pysimplegui": "4.60.3",
   "python-rtmidi": "1.4.9",
-  "python-soundfile": "1.11.0",
+  "python-soundfile": "0.11.0",
   "qjackcapture": "0.1.2",
   "rakarrack-plus": "1.2.3",
   "rtcqs": "0.5.3",
