@@ -10,4 +10,4 @@ git stash
 git pull -q
 git stash pop
 nvchecker -l warning
-$PYTHON nvchecker/nvchecker-notify-matrixchat.py # --dry-run
+$PYTHON nvchecker/nvchecker-notify-matrixchat.py "$@" # --dry-run
