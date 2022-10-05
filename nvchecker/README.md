@@ -70,7 +70,7 @@ and have joined the `archlinux-proaudio` room).
 ```
 
 Finally, add an entry to the user's crontab to run the `run-nvchecker.cron`
-script periodically (e.g. every day):
+script periodically (e.g. once every 6 hours):
 
 ```con
 crontab -e
@@ -79,8 +79,18 @@ crontab -e
 ```cron
 SHELL=/bin/bash
 NVCHECK=$HOME/.config/nvchecker/run-nvchecker.cron
-* 12 * * * test -x $NVCHECK && $NVCHECK >> $HOME/logs/run-nvchecker.log 2>&1
+# run every 6 hours at half past the hour
+30 0-23/6 * * * test -x $NVCHECK && $NVCHECK >> $HOME/logs/run-nvchecker.log 2>&1
+# run every Monday at 10 a.m. and report all new versions, even if already reported
+0 10 * * 1 test -x $NVCHECK && $NVCHECK --seen >> $HOME/logs/run-nvchecker.log 2>&1
 ```
+
+Command line options passed to `run-nvchecker.cron` are passed on to
+`nvchecker-notify-matrixchat.py`.
+
+Note: by default, the script reporrts new version only once and records the
+latest version it has seen. To make it report all new versions, use the
+`-s|--seen` command line option. 
 
 
 [nvchecker]: https://github.com/lilydjwg/nvchecker
