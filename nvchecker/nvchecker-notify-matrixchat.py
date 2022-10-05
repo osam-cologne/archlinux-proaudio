@@ -13,9 +13,10 @@ import argparse
 import asyncio
 import json
 import logging
+import os
 import shutil
 import sys
-from os.path import join
+from os.path import exists, isdir, join
 from subprocess import CalledProcessError, run
 
 import appdirs
@@ -23,8 +24,11 @@ import tabulate
 from nio import AsyncClient, LoginResponse
 
 PROG = "nvchecker-notify-matrixchat"
-CONFIG_FILENAME = "nvchecker-notify-matrixchat.json"
+CONFIG_FILENAME = f"{PROG}.json"
+STATE_FILENAME = f"{PROG}-seen.json"
 USER_CONFIG_DIR = appdirs.user_config_dir("nvchecker")
+USER_CACHE_DIR = appdirs.user_cache_dir("nvchecker")
+DEFAULT_TABLEFMT = "fancy_grid"
 log = logging.getLogger(PROG)
 
 
@@ -54,8 +58,35 @@ def write_config(fn, config, resp):
     config_data["access_token"] = resp.access_token
     config_data["device_id"] = resp.device_id
 
+    if not isdir(USER_CONFIG_DIR):
+        os.makedirs(USER_CONFIG_DIR)
+
     with open(config_path, "w") as fp:
         json.dump(config_data, fp, sort_keys=True, indent=2)
+
+
+def read_state(fn):
+    state_path = join(USER_CACHE_DIR, fn)
+
+    if exists(state_path):
+        with open(state_path) as fp:
+            state = json.load(fp)
+    else:
+        state = {}
+
+    assert isinstance(state, dict)
+    return state
+
+
+def write_state(fn, state):
+    assert isinstance(state, dict)
+    state_path = join(USER_CACHE_DIR, fn)
+
+    if not isdir(USER_CACHE_DIR):
+        os.makedirs(USER_CACHE_DIR)
+
+    with open(state_path, "w") as fp:
+        json.dump(state, fp, sort_keys=True, indent=2)
 
 
 def run_nvcmp():
@@ -134,9 +165,21 @@ def main(args=None):
         "-f",
         "--table-format",
         metavar="FMT",
-        default="fancy_grid",
         choices=tabulate.tabulate_formats,
         help="Versions table display format.",
+    )
+    ap.add_argument(
+        "-s",
+        "--seen",
+        action="store_true",
+        default=None,
+        help="Ignore record of seen new versions and report them anyway.",
+    )
+    ap.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable debug level logging.",
     )
 
     args = ap.parse_args(args)
@@ -147,31 +190,50 @@ def main(args=None):
         sys.exit(f"Could not parse configuration: {exc}")
 
     logging.basicConfig(
-        level=getattr(logging, config.get("log_level", "INFO")),
-        format=config.get("log_format", "%(message)s"),
+        level=getattr(logging, "DEBUG" if args.verbose is not None else config.get("log_level", "INFO")),
+        format=config.get("log_format", "%(levelname)s: %(message)s"),
     )
 
+    state = read_state(STATE_FILENAME)
     versions = run_nvcmp()
 
     if versions:
-        tablefmt = config.get("tablefmt", args.table_format)
-        message = make_message(versions, template=config.get("template", "{table}"), fmt=tablefmt)
+        if not args.seen:
+            unseen = []
+            for version in versions:
+                if state.get(version["name"]) != version["newver"]:
+                    unseen.append(version)
+                else:
+                    log.debug("%s version %s already seen.", version["name"], version["newver"])
+        else:
+            unseen = versions
 
-        if "html" in tablefmt:
-            message = {"formatted_body": message}
-            message["body"] = make_message(versions, template="{table}", fmt="simple")
-            message["format"] = "org.matrix.custom.html"
+        if unseen:
+            tablefmt = args.table_format or config.get("tablefmt", DEFAULT_TABLEFMT)
+            message = make_message(unseen, template=config.get("template", "{table}"), fmt=tablefmt)
 
-        if args.dry_run:
-            log.info("%s", message)
-            return
+            if "html" in tablefmt:
+                message = {"formatted_body": message}
+                message["body"] = make_message(versions, template="{table}", fmt="simple")
+                message["format"] = "org.matrix.custom.html"
 
-        try:
-            log.debug("Sending notification to Matrix chat...")
-            asyncio.run(send_notification(config, message))
-        except KeyboardInterrupt:
-            log.info("Interrupted.")
+            if not args.dry_run:
+                try:
+                    log.debug("Sending notification to Matrix chat...")
+                    asyncio.run(send_notification(config, message))
+                except KeyboardInterrupt:
+                    log.info("Interrupted.")
 
+            else:
+                log.info("%s", message)
+        else:
+            log.info("No unseen versions to report.")
+
+        for version in versions:
+            state[version["name"]] = version["newver"]
+
+        log.debug("Writing seeen versions state.")
+        write_state(STATE_FILENAME, state)
         log.debug("Done.")
     else:
         log.debug("No new versions found.")
