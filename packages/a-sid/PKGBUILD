@@ -25,7 +25,7 @@ prepare() {
 
 build() {
   cd $_reponame-$pkgver/vst3
-  VST_SDK_DIR=/usr/include ./buildLinux.sh
+  VST_SDK_DIR=/usr/share ./buildLinux.sh
 }
 
 package() {
