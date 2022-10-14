@@ -5,6 +5,7 @@ clap
 die-plugins
 elephantdsp-roomreverb
 faustlive
+fluida.lv2
 glasscoder
 gnome-shell-extension-gsjackctl
 hpklinux
