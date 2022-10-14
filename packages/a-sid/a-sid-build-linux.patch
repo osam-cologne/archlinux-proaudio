@@ -1,19 +1,12 @@
-diff --git a/vst3/.gitignore b/vst3/.gitignore
-new file mode 100644
-index 0000000..567609b
---- /dev/null
-+++ b/vst3/.gitignore
-@@ -0,0 +1 @@
-+build/
 diff --git a/vst3/buildLinux.sh b/vst3/buildLinux.sh
-index 647969a..02f781c 100755
+index 647969a..2ac4034 100755
 --- a/vst3/buildLinux.sh
 +++ b/vst3/buildLinux.sh
-@@ -1,13 +1,13 @@
+@@ -1,15 +1,19 @@
  #!/bin/bash
  
 -VST_SDK_DIR=../../VST_SDK
-+VST_SDK_DIR="${VST_SDK_DIR:-../../VST_SDK/vst3sdk}"
++VST_SDK_DIR="${VST_SDK_DIR:-../../VST_SDK}"
  
  rm -rf build
  
@@ -24,10 +17,21 @@ index 647969a..02f781c 100755
 +mkdir -p build/asid.vst3/Contents/$(uname -m)-linux
  
  g++ \
++	-DRELEASE=1 \
++	-I../src \
++	-Isrc \
++	-I$VST_SDK_DIR/vst3sdk/ \
  	src/vst3/entry.cpp \
-@@ -47,11 +47,10 @@ g++ \
- 	-Isrc \
- 	-I$VST_SDK_DIR/vst3sdk/ \
+ 	src/vst3/plugin.cpp \
+ 	src/vst3/controllerLinux.cpp \
+@@ -42,16 +46,11 @@ g++ \
+ 	src/asid_gui.c \
+ 	src/gui-x.c \
+ 	\
+-	-DRELEASE=1 \
+-	-I../src \
+-	-Isrc \
+-	-I$VST_SDK_DIR/vst3sdk/ \
  	-fPIC -shared \
 -	-lxcb \
 -	-o build/asid.vst3/Contents/x86_64-linux/asid.so \
