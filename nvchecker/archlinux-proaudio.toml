@@ -93,6 +93,12 @@ include_regex = '^r(\d+)_(\d+)_(\d+)$'
 from_pattern = '^r(\d+)_(\d+)_(\d+)$'
 to_pattern = '\1.\2.\3'
 
+[jkmeter]
+source = "regex"
+url = "http://kokkinizita.linuxaudio.org/linuxaudio/downloads/"
+regex = 'jkmeter-(\d+\.\d+(?:\.\d+)?).tar.bz2'
+encoding = "utf-8"
+
 [klick]
 source = "github"
 github = "Allfifthstuning/klick"
