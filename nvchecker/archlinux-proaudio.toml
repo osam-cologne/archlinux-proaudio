@@ -99,6 +99,12 @@ url = "http://kokkinizita.linuxaudio.org/linuxaudio/downloads/"
 regex = 'jkmeter-(\d+\.\d+(?:\.\d+)?).tar.bz2'
 encoding = "utf-8"
 
+[jmeters]
+source = "regex"
+url = "http://kokkinizita.linuxaudio.org/linuxaudio/downloads/"
+regex = 'jmeters-(\d+\.\d+(?:\.\d+)?).tar.bz2'
+encoding = "utf-8"
+
 [klick]
 source = "github"
 github = "Allfifthstuning/klick"
