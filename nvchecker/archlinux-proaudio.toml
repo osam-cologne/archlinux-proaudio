@@ -300,3 +300,9 @@ source = "github"
 github = "SpotlightKid/ykchorus"
 use_max_tag = true
 prefix = "v"
+
+[xtuner]
+source = "github"
+github = "brummer10/XTuner"
+use_max_tag = true
+prefix = "v"
