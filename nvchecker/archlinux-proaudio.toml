@@ -9,6 +9,12 @@ github = "lewdlime/abcm2ps"
 use_max_tag = true
 prefix = "v"
 
+[abcpp]
+source = "regex"
+url = "https://abcplus.sourceforge.net/"
+regex = 'abcpp-(\d+\.\d+(?:\.\d+)?).tar.gz'
+encoding = "utf-8"
+
 # note: unquoted dots in section names cause errors
 ["aether.lv2"]
 source = "github"
