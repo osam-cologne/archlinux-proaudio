@@ -224,7 +224,7 @@ steps:
     commands:
       - source tools/build-env.sh
       - echo "$${SSH_KEY}" > aur/.ssh/id_osamc
-      - cp -a aur/.ssh /root && chmod 600 ~/.ssh/*
+      - cp -a aur/.ssh ~/ && chmod 600 ~/.ssh/*
       - tools/push-aur.sh
     depends_on:
       - Build packages
