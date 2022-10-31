@@ -154,6 +154,13 @@ use_max_tag = true
 include_regex = '^ninjamsrv\/v[\.\d]+$'
 prefix = "ninjamsrv/v"
 
+[octasine]
+source = "github"
+github = "greatest-ape/OctaSine"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
 [ola]
 source = "github"
 github = "OpenLightingProject/ola"
