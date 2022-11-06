@@ -10,7 +10,7 @@ cd "${0%/*}/.."
 ROOT="$(pwd)"
 TMP="$ROOT/.tmp"
 
-sudo pacman -S --noconfirm git openssh
+sudo pacman -Syu --noconfirm git openssh
 
 PACKAGES="$(cd "$TMP"/pkgs; ls -1)"
 for PKG in $PACKAGES; do
