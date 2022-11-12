@@ -14,7 +14,7 @@ arch=(aarch64 armv6h armv7h x86_64)
 url='http://www.darkice.org/'
 license=(GPL3)
 depends=(gcc-libs)
-makedepends=(alsa-lib faac flac gcc-libs jack lame libpulse libsamplerate libvorbis twolame opus)
+makedepends=(alsa-lib faac flac jack lame libpulse libsamplerate libvorbis twolame opus)
 source=("https://github.com/rafael2k/darkice/releases/download/v${pkgver}/$pkgname-$pkgver.tar.gz"
         'darkice@.service')
 sha256sums=('e6a8ec2b447cf5b4ffaf9b62700502b6bdacebf00b476f4e9bf9f9fe1e3dd817'
