@@ -1,10 +1,11 @@
 [Unit]
 Description=DarkIce Live Stream %i
+Documentation=man:darkice(1)
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/darkice -c /etc/darkice/%i.cfg
+ExecStart=/usr/bin/darkice -c %h/.config/darkice/%i.conf
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
