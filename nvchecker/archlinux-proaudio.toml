@@ -39,6 +39,13 @@ source = "github"
 github = "free-audio/clap"
 use_max_tag = true
 
+[darkice]
+source = "github"
+github = "rafael2k/darkice"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
 [die-plugins]
 source = "github"
 github = "DISTRHO/DIE-Plugins"
