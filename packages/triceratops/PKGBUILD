@@ -56,7 +56,10 @@ check() {
   cd $pkgname
   mkdir -p lv2
   ln -sf ../build/$pkgname.lv2 lv2/$pkgname.lv2
-  LV2_PATH="$PWD/lv2:/usr/lib/lv2" lv2lint -M pack "$_plugin_uri"
+  LV2_PATH="$PWD/lv2:/usr/lib/lv2" lv2lint -M pack \
+    -s *_bss* \
+    -s __end__ \
+    "$_plugin_uri"
 }
 
 package() {
