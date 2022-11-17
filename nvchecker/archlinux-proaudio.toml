@@ -247,6 +247,12 @@ source = "github"
 github = "Stazed/rakarrack-plus"
 use_max_tag = true
 
+[rezonateur]
+source = "github"
+github = "jpcima/rezonateur"
+use_max_tag = true
+prefix = "v"
+
 [rtcqs]
 source = "pypi"
 pypi = "rtcqs"
