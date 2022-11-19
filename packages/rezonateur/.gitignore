@@ -1,1 +1,2 @@
-rezonateur-*.diff
+rezonateur-*.patch
+rezonateur-Makefile.base.mk

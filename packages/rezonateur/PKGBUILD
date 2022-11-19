@@ -16,21 +16,26 @@ optdepends=(
   'lv2-host: for loading the LV2 plugin'
   'vst-host: for loading the VST2 plugin'
 )
+_dpf_commit='05d91f5852f4bccfd2bce1d4d2e2b3036e29db03'
 source=("https://github.com/jpcima/rezonateur/releases/download/v$pkgver/$pkgname-$pkgver.tar.gz"
-        'rezonateur-include-stdexcept.diff::https://github.com/jpcima/rezonateur/commit/58ccec5483198cb973be01d4151648b4b70db222.diff'
-        'rezonateur-no-opengl-build.diff::https://github.com/jpcima/rezonateur/commit/82b731344a961e210c27107786d0c7a4787f77cc.diff')
+        'rezonateur-no-opengl-build.patch::https://github.com/jpcima/rezonateur/commit/82b731344a961e210c27107786d0c7a4787f77cc.patch'
+        'rezonateur-include-stdexcept.patch::https://github.com/jpcima/rezonateur/commit/58ccec5483198cb973be01d4151648b4b70db222.patch'
+        "${pkgname}-Makefile.base.mk::https://raw.githubusercontent.com/DISTRHO/DPF/$_dpf_commit/Makefile.base.mk")
 sha256sums=('466624147a22299c045e94b385b4f615f16dc91fcb208494c420bedb8e64fac9'
-            '03f5b285b49c7753d8fce2e0efef33e834ca118056cbb9e80244091ff5c05b9c'
-            'cf7bfd39a74d0ccff9edef268a916b1ad3d2aca9c80f47aaecc0b2fb0f5955c6')
+            'f987c0e7be3b1e1f4934cf9cc54a6a2cb3118b3f00595b2b7011800ad2c70e83'
+            'dcdbdffd3d3d9e5bd5a59e2983e3b4415da7f7a1f63aeac1bfb3dae7d8749af7'
+            'ef890c65422c8c73ffea7687a45317689378ff2b0f3ccadd497ca1cdc77e08a4')
 
 prepare() {
   cd $pkgname-$pkgver
-  # fix for missing include with gcc versions
-  patch -N -r - -p 1 -i "$srcdir"/rezonateur-include-stdexcept.diff
   # don't build unneeded DPF/DGL OpenGL version
-  patch -N -r - -p 1 -i "$srcdir"/rezonateur-no-opengl-build.diff
-  cd dpf
+  patch -N -r - -p 1 -i "$srcdir"/rezonateur-no-opengl-build.patch
+  # fix for missing include with gcc versions
+  patch -N -r - -p 1 -i "$srcdir"/rezonateur-include-stdexcept.patch
+  # Update DPF base makefile to fix aarch64 build
+  cp -f "$srcdir"/$pkgname-Makefile.base.mk dpf/Makefile.base.mk
   # use included patch to fix bypass param in bundled DPF version
+  cd dpf
   patch -N -r - -p 1 -i ../resources/patch/DPF-bypass.patch || return 0
 }
 
