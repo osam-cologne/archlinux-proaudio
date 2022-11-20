@@ -281,6 +281,12 @@ github = "swh/lv2"
 use_max_tag = true
 prefix = "v"
 
+[triceratops]
+source = "regex"
+url = "https://sourceforge.net/projects/triceratops/files/"
+regex = 'triceratops_v(\d+\.\d+(?:\.\d+)?)_[^.]+\.tar.gz'
+encoding = "utf-8"
+
 [tuxguitar]
 source = "regex"
 url = "https://sourceforge.net/projects/tuxguitar/rss?path=/TuxGuitar"
