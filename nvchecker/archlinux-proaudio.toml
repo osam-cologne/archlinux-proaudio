@@ -263,6 +263,12 @@ prefix = "v"
 source = "pypi"
 pypi = "rtcqs"
 
+[sfzlint]
+source = "github"
+github = "jisaacstone/sfzlint"
+use_max_tag = true
+prefix = "v"
+
 [stone-phaser]
 source = "github"
 github = "jpcima/stone-phaser"
