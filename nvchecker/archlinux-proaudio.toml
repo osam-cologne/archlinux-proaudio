@@ -342,9 +342,45 @@ github = "Ahornberg/Ahornberg-VCV-Modules"
 use_max_tag = true
 prefix = "v"
 
+[vcvrack-alefsbits]
+source = "github"
+github = "alefnull/alefsbits"
+use_max_tag = true
+include_regex = '^v[\.\d]+$'
+prefix = "v"
+
 [vcvrack-alikins]
 source = "github"
 github = "alikins/Alikins-rack-plugins"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-alliewayaudio-freebies]
+source = "github"
+github = "AlliewayAudio/AlliewayAudio_Freebies"
+use_max_tag = true
+include_regex = '^[\.\d]+$'
+
+[vcvrack-amalgamated-harmonics]
+source = "github"
+github = "jhoar/AmalgamatedHarmonics"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-aridacity]
+source = "github"
+github = "cubeleco/aridacityVCV"
+use_max_tag = true
+
+[vcvrack-axioma]
+source = "github"
+github = "kauewerner/Axioma"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-bastl]
+source = "github"
+github = "hemmer/bastl-vcv"
 use_max_tag = true
 prefix = "v"
 
