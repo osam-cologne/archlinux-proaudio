@@ -20,7 +20,6 @@ source=("https://github.com/rafael2k/darkice/releases/download/v${pkgver}/$pkgna
 sha256sums=('e6a8ec2b447cf5b4ffaf9b62700502b6bdacebf00b476f4e9bf9f9fe1e3dd817'
             '7c65f92c885ed7e141d3289fd8e108dc3d7c19d5c4b3f948e7ce3ad6c653cd12')
 
-
 build() {
   cd $pkgname-$pkgver
 

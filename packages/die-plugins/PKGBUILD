@@ -18,7 +18,6 @@ source=("$_name-$pkgver.tar.gz::https://github.com/DISTRHO/$_name/archive/refs/t
 sha256sums=('bef945fd7534a4bdaacd6bc57548ac3a9da97446c2b2e5a56b27ebfa2092a49a'
             'ee961e520e0bf0d98899fcc284cf7d4dbad6b59d0d98ed1ab1d4411889ead12a')
 
-
 prepare() {
   cd $_name-$pkgver
   patch -p1 -N -r - -i "$srcdir"/die-plugins-maintainer-mod-brand.patch

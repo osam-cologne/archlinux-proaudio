@@ -28,7 +28,6 @@ _lv2_libname="${_plugin_name// /}.so"
 _vst3_libpath="$_plugin_name.vst3/Contents/$(uname -m)-linux"
 _vst3_libname="$_plugin_name.so"
 
-
 prepare() {
   mkdir -p OneTrick-SIMIAN-${pkgver}
   bsdtar -xf "$srcdir"/OneTrick-SIMIAN-${pkgver}-Source.zip -C OneTrick-SIMIAN-${pkgver}

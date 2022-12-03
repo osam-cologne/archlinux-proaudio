@@ -22,7 +22,6 @@ optdepends=(
 source=("https://github.com/DISTRHO/$_name/releases/download/v$pkgver/$_name-src-$pkgver.tar.xz")
 sha256sums=('9bdcdc0e563e4e990d3775cd7ac845b9799f7e2da090e85ecb1b438ddb2be2d3')
 
-
 build() {
   cd $_name-$pkgver
   make \

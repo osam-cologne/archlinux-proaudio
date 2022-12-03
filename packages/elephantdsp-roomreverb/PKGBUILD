@@ -33,7 +33,6 @@ sha256sums=('80f24dfe7b4d35752024ffe7379fae28767c97f441971cc461a0875c8523fa9e'
             'd1915186a59d6ed217de690168ff53b4bcecd9e3a8c87ddbd5bd60b521fd3546'
             'a7478a0113128e55fdc14e4b861f95bd65c1c64cc20c0d544bce07f90c0a6ede')
 
-
 prepare() {
   cd $_plugin_name-$pkgver
 
@@ -44,12 +43,12 @@ prepare() {
 
   # link external libs
   cd Libs
-  rm -rf clap-juce-extensions && \
+  rm -rf clap-juce-extensions &&
     ln -s "$srcdir"/clap-juce-extensions-$_clap_ext_commit clap-juce-extensions
   cd clap-juce-extensions/clap-libs
-  rm -rf clap && \
+  rm -rf clap &&
     ln -s "$srcdir"/clap-$_clap_commit clap
-  rm -rf clap-helpers && \
+  rm -rf clap-helpers &&
     ln -s "$srcdir"/clap-helpers-$_clap_helpers_commit clap-helpers
 }
 
