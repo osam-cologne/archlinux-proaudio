@@ -34,6 +34,12 @@ source = "github"
 github = "sdangelo/asid"
 use_max_tag = true
 
+# note: we use the stable website downloads for building, but gitlab for checking
+[audiowmark]
+source = "gitlab"
+gitlab = "stefan/audiowmark"
+use_max_tag = true
+
 [clap]
 source = "github"
 github = "free-audio/clap"
