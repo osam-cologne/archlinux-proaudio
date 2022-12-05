@@ -2,6 +2,7 @@ abcm2ps
 abcpp
 aether.lv2
 a-sid
+audiowmark
 clap
 darkice
 die-plugins
@@ -55,5 +56,5 @@ vcvrack-freesurface
 vcvrack-goodsheperd
 vcvrack-sonusmodular
 vcvrack-zetacarinae
-ykchorus
 xtuner
+ykchorus
