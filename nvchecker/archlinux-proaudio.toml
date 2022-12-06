@@ -37,7 +37,10 @@ use_max_tag = true
 # note: we use the stable website downloads for building, but gitlab for checking
 [audiowmark]
 source = "gitlab"
+host = "code.uplex.de"
 gitlab = "stefan/audiowmark"
+# Regex to avoid the "proof-of-concept" tag. Start with a number.
+include_regex = '^\d.+$'
 use_max_tag = true
 
 [clap]
