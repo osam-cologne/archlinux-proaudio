@@ -308,6 +308,13 @@ url = "https://sourceforge.net/projects/tuxguitar/rss?path=/TuxGuitar"
 regex = 'tuxguitar-(\d+\.\d+(?:\.\d+)?)-src.tar.gz'
 encoding = "utf-8"
 
+[uhhyou-plugins]
+source = "github"
+github = "ryukau/VSTPlugins"
+use_max_tag = true
+include_regex = '^UhhyouPlugins[\.\d]+$'
+prefix = "UhhyouPlugins"
+
 [vcf-lv2]
 source= "github"
 github = "linuxmao-org/vcf-lv2"
