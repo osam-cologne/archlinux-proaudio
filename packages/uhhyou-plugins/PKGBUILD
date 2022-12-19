@@ -49,7 +49,8 @@ build() {
 
 check() {
   for _plugin in build/VST3/Release/*.vst3; do
-    if [[ $_plugin =~ ClangSynth || $_plugin =~ L4Reverb ]]; then
+    if [[ $_plugin =~ ClangSynth || $_plugin =~ L4Reverb || $_plugin =~ LightPadSynth ||
+      $_plugin =~ PitchShiftDelay ]]; then
       # these plugins seem to use a lot of memory during validation so let's only test basics
       build/bin/Release/validator -suite "General Tests" $_plugin
     else
