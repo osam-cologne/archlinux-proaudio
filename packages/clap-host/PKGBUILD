@@ -1,8 +1,7 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
-_name=clap-host
-pkgname=clap-example-host
+pkgname=clap-host
 pkgver=1.0.2
 pkgrel=1
 pkgdesc='CLAP example host'
@@ -10,12 +9,12 @@ arch=(aarch64 x86_64)
 url='https://github.com/free-audio/clap-host'
 license=(MIT)
 depends=(qt6-base)
-makedepends=(cmake rtaudio rtmidi)
+makedepends=(catch2 cmake rtaudio rtmidi)
 provides=(clap-host)
 groups=(pro-audio)
 _clap_ref='27b7af0'
 _clap_helpers_ref='4d4e297'
-source=("$pkgname-$pkgver.tar.gz::https://github.com/free-audio/$_name/archive/refs/tags/$pkgver.tar.gz"
+source=("$pkgname-$pkgver.tar.gz::https://github.com/free-audio/$pkgname/archive/refs/tags/$pkgver.tar.gz"
         "clap-$_clap_ref.tar.gz::https://github.com/free-audio/clap/archive/$_clap_ref.tar.gz"
         "clap-helpers-$_clap_helpers_ref.tar.gz::https://github.com/free-audio/clap-helpers/archive/$_clap_helpers_ref.tar.gz")
 sha256sums=('ec4342d8edcdd8262da1042cd6b3862d180dfaf740eb326239b86cbb6331dd4e'
@@ -24,24 +23,23 @@ sha256sums=('ec4342d8edcdd8262da1042cd6b3862d180dfaf740eb326239b86cbb6331dd4e'
 noextract=(clap-$_clap_ref.tar.gz clap-helpers-$_clap_helpers_ref.tar.gz)
 
 prepare() {
-  cd $_name-$pkgver
+  cd $pkgname-$pkgver
   bsdtar -xf ../clap-$_clap_ref.tar.gz -C clap --strip-components 1
   bsdtar -xf ../clap-helpers-$_clap_helpers_ref.tar.gz -C clap-helpers --strip-components 1
 }
 
 build() {
-  cmake -B build -S $_name-$pkgver \
+  cmake -B build -S $pkgname-$pkgver \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCLAP_BUILD_TESTS=On \
     -Wno-dev
   cmake --build build
 }
 
-check() {
-  ctest --test-dir build --output-on-failure
-}
-
 package() {
-  depends+=(librtaudio.so librtmidi.so)
+  depends+=(hicolor-icon-theme librtaudio.so librtmidi.so)
   DESTDIR="$pkgdir" cmake --install build
+  cd $pkgname-$pkgver
+  install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
