@@ -5,7 +5,7 @@
 # Contributor: Peter Sutton <peter@foxdogstudios.com>
 
 pkgname=abcmidi
-pkgver=2022.12.09
+pkgver=2022.12.22
 pkgrel=1
 pkgdesc='A set of tools for converting ABC files to and from MIDI and other related tasks'
 arch=(aarch64 x86_64)
@@ -14,7 +14,7 @@ license=(GPL)
 depends=(glibc)
 groups=(abc pro-audio)
 source=("https://ifdo.ca/~seymour/runabc/abcMIDI-$pkgver.zip")
-sha256sums=('51264a2956817a2a198c7ba245e10b3444b2f18ad8d35e8b4b08834049cd10e0')
+sha256sums=('008ee7eef72c53bd27d2e46c36c5097af0f0fe23e8de20a028642d8ac06d4557')
 
 build() {
   cd $pkgname
