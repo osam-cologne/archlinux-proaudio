@@ -10,7 +10,7 @@ arch=(aarch64 x86_64)
 url='https://github.com/free-audio/clap-host'
 license=(MIT)
 depends=(qt6-base)
-makedepends=(cmake)
+makedepends=(cmake rtaudio rtmidi)
 provides=(clap-host)
 groups=(pro-audio)
 _clap_ref='27b7af0'
@@ -42,5 +42,6 @@ check() {
 }
 
 package() {
+  depends+=(librtaudio.so librtmidi.so)
   DESTDIR="$pkgdir" cmake --install build
 }
