@@ -1,0 +1,50 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+_name=clap-host
+pkgname=clap-example-host
+pkgver=1.0.2
+pkgrel=1
+pkgdesc='CLAP example host'
+arch=(aarch64 x86_64)
+url='https://github.com/free-audio/clap-host'
+license=(MIT)
+depends=()
+makedepends=(cmake)
+provides=(clap-host)
+groups=(pro-audio)
+_clap_ref='27b7af0'
+_clap_helpers_ref='4d4e297'
+_vcpkg_ref='5251291'
+source=("$pkgname-$pkgver.tar.gz::https://github.com/free-audio/$_name/archive/refs/tags/$pkgver.tar.gz"
+        "clap-$_clap_ref.tar.gz::https://github.com/free-audio/clap/archive/$_clap_ref.tar.gz"
+        "clap-helpers-$_clap_helpers_ref.tar.gz::https://github.com/free-audio/clap-helpers/archive/$_clap_helpers_ref.tar.gz"
+        "vcpkg-$_vcpkg_ref.tar.gz::https://github.com/microsoft/vcpkg/archive/$_vcpkg_ref.tar.gz")
+sha256sums=('ec4342d8edcdd8262da1042cd6b3862d180dfaf740eb326239b86cbb6331dd4e'
+            '8a85ac0fe0ce58c6e641386257a21bd5167b55f05bdd0e69b9617c49b78b9a6b'
+            '0681e844336212e56df41b9ed7937b6e0d82f4005209e392fbc991e5d3ed6dd4'
+            '93d6038a3cb660e6fcc5d1a72f93cb44510c4e2b6ba895c680837f1c9deff21c')
+noextract=(clap-$_clap_ref.tar.gz clap-helpers-$_clap_helpers_ref.tar.gz vcpkg-$_vcpkg_ref.tar.gz)
+
+prepare() {
+  cd $_name-$pkgver
+  bsdtar -xf ../clap-$_clap_ref.tar.gz -C clap --strip-components 1
+  bsdtar -xf ../clap-helpers-$_clap_helpers_ref.tar.gz -C clap-helpers --strip-components 1
+  bsdtar -xf ../vcpkg-$_vcpkg_ref.tar.gz -C vcpkg --strip-components 1
+}
+
+build() {
+  cmake -B build -S $_name-$pkgver \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -Wno-dev
+  cmake --build build
+}
+
+check() {
+  ctest --test-dir build --output-on-failure
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}
