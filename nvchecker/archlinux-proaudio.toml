@@ -43,6 +43,12 @@ gitlab = "stefan/audiowmark"
 include_regex = '^\d.+$'
 use_max_tag = true
 
+[clap-host]
+source = "github"
+github = "free-audio/clap-host"
+include_regex = '^[\.\d]+$'
+use_max_tag = true
+
 [clap-validator]
 source = "github"
 github = "free-audio/clap-validator"
