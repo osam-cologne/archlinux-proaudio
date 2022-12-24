@@ -4,7 +4,7 @@
 pkgname=clap-host
 pkgver=1.0.2
 pkgrel=1
-pkgdesc='CLAP example host'
+pkgdesc='CLAP example audio plugin host'
 arch=(aarch64 x86_64)
 url='https://github.com/free-audio/clap-host'
 license=(MIT)
