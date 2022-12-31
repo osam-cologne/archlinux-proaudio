@@ -1,0 +1,37 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+pkgname=liblc3
+pkgver=1.0.1
+pkgrel=1
+pkgdesc='Low Complexity Communication Codec library and tools'
+arch=(aarch64 x86_64)
+url='https://github.com/google/liblc3/'
+license=(Apache)
+groups=(pro-audio)
+depends=(glibc)
+makedepends=(meson)
+provides=(liblc3.so)
+source=("$pkgname-$pkgver.tar.gz::https://github.com/google/$pkgname/archive/refs/tags/v$pkgver.tar.gz"
+        'soname-and-tools.patch::https://patch-diff.githubusercontent.com/raw/google/liblc3/pull/12.patch')
+sha256sums=('3a8a6973c57585370dc9abe1373f8762f90ab0893a6ede410fdd22501caa7cfc'
+            '1ac702e4d2087a73eaf08ad56587d63cbc416c01ad578c1c7945fc15c9cec3cf')
+
+prepare() {
+  cd $pkgname-$pkgver
+  # https://github.com/google/liblc3/pull/12
+  patch -p1 -i ../soname-and-tools.patch
+}
+
+build() {
+  arch-meson $pkgname-$pkgver build-$pkgname -D tools=true
+  meson compile -C build-$pkgname
+}
+
+check() {
+  meson test -C build-$pkgname --print-errorlogs
+}
+
+package() {
+  meson install -C build-$pkgname --destdir "$pkgdir"
+}
