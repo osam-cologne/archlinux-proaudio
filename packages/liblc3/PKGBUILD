@@ -33,4 +33,6 @@ check() {
 
 package() {
   meson install -C build-$pkgname --destdir "$pkgdir"
+  cd $pkgname-$pkgver
+  install -vDm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname
 }
