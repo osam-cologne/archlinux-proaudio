@@ -8,7 +8,6 @@ pkgdesc='Low Complexity Communication Codec library and tools'
 arch=(aarch64 x86_64)
 url='https://github.com/google/liblc3/'
 license=(Apache)
-groups=(pro-audio)
 depends=(glibc)
 makedepends=(meson)
 provides=(liblc3.so)
