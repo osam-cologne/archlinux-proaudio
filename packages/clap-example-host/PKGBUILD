@@ -2,6 +2,7 @@
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
 _name=clap-host
+# clap-host as pkgname is not ideal due to other hosts using that as a virtual provides
 pkgname=clap-example-host
 pkgver=1.0.2
 pkgrel=1
