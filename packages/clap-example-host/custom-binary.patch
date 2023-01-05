@@ -1,0 +1,51 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c4b3b6f..5a2fb3d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -11,6 +11,7 @@ project(CLAP_EXAMPLES C CXX)
+ 
+ set(UsePkgConfig TRUE CACHE BOOL "Use PkgConfig to find RtMidi and RtAudio dependencies")
+ set(CLAP_HOST_BUNDLE FALSE CACHE BOOL "Produce a macOS bundle")
++set(CLAP_HOST_BINARY clap-host CACHE STRING "File name of the resulting binary")
+ 
+ set(CMAKE_AUTOMOC ON)
+ 
+@@ -43,7 +44,8 @@ endif()
+ add_subdirectory(host)
+ 
+ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+-  install(FILES resources/linux/org.cleveraudio.clap-host.desktop DESTINATION share/applications)
++  configure_file(resources/linux/org.cleveraudio.clap-host.desktop.in resources/linux/org.cleveraudio.clap-host.desktop)
++  install(FILES ${CMAKE_CURRENT_BINARY_DIR}/resources/linux/org.cleveraudio.clap-host.desktop DESTINATION share/applications)
+   install(FILES resources/linux/org.cleveraudio.clap-host.appdata.xml DESTINATION share/metainfo)
+   install(FILES "clap/artwork/CLAP Full Logo.svg" DESTINATION share/icons/hicolor/scalable/apps RENAME org.cleveraudio.clap-host.svg)
+ endif()
+diff --git a/host/CMakeLists.txt b/host/CMakeLists.txt
+index 8d58e25..5f4987a 100644
+--- a/host/CMakeLists.txt
++++ b/host/CMakeLists.txt
+@@ -81,4 +81,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
+   target_link_options(clap-host PRIVATE -exported_symbols_list ${CMAKE_CURRENT_SOURCE_DIR}/macos-symbols.txt)
+ endif()
+ 
++if(NOT ${CLAP_HOST_BINARY} STREQUAL clap-host)
++  set_target_properties(clap-host PROPERTIES OUTPUT_NAME ${CLAP_HOST_BINARY})
++endif()
++
+ install(TARGETS clap-host DESTINATION "bin" COMPONENT host)
+diff --git a/resources/linux/org.cleveraudio.clap-host.desktop b/resources/linux/org.cleveraudio.clap-host.desktop.in
+similarity index 92%
+rename from resources/linux/org.cleveraudio.clap-host.desktop
+rename to resources/linux/org.cleveraudio.clap-host.desktop.in
+index 0e888a8..e5951cd 100644
+--- a/resources/linux/org.cleveraudio.clap-host.desktop
++++ b/resources/linux/org.cleveraudio.clap-host.desktop.in
+@@ -7,7 +7,7 @@ NoDisplay=false
+ Comment=Example CLAP Host
+ Icon=org.cleveraudio.clap-host
+ DBusActivatable=false
+-Exec=clap-host
++Exec=@CLAP_HOST_BINARY@
+ Terminal=false
+ MimeType=
+ Categories=AudioVideo
