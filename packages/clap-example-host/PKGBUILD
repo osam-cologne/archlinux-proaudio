@@ -19,18 +19,18 @@ _clap_helpers_ref='4d4e297'
 source=("$pkgname-$pkgver.tar.gz::https://github.com/free-audio/$_name/archive/refs/tags/$pkgver.tar.gz"
         "clap-$_clap_ref.tar.gz::https://github.com/free-audio/clap/archive/$_clap_ref.tar.gz"
         "clap-helpers-$_clap_helpers_ref.tar.gz::https://github.com/free-audio/clap-helpers/archive/$_clap_helpers_ref.tar.gz"
-        'custom-binary.patch')
+        "custom-binary.patch::https://patch-diff.githubusercontent.com/raw/free-audio/clap-host/pull/30.patch")
 sha256sums=('ec4342d8edcdd8262da1042cd6b3862d180dfaf740eb326239b86cbb6331dd4e'
             '8a85ac0fe0ce58c6e641386257a21bd5167b55f05bdd0e69b9617c49b78b9a6b'
             '0681e844336212e56df41b9ed7937b6e0d82f4005209e392fbc991e5d3ed6dd4'
-            '5501b682626cae01f7d9f9f0c3b56f32eee3841a7d64b4d67ed1854b580c0aff')
+            '6fdc314f67a2b970f4cb2d90d64b84d40da7cbd6cdd2c69f5ddc8e2ee429ab51')
 noextract=(clap-$_clap_ref.tar.gz clap-helpers-$_clap_helpers_ref.tar.gz)
 
 prepare() {
   cd $_name-$pkgver
   bsdtar -xf ../clap-$_clap_ref.tar.gz -C clap --strip-components 1
   bsdtar -xf ../clap-helpers-$_clap_helpers_ref.tar.gz -C clap-helpers --strip-components 1
-  # allow setting a custom binary filename
+  # https://github.com/free-audio/clap-host/pull/30
   patch -p1 -i ../custom-binary.patch
 }
 
