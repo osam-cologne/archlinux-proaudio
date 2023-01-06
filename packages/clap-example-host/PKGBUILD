@@ -19,9 +19,9 @@ _clap_helpers_ref='15dd627'
 source=("$pkgname-$pkgver.tar.gz::https://github.com/free-audio/$_name/archive/refs/tags/$pkgver.tar.gz"
         "clap-$_clap_ref.tar.gz::https://github.com/free-audio/clap/archive/$_clap_ref.tar.gz"
         "clap-helpers-$_clap_helpers_ref.tar.gz::https://github.com/free-audio/clap-helpers/archive/$_clap_helpers_ref.tar.gz")
-sha256sums=('SKIP'
-            'SKIP'
-            'SKIP')
+sha256sums=('03b4a272cde2336024ba34c2b679ab55756e08bc72bc193b8738e9534602b2c2'
+            'e5d52790eaccf124725c7511e18204f2caa25e662d853b0d50b1f4baade00d17'
+            'd1c035d54743346d0e3735bd4d2b4f12868201b8ab49c716cf1e6a3b39fcf04e')
 noextract=(clap-$_clap_ref.tar.gz clap-helpers-$_clap_helpers_ref.tar.gz)
 
 prepare() {
