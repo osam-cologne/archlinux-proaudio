@@ -11,7 +11,7 @@ arch=(x86_64 aarch64)
 url='https://www.elephantdsp.com/products/room-reverb/'
 license=(GPL3)
 depends=(glibc gcc-libs zlib)
-makedepends=(cmake freetype2 'juce>=7' libx11 libxcursor libxinerama libxrandr)
+makedepends=(alsa-lib cmake flac freetype2 'juce>=7' libvorbis libx11 libxcursor libxinerama libxrandr)
 checkdepends=(lv2lint lv2)
 optdepends=(
   'clap-host: for CLAP plugin'
@@ -68,7 +68,7 @@ check() {
 }
 
 package() {
-  depends+=(libfreetype.so libjpeg.so)
+  depends+=(libfreetype.so)
   cd $_plugin_name-$pkgver-build
   # LV2 plugin bundle
   install -Dm755 ${_plugin_name}_artefacts/Release/LV2/$_plugin_name.lv2/*.so \
