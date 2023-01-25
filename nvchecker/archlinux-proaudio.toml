@@ -251,10 +251,6 @@ pypi = "pyjacklib"
 source = "pypi"
 pypi = "PySimpleGUI"
 
-[python-rtmidi]
-source = "pypi"
-pypi = "python-rtmidi"
-
 [python-soundfile]
 source = "pypi"
 pypi = "soundfile"
