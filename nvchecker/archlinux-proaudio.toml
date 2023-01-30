@@ -43,6 +43,12 @@ gitlab = "stefan/audiowmark"
 include_regex = '^\d.+$'
 use_max_tag = true
 
+[clap-example-host]
+source = "github"
+github = "free-audio/clap-host"
+include_regex = '^[\.\d]+$'
+use_max_tag = true
+
 [clap-validator]
 source = "github"
 github = "free-audio/clap-validator"
@@ -244,10 +250,6 @@ pypi = "pyjacklib"
 [python-pysimplegui]
 source = "pypi"
 pypi = "PySimpleGUI"
-
-[python-rtmidi]
-source = "pypi"
-pypi = "python-rtmidi"
 
 [python-soundfile]
 source = "pypi"
