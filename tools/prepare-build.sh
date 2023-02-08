@@ -7,12 +7,22 @@ fi
 cd "${0%/*}/.."
 ROOT="$(pwd)"
 TMP="${ROOT}/.tmp"
+CACHE="${TMP}/cache"
 PACMAN_EXTRA="$*"
 
 # Prepare directories
-sudo rm -rf "$ROOT"/{out,out2,out.SHA512} "$TMP"
-sudo install -o nobody -d "$ROOT"/{out,out2}
-sudo install -o nobody -d "$TMP"{,/pkgs,/ignore}
+sudo rm -rf "$ROOT"/{out,out2,out.SHA512}
+sudo install -o nobody -d "$ROOT"/{out,out2,out-debug}
+sudo install -o nobody -d "$TMP"{,/pkgs,/ignore,/aur}
+sudo install -o nobody -d "$CACHE"/srcdest
+
+# Restore pacman cache if exists
+if [ -d "$CACHE"/pkgcache ]; then
+    sudo cp "$CACHE"/pkgcache/* /var/cache/pacman/pkg
+fi
+if [ -d "$CACHE"/pkgdb ]; then
+    sudo cp "$CACHE"/pkgdb/* /var/lib/pacman/sync
+fi
 
 # Update pacman cache
 sudo pacman -Syyu --noconfirm git $PACMAN_EXTRA
@@ -45,7 +55,13 @@ final() {
 
     # fetch all dependencies to pacman cache
     export PACKAGES="$(get_pkgs)"
+    export SRCDEST="$CACHE"/srcdest
     "$ROOT"/tools/syncdeps-all.sh $MAKEPKG_ARGS
+
+    # Save pacman cache
+    sudo mkdir -p "$CACHE"/{pkgcache,pkgdb}
+    sudo cp -r /var/cache/pacman/pkg/* "$CACHE"/pkgcache
+    sudo cp -r /var/lib/pacman/sync/* "$CACHE"/pkgdb
 
     # print report
     echo -e "\nPackages to skip:"
@@ -59,13 +75,6 @@ cd "$ROOT"/packages
 ALLPKGS="$(ls -1)"
 enable_pkgs "new" $ALLPKGS
 trap final EXIT
-
-# If a single package is provided in the PACKAGE variable, ignore all others
-if [[ -n "$PACKAGE" && -e $PACKAGE ]]; then
-    disable_pkgs "not selected" $ALLPKGS
-    enable_pkgs "building single selected package" $PACKAGE
-    exit 0
-fi
 
 source /etc/makepkg.conf
 
@@ -82,7 +91,8 @@ if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
     for PKG in $ALLPKGS; do
         IGN=true
         PKGFILES=($(cd $PKG; makepkg --packagelist))
-        for PKGPATH in "${PKGFILES[@]}"; do
+        # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
+        for PKGPATH in "${PKGFILES[@]/\-debug}"; do
             PKGFILE=$(basename $PKGPATH)
             echo $PKGFILE >> "$TMP"/packagelist
             if [[ ! " ${DB_PKGS[@]} " =~ " $PKGFILE " ]]; then
@@ -95,6 +105,13 @@ if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
     done
 fi
 
+# If a single package is provided in the PACKAGE variable, ignore all others
+if [[ -n "$PACKAGE" && -e $PACKAGE ]]; then
+    disable_pkgs "not selected" $ALLPKGS
+    enable_pkgs "building single selected package" $PACKAGE
+    exit 0
+fi
+
 # ignore packages that don't support our architecture
 for PKG in $(get_pkgs); do
     ARCH="$(. "$PKG"/PKGBUILD; echo "${arch[@]}")"
@@ -102,12 +119,3 @@ for PKG in $(get_pkgs); do
         disable_pkgs "unsupported architecture" $PKG
     fi
 done
-
-# always build modified packages
-if ! (git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} .); then
-    for PKG in *; do
-        if ! (git diff --quiet origin/${DRONE_TARGET_BRANCH:-master} "$PKG"); then
-            enable_pkgs "modified" $PKG
-        fi
-    done
-fi

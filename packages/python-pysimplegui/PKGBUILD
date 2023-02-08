@@ -1,0 +1,25 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+_name=PySimpleGUI
+pkgname=python-pysimplegui
+pkgdesc='Python library to create simple GUIs on top of Tk'
+pkgver=4.60.4
+pkgrel=1
+arch=(any)
+url='http://pysimplegui.org/'
+license=(LGPL3)
+depends=(python tk)
+makedepends=(python-build python-installer python-setuptools python-wheel)
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
+sha256sums=('f88c82c301a51aea35be605dc060bcceb0dcb6682e16280544884701ab4b23ba')
+
+build() {
+  cd $_name-$pkgver
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd $_name-$pkgver
+  python -m installer --destdir="$pkgdir" dist/*.whl
+}

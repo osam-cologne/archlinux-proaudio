@@ -17,7 +17,7 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - run_nobody tools/prepare-build.sh namcap diffoscope
+      - run_nobody tools/prepare-build.sh namcap diffoscope openssh
 
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
@@ -42,11 +42,14 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
+      SRCDEST: /drone/src/.tmp/cache/srcdest
       PKGDEST: /drone/src/out
     commands:
       - source tools/build-env.sh
       - pacman -Su --noconfirm
       - run_nobody tools/clean-build-all.sh
+      - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
+        mv out/*-debug-*$PKGEXT out-debug/; fi
     depends_on:
       - Prepare
 
@@ -54,6 +57,7 @@ steps:
     image: alpine:3.15
     commands:
       - ls -1 out/
+      - ls -1 out-debug/
     depends_on:
       - Build packages
     when:
@@ -88,6 +92,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
+      SRCDEST: /drone/src/.tmp/cache/srcdest
       PKGDEST: /drone/src/out2
     commands:
       - sleep 9  # backoff to prevent false positives
@@ -123,8 +128,8 @@ steps:
     commands:
       - source tools/build-env.sh
       - pacman -S --noconfirm diffoscope >/dev/null
-      - cd out2 && shopt -s nullglob
-      - for PKG in *$PKGEXT; do diffoscope ../out/$PKG $PKG; done
+      - cd out && shopt -s nullglob
+      - for PKG in *$PKGEXT; do diffoscope $PKG ../out2/$PKG; done
     depends_on:
       - Build packages
       - Reproduce packages
@@ -143,6 +148,7 @@ steps:
         from_secret: pkgsignkey-pass
       files:
         - out/*.pkg.tar.*
+        - out-debug/*.pkg.tar.*
       armor: false
       detach_sign: true
     depends_on:
@@ -186,6 +192,48 @@ steps:
         include:
           - refs/heads/master
 
+  - name: Publish debug packages
+    image: appleboy/drone-scp
+    pull: if-not-exists
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out-debug
+      target: /var/www/virtual/aiwahpoo/html/debug-archive
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Sign packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+  - name: Push to AUR
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgcache
+        path: /var/cache/pacman/pkg
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    environment:
+      SSH_KEY:
+        from_secret: ssh-key
+    commands:
+      - source tools/build-env.sh
+      - echo "$${SSH_KEY}" > aur/.ssh/id_osamc
+      - cp -a aur/.ssh /root && chmod 600 /root/.ssh/*
+      - tools/push-aur.sh
+      - rm -rf /root/.ssh
+    depends_on:
+      - Build packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
 # use a shared pacman cache to speed up successive package installs
 volumes:
   - name: pkgcache
@@ -198,7 +246,6 @@ trigger:
     include:
       - refs/heads/master
       - refs/pull/**
-      - refs/tags/**
 
 ---
 kind: pipeline
@@ -213,7 +260,7 @@ platform:
 
 steps:
   - name: Prepare
-    image: lopsided/archlinux:devel
+    image: lopsided/archlinux-arm64v8:devel
     volumes:
       - name: pkgcache
         path: /var/cache/pacman/pkg
@@ -228,7 +275,7 @@ steps:
       - run_nobody tools/prepare-build.sh
 
   - name: Build packages
-    image: lopsided/archlinux:devel
+    image: lopsided/archlinux-arm64v8:devel
     volumes:
       - name: pkgcache
         path: /var/cache/pacman/pkg
@@ -241,6 +288,8 @@ steps:
     commands:
       - source tools/build-env.sh
       - run_nobody tools/clean-build-all.sh
+      - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
+        mv out/*-debug-*$PKGEXT out-debug/; fi
     depends_on:
       - Prepare
 
@@ -248,6 +297,7 @@ steps:
     image: alpine:3.15
     commands:
       - ls -1 out/
+      - ls -1 out-debug/
     depends_on:
       - Build packages
     when:
@@ -265,6 +315,7 @@ steps:
         from_secret: pkgsignkey-pass
       files:
         - out/*.pkg.tar.*
+        - out-debug/*.pkg.tar.*
       armor: false
       detach_sign: true
     depends_on:
@@ -278,7 +329,7 @@ steps:
         - failure
 
   - name: Update db
-    image: lopsided/archlinux:devel
+    image: lopsided/archlinux-arm64v8:devel
     commands:
       - source tools/build-env.sh
       - tools/update-db.sh
@@ -308,6 +359,25 @@ steps:
         include:
           - refs/heads/master
 
+  - name: Publish debug packages
+    image: appleboy/drone-scp
+    pull: if-not-exists
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: out-debug
+      target: /var/www/virtual/aiwahpoo/html/debug-archive
+      strip_components: 1
+      overwrite: true
+    depends_on:
+      - Sign packages
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
 # use a shared pacman cache to speed up successive package installs
 volumes:
   - name: pkgcache
@@ -320,4 +390,54 @@ trigger:
     include:
       - refs/heads/master
       - refs/pull/**
-      - refs/tags/**
+
+---
+kind: pipeline
+type: docker
+name: Website
+
+steps:
+  - name: Fetch databases
+    image: archlinux/archlinux:base-devel
+    commands:
+      - for ARCH in x86_64 aarch64; do
+        mkdir -p .tmp/db/$ARCH &&
+        curl https://arch.osamc.de/proaudio/$ARCH/proaudio.files.tar.gz |
+        bsdtar -xC .tmp/db/$ARCH; done
+
+  - name: Build site
+    image: klakegg/hugo:busybox
+    commands:
+      - hugo
+
+  - name: Publish
+    image: appleboy/drone-scp
+    pull: if-not-exists
+    settings:
+      host: arch.osamc.de
+      user: aiwahpoo
+      key:
+        from_secret: ssh-key
+      source: .tmp/public
+      target: /var/www/virtual/aiwahpoo/html
+      strip_components: 2
+      overwrite: true
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
+depends_on:
+  - Build and check
+  - Build arm64
+
+trigger:
+  ref:
+    include:
+      - refs/heads/master
+      - refs/pull/**
+
+when:
+  status:
+    - success
+    - failure

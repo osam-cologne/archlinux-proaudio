@@ -1,0 +1,33 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <chris@chrisarndt.de>
+# Contributor: Luis Pablo Gasparotto <lpgasparotto at gmail dot com>
+# Contributor: Phillip Fynan <pfynan@gmail.com>
+# Contributor: Peter Sutton <peter@foxdogstudios.com>
+
+pkgname=abcmidi
+pkgver=2023.02.07
+pkgrel=1
+pkgdesc='A set of tools for converting ABC files to and from MIDI and other related tasks'
+arch=(aarch64 x86_64)
+url='https://ifdo.ca/~seymour/runabc/top.html'
+license=(GPL)
+depends=(glibc)
+groups=(abc pro-audio)
+source=("https://ifdo.ca/~seymour/runabc/abcMIDI-$pkgver.zip")
+sha256sums=('839e6c6a5e788681d32a24abeb57f36568984073536c2cbacb7a5a8e46edd284')
+
+build() {
+  cd $pkgname
+  ./configure --prefix=/usr
+  make
+}
+
+package() {
+  cd $pkgname
+  make DESTDIR="$pkgdir" install
+  # Install programming documentation to docdir
+  install -Dm644 doc/programming/*.txt doc/programming/*.abc \
+    -t "$pkgdir"/usr/share/doc/$pkgname/programming
+  # Install example ABC files to docdir
+  install -Dm644 samples/*.abc -t "$pkgdir"/usr/share/doc/$pkgname/samples
+}

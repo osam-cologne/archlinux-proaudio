@@ -1,7 +1,143 @@
 [__config__]
 oldver = "old_ver.json"
 newver = "new_ver.json"
-#keyfile = "keyfile.toml"
+keyfile = "keyfile.toml"
+
+[abcm2ps]
+source = "github"
+github = "lewdlime/abcm2ps"
+use_max_tag = true
+prefix = "v"
+
+[abcmidi]
+source = "github"
+github = "sshlien/abcmidi"
+use_max_tag = true
+include_regex = '^\d\d\d\d\.\d\d\.\d\d$'
+
+[abcpp]
+source = "regex"
+url = "https://abcplus.sourceforge.net/"
+regex = 'abcpp-(\d+\.\d+(?:\.\d+)?).tar.gz'
+encoding = "utf-8"
+
+# note: unquoted dots in section names cause errors
+["aether.lv2"]
+source = "github"
+github = "Dougal-s/Aether"
+use_max_tag = true
+include_regex = '^v[\.\d]+$'
+prefix = "v"
+
+[a-sid]
+source = "github"
+github = "sdangelo/asid"
+use_max_tag = true
+
+# note: we use the stable website downloads for building, but gitlab for checking
+[audiowmark]
+source = "gitlab"
+host = "code.uplex.de"
+gitlab = "stefan/audiowmark"
+# Regex to avoid the "proof-of-concept" tag. Start with a number.
+include_regex = '^\d.+$'
+use_max_tag = true
+
+[clap-example-host]
+source = "github"
+github = "free-audio/clap-host"
+include_regex = '^[\.\d]+$'
+use_max_tag = true
+
+[clap-validator]
+source = "github"
+github = "free-audio/clap-validator"
+use_max_tag = true
+
+[darkice]
+source = "github"
+github = "rafael2k/darkice"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
+[die-plugins]
+source = "github"
+github = "DISTRHO/DIE-Plugins"
+use_max_tag = true
+prefix = "v"
+
+[dxconvert]
+source = "regex"
+url = "http://home.kpn.nl/m.tarenskeen/download/sysex/DXconvert/dxconvert.html"
+regex = 'DXconvert-(\d+\.\d+(?:\.\d+)?).zip'
+encoding = "utf-8"
+
+[elephantdsp-roomreverb]
+source = "github"
+github = "cvde/RoomReverb"
+use_max_tag = true
+prefix = "v"
+
+["fatfrog.lv2"]
+source = "github"
+github = "brummer10/FatFrog.lv2"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
+[faustlive]
+source = "github"
+github = "grame-cncm/faustlive"
+use_max_tag = true
+include_regex = '^\d+(\.\d+)+$'
+
+["fluida.lv2"]
+source = "github"
+github = "brummer10/Fluida.lv2"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
+[fogpad]
+source = "github"
+github = "linuxmao-org/fogpad-port"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
+[glasscoder]
+source = "github"
+github = "ElvishArtisan/GlassCoder"
+use_latest_release = true
+prefix = "v"
+
+[gnome-shell-extension-gsjackctl]
+source = "github"
+github = "cbix/gsjackctl"
+use_max_tag = true
+prefix = "v"
+
+[hpklinux]
+source = "regex"
+url = "https://www.audioscience.com/internet/download/linux_drivers.htm"
+regex = 'hpklinux_(.*).tar.gz.*stable'
+
+[ildaeil]
+source = "github"
+github = "DISTRHO/Ildaeil"
+use_max_tag = true
+prefix = "v"
+
+[jack-matchmaker]
+source = "pypi"
+pypi = "jack-matchmaker"
+
+[jalv-select]
+source = "github"
+github = "brummer10/jalv_select"
+use_max_tag = true
+prefix = "v"
 
 [jamulus]
 source = "github"
@@ -11,16 +147,58 @@ include_regex = '^r(\d+)_(\d+)_(\d+)$'
 from_pattern = '^r(\d+)_(\d+)_(\d+)$'
 to_pattern = '\1.\2.\3'
 
+[jkmeter]
+source = "regex"
+url = "http://kokkinizita.linuxaudio.org/linuxaudio/downloads/"
+regex = 'jkmeter-(\d+\.\d+(?:\.\d+)?).tar.bz2'
+encoding = "utf-8"
+
+[jmeters]
+source = "regex"
+url = "http://kokkinizita.linuxaudio.org/linuxaudio/downloads/"
+regex = 'jmeters-(\d+\.\d+(?:\.\d+)?).tar.bz2'
+encoding = "utf-8"
+
+[klick]
+source = "github"
+github = "Allfifthstuning/klick"
+use_max_tag = true
+
+[kpp]
+source = "github"
+github = "olegkapitonov/Kapitonov-Plugins-Pack"
+use_max_tag = true
+include_regex = '^\d+(\.\d+)+$'
+
+[linux-show-player]
+source = "github"
+github = "FrancescoCeruti/linux-show-player"
+use_max_tag = true
+include_regex = '^\d+(\.\d+)+$'
+prefix = "v"
+
+["littlefly.lv2"]
+source = "github"
+github = "brummer10/LittleFly.lv2"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
 [mamba]
 source = "github"
 github = "brummer10/Mamba"
 use_max_tag = true
 prefix = "v"
 
-# note: unquoted dots in section names cause errors
 ["mclk.lv2"]
 source = "github"
 github = "x42/mclk.lv2"
+use_max_tag = true
+prefix = "v"
+
+[midimonster]
+source = "github"
+github = "cbdevnet/midimonster"
 use_max_tag = true
 prefix = "v"
 
@@ -30,17 +208,83 @@ github = "SpotlightKid/midiomatic"
 use_max_tag = true
 prefix = "v"
 
+[ninjam-server]
+source = "github"
+github = "cbix/ninjam"
+use_max_tag = true
+include_regex = '^ninjamsrv\/v[\.\d]+$'
+prefix = "ninjamsrv/v"
+
+[octasine]
+source = "github"
+github = "greatest-ape/OctaSine"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
+[ola]
+source = "github"
+github = "OpenLightingProject/ola"
+use_max_tag = true
+
+[ot-simian]
+source = "regex"
+url = "https://punklabs.com/ot-simian"
+regex = 'OneTrick-SIMIAN-(\d+\.\d+\.\d+)-Source.zip'
+encoding = "utf-8"
+
+[paulxstretch]
+source = "github"
+github = "essej/paulxstretch"
+use_max_tag = true
+prefix = "v"
+
+[python-mido]
+source = "pypi"
+pypi = "mido"
+
 [python-pyjacklib]
 source = "pypi"
 pypi = "pyjacklib"
 
-[python-rtmidi]
+[python-pysimplegui]
 source = "pypi"
-pypi = "python-rtmidi"
+pypi = "PySimpleGUI"
+
+[python-soundfile]
+source = "pypi"
+pypi = "soundfile"
 
 [qjackcapture]
 source = "pypi"
 pypi = "QJackCapture"
+
+[rakarrack-plus]
+source = "github"
+github = "Stazed/rakarrack-plus"
+use_max_tag = true
+
+[rezonateur]
+source = "github"
+github = "jpcima/rezonateur"
+use_max_tag = true
+prefix = "v"
+
+[rtcqs]
+source = "pypi"
+pypi = "rtcqs"
+
+[sfzlint]
+source = "github"
+github = "jisaacstone/sfzlint"
+use_max_tag = true
+prefix = "v"
+
+[stone-phaser]
+source = "github"
+github = "jpcima/stone-phaser"
+use_max_tag = true
+prefix = "v"
 
 [string-machine]
 source = "github"
@@ -48,11 +292,36 @@ github = "jpcima/string-machine"
 use_max_tag = true
 prefix = "v"
 
+["swh-plugins.lv2"]
+source = "github"
+github = "swh/lv2"
+use_max_tag = true
+prefix = "v"
+
+[triceratops]
+source = "regex"
+url = "https://sourceforge.net/projects/triceratops/files/"
+regex = 'triceratops_v(\d+\.\d+(?:\.\d+)?)_[^.]+\.tar.gz'
+encoding = "utf-8"
+
 [tuxguitar]
 source = "regex"
 url = "https://sourceforge.net/projects/tuxguitar/rss?path=/TuxGuitar"
 regex = 'tuxguitar-(\d+\.\d+(?:\.\d+)?)-src.tar.gz'
 encoding = "utf-8"
+
+[uhhyou-plugins]
+source = "github"
+github = "ryukau/VSTPlugins"
+use_max_tag = true
+include_regex = '^UhhyouPlugins[\.\d]+$'
+prefix = "UhhyouPlugins"
+
+[vcf-lv2]
+source= "github"
+github = "linuxmao-org/vcf-lv2"
+use_max_tag = true
+prefix = "v"
 
 [vcvrack]
 source = "github"
@@ -60,8 +329,117 @@ github = "VCVRack/Rack"
 use_max_tag = true
 prefix = "v"
 
+[vcvrack-21khz]
+source = "github"
+github = "netboy3/21kHz-rack-plugins"
+use_max_tag = true
+
+[vcvrack-8mode]
+source = "github"
+github = "8Mode/8Mode-VCV_Modules"
+use_max_tag = true
+
+[vcvrack-aaronstatic]
+source = "github"
+github = "aaronstatic/AaronStatic_modules"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-ahornberg]
+source = "github"
+github = "Ahornberg/Ahornberg-VCV-Modules"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-alefsbits]
+source = "github"
+github = "alefnull/alefsbits"
+use_max_tag = true
+include_regex = '^v[\.\d]+$'
+prefix = "v"
+
+[vcvrack-alikins]
+source = "github"
+github = "alikins/Alikins-rack-plugins"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-alliewayaudio-freebies]
+source = "github"
+github = "AlliewayAudio/AlliewayAudio_Freebies"
+use_max_tag = true
+include_regex = '^[\.\d]+$'
+
+[vcvrack-amalgamated-harmonics]
+source = "github"
+github = "jhoar/AmalgamatedHarmonics"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-aridacity]
+source = "github"
+github = "cubeleco/aridacityVCV"
+use_max_tag = true
+
+[vcvrack-axioma]
+source = "github"
+github = "kauewerner/Axioma"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-bastl]
+source = "github"
+github = "hemmer/bastl-vcv"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-collection-one]
+source = "github"
+github = "scanner-darkly/vcv-collection-one"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-computerscare]
+source = "github"
+github = "freddyz/computerscare-vcv-modules"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-cvly]
+source = "github"
+github = "Lyqst/cvly-modules"
+use_max_tag = true
+
+[vcvrack-freesurface]
+source = "github"
+github = "freesurfacemodules/FreeSurface"
+use_max_tag = true
+prefix = "v"
+
+[vcvrack-goodsheperd]
+source = "github"
+github = "jensschulze/GoodSheperd"
+use_max_tag = true
+
+[vcvrack-sonusmodular]
+source = "gitlab"
+gitlab = "sonusdept/sonusmodular"
+use_max_tag = true
+
+[vcvrack-zetacarinae]
+source = "github"
+github = "mhampton/ZetaCarinaeModules"
+use_max_tag = true
+prefix = "v"
+
 [ykchorus]
 source = "github"
 github = "SpotlightKid/ykchorus"
+use_max_tag = true
+prefix = "v"
+
+[xtuner]
+source = "github"
+github = "brummer10/XTuner"
 use_max_tag = true
 prefix = "v"

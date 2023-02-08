@@ -3,8 +3,8 @@
 
 pkgname=midiomatic
 pkgver=0.2.1
-pkgrel=1
-pkgdesc='A collection of MIDI filter, generator and processor LV2 and VST plugins'
+pkgrel=3
+pkgdesc='A collection of MIDI filter, generator and processor LV2 and VST2 plugins'
 arch=(x86_64 aarch64)
 url='https://github.com/SpotlightKid/midiomatic'
 license=(MIT)
@@ -21,17 +21,17 @@ source=(
 sha256sums=('aed203bde8fd01e279e058d48f084754f50b9fd758d7b56b845f11d8fbdbb1f3')
 
 build() {
-  cd "$pkgname-$pkgver"
-  make
+  cd $pkgname-$pkgver
+  make -j1
 }
 
 check() {
-  cd "$pkgname-$pkgver"
+  cd $pkgname-$pkgver
   make check
 }
 
 package() {
-  cd "$pkgname-$pkgver"
+  cd $pkgname-$pkgver
   # install plugin LV2 bundles and VST binaries
   make PREFIX=/usr DESTDIR="$pkgdir" install
   # readme

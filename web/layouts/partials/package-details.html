@@ -1,0 +1,114 @@
+<a href="#-" class="close"><small>Close</small></a>
+<h3>{{ .name }} {{ .version }}</h3>
+<hr/>
+<table class="details">
+  <tr>
+    <th>Architecture:</th>
+    <td>{{ .arch }}</td>
+  </tr>
+  <tr>
+    <th>Base Package:</th>
+    <td>
+      {{ .base }}
+      (<a href="{{ printf site.Params.pkgbuildUrl .base }}" target="_blank">PKGBUILD</a>)
+    </td>
+  </tr>
+  <tr>
+    <th>Description:</th>
+    <td>{{ .desc }}</td>
+  </tr>
+  {{ if .url }}
+  <tr>
+    <th>Upstream URL:</th>
+    <td><a href="{{ .url }}" target="_blank">{{ .url }}</a></td>
+  </tr>
+  {{ end }}
+  {{ if .groups }}
+  <tr>
+    <th>Groups:</th>
+    <td>{{ range sort .groups }}{{ . }}<br/>{{ end }}</td>
+  </tr>
+  {{ end }}
+  {{ if .provides }}
+  <tr>
+    <th>Provides:</th>
+    <td>{{ range sort .provides }}{{ . }}<br/>{{ end }}</td>
+  </tr>
+  {{ end }}
+  {{ if .conflicts }}
+  <tr>
+    <th>Conflicts:</th>
+    <td>{{ range sort .conflicts }}{{ . }}<br/>{{ end }}</td>
+  </tr>
+  {{ end }}
+  {{ if .replaces }}
+  <tr>
+    <th>Replaces:</th>
+    <td>{{ range sort .replaces }}{{ . }}<br/>{{ end }}</td>
+  </tr>
+  {{ end }}
+  <tr>
+    <th>Download Size:</th>
+    <td>
+      {{ partial "filesize" .csize }}
+      {{ $dlarch := .arch }}
+      {{ if (eq .arch "any") }}
+        {{ if (strings.HasSuffix .filename ".zst") }}
+          {{ $dlarch = "x86_64" }}
+        {{ else }}
+          {{ $dlarch = "aarch64" }}
+        {{ end }}
+      {{ end }}
+      (<a href="{{ printf site.Params.repoUrl $dlarch .filename }}">Download</a>)
+    </td>
+  </tr>
+  <tr>
+    <th>Installed Size:</th>
+    <td>{{ partial "filesize" .isize }}</td>
+  </tr>
+  <tr>
+    <th>License{{ if gt (len .license) 1 }}s{{ end }}:</th>
+    <td>
+      {{ range sort .license }}
+        {{ . }}<br/>
+      {{ end }}
+    </td>
+  </tr>
+  <tr>
+    <th>Build Date:</th>
+    <td>{{ dateFormat "2006-01-02 15:04 MST" .builddate.UTC}}</td>
+  </tr>
+  <tr>
+    <th>Dependencies:</th>
+    <td>
+      {{ if .depends }}
+        {{ range sort .depends }}
+          {{ . }}<br/>
+        {{ end }}
+      {{ end }}
+      {{ if .optdepends }}
+        {{ range sort .optdepends }}
+          {{ . }} <em>(optional)</em><br/>
+        {{ end }}
+      {{ end }}
+      {{ if .makedepends }}
+        {{ range sort .makedepends }}
+          <span class="makedep">{{ . }} <em>(make)</em></span><br/>
+        {{ end }}
+      {{ end }}
+      {{ if .checkdepends }}
+        {{ range sort .checkdepends }}
+          <span class="checkdep">{{ . }} <em>(check)</em></span><br/>
+        {{ end }}
+      {{ end }}
+    </td>
+  </tr>
+</table>
+<details>
+  <summary><strong>Package Contents</strong></summary>
+  <div class="files">
+    {{ range sort .files }}
+    <span class="{{ cond (strings.HasSuffix . `/`) `dir` `file` }}">{{ . }}</span>
+    {{ end }}
+  </div>
+</details>

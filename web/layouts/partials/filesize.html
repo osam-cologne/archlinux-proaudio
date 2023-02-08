@@ -1,0 +1,20 @@
+{{ $unit := 1000.0 }}
+{{ $size := float . }}
+{{ $res := printf "%.0f B" $size }}
+
+{{ if gt $size $unit }}
+  {{ $size = div $size $unit }}
+  {{ $res = printf "%.1f kB" $size }}
+{{ end }}
+
+{{ if gt $size $unit }}
+  {{ $size = div $size $unit }}
+  {{ $res = printf "%.1f MB" $size }}
+{{ end }}
+
+{{ if gt $size $unit }}
+  {{ $size = div $size $unit }}
+  {{ $res = printf "%.1f GB" $size }}
+{{ end }}
+
+{{ return $res }}

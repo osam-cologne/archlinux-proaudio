@@ -1,0 +1,36 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+# Contributor: Mathias Buhr <napcode@aparatus.de>
+
+_name=OctaSine
+pkgname=${_name,,}
+pkgver=0.8.2
+pkgrel=1
+pkgdesc='A four-operator stereo FM synthesizer VST2 plugin'
+arch=(aarch64 x86_64)
+url='https://www.octasine.com/'
+license=(AGPL3)
+groups=(pro-audio vst-plugins)
+depends=(libx11 libxcb xcb-util-wm)
+makedepends=(libglvnd libxcursor python rust)
+optdepends=('vst-host: for loading the VST2 plugin')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/greatest-ape/$_name/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('5b555d3ffa9cfc5206d65428152cda20a84dfe76a5ae0a9cc8758f4a8a8d7b5f')
+
+build() {
+  cd $_name-$pkgver
+  cargo build --release -p octasine-vst2-plugin
+}
+
+check() {
+  cd $_name-$pkgver
+  cargo test
+}
+
+package() {
+  depends+=(libGL.so)
+  cd $_name-$pkgver
+  install -Dm755 target/release/liboctasine.so $pkgdir/usr/lib/vst/$_name.so
+  install -Dm644 *.md -t $pkgdir/usr/share/doc/$pkgname
+  install -Dm644 images/* -t $pkgdir/usr/share/doc/$pkgname/images
+}
