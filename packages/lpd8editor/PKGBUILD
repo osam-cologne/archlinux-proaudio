@@ -12,7 +12,7 @@ license=(MIT)
 depends=()
 makedepends=(alsa-lib cmake qt5-base qt5-svg qt5-tools)
 groups=(pro-audio)
-source=("$pkgname-$pkgver.tar.gz::https://github.com/charlesfleche/$pkgname/archive/refs/tags/v${pkgver}.tar.gz")
+source=("$pkgname-$pkgver.tar.gz::https://github.com/charlesfleche/$pkgname/archive/refs/tags/v$pkgver.tar.gz")
 sha256sums=('2b9709e014102b65711825488d9f081edb40e18c1b316c0ebd5b0248f6728201')
 
 prepare() {
