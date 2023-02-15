@@ -4,7 +4,7 @@
 
 _name=OctaSine
 pkgname=${_name,,}
-pkgver=0.8.2
+pkgver=0.8.3
 pkgrel=1
 pkgdesc='A four-operator stereo FM synthesizer VST2 plugin'
 arch=(aarch64 x86_64)
@@ -13,13 +13,16 @@ license=(AGPL3)
 groups=(pro-audio vst-plugins)
 depends=(libx11 libxcb xcb-util-wm)
 makedepends=(libglvnd libxcursor python rust)
-optdepends=('vst-host: for loading the VST2 plugin')
+optdepends=(
+  'clap-host: for loading the CLAP plugin'
+  'vst-host: for loading the VST2 plugin'
+)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/greatest-ape/$_name/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('5b555d3ffa9cfc5206d65428152cda20a84dfe76a5ae0a9cc8758f4a8a8d7b5f')
+sha256sums=('8ddad2874165bd7d0b28f87c0d8cd7eb55021607deb79eed1f4e2890b13f003c')
 
 build() {
   cd $_name-$pkgver
-  cargo build --release -p octasine-vst2-plugin
+  cargo xtask bundle octasine --release
 }
 
 check() {
@@ -30,7 +33,10 @@ check() {
 package() {
   depends+=(libGL.so)
   cd $_name-$pkgver
-  install -Dm755 target/release/liboctasine.so $pkgdir/usr/lib/vst/$_name.so
-  install -Dm644 *.md -t $pkgdir/usr/share/doc/$pkgname
-  install -Dm644 images/* -t $pkgdir/usr/share/doc/$pkgname/images
+  # Use 'OctaSine' instead of 'octasine' a s the basename for the plugins
+  # since that's what previous versions used, so that existing projects will still work.
+  install -Dm755 target/bundled/$pkgname.so "$pkgdir"/usr/lib/vst/$_name.so
+  install -Dm755 target/bundled/$pkgname.clap "$pkgdir"/usr/lib/clap/$_name.clap
+  install -Dm644 *.md -t "$pkgdir"/usr/share/doc/$pkgname
+  install -Dm644 images/* -t "$pkgdir"/usr/share/doc/$pkgname/images
 }
