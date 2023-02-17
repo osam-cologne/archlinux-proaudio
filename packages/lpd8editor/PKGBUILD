@@ -5,7 +5,7 @@
 pkgname=lpd8editor
 pkgver=0.0.16
 pkgrel=1
-pkgdesc='A Linux editor for the Akai LPD8 pad controller.'
+pkgdesc='A Linux editor for the Akai LPD8 pad controller'
 arch=(x86_64 aarch64)
 url='https://github.com/charlesfleche/lpd8editor'
 license=(MIT)
