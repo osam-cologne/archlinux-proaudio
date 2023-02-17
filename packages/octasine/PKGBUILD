@@ -5,7 +5,7 @@
 _name=OctaSine
 pkgname=${_name,,}
 pkgver=0.8.3
-pkgrel=2
+pkgrel=3
 pkgdesc='A four-operator stereo FM synthesizer VST2 plugin'
 arch=(aarch64 x86_64)
 url='https://www.octasine.com/'
@@ -31,8 +31,7 @@ build() {
 check() {
   cd $_name-$pkgver
   if [[ "$CARCH" = "aarch64" ]]; then
-    # test try to compile CLAP plugin as well, so don't run them on aarch64 for now
-    echo "Warning: skipping tests on $CARCH"
+    cargo test --no-default-features --features "glow vst2"
   else
     cargo test
   fi
