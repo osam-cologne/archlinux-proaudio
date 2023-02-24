@@ -5,7 +5,7 @@
 # Contributor: Peter Sutton <peter@foxdogstudios.com>
 
 pkgname=abcmidi
-pkgver=2023.02.08
+pkgver=2023.02.20
 pkgrel=1
 pkgdesc='A set of tools for converting ABC files to and from MIDI and other related tasks'
 arch=(aarch64 x86_64)
@@ -13,17 +13,17 @@ url='https://ifdo.ca/~seymour/runabc/top.html'
 license=(GPL)
 depends=(glibc)
 groups=(abc pro-audio)
-source=("https://ifdo.ca/~seymour/runabc/abcMIDI-$pkgver.zip")
-sha256sums=('2b8e480d7199ba098efc76940785130a5dcdfe0462a10600e9f8059be8ff2c61')
+source=("https://github.com/sshlien/abcmidi/archive/refs/tags/$pkgver.zip")
+sha256sums=('f56571d195145cfdb6c56050a93471d01e8e4a9a74df96517965707d496f11b1')
 
 build() {
-  cd $pkgname
+  cd $pkgname-$pkgver
   ./configure --prefix=/usr
   make
 }
 
 package() {
-  cd $pkgname
+  cd $pkgname-$pkgver
   make DESTDIR="$pkgdir" install
   # Install programming documentation to docdir
   install -Dm644 doc/programming/*.txt doc/programming/*.abc \
