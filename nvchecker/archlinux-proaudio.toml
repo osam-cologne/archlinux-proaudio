@@ -54,6 +54,11 @@ source = "github"
 github = "free-audio/clap-validator"
 use_max_tag = true
 
+[convertwithmoss]
+source = "github"
+github = "git-moss/ConvertWithMoss"
+use_max_tag = true
+
 [darkice]
 source = "github"
 github = "rafael2k/darkice"

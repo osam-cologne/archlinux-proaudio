@@ -1,0 +1,35 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <osam -at- chrisarndt -dot- de>
+# Contributor: redtide <redtid3 -at- gmail -dot- com>
+
+_name=ConvertWithMoss
+pkgname=${_name,,}
+pkgver=6.0.0
+pkgrel=1
+pkgdesc='A tool for converting multi-sample from one format to another'
+url='https://mossgrabers.de/Software/ConvertWithMoss/ConvertWithMoss.html'
+arch=(any)
+license=(LGPL)
+depends=('java-runtime>=16' java-openjfx)
+makedepends=(maven)
+source=("$pkgname-$pkgver.tar.gz::https://github.com/git-moss/ConvertWithMoss/archive/refs/tags/$pkgver.tar.gz"
+        'ConvertWithMoss.desktop'
+        'convertwithmoss.png'
+        'convertwithmoss.sh')
+sha256sums=('8d3d24e3ff79f745f2e3f968d2e714cc50fb8d2a2a1bff900d01b34ef694ecb2'
+            'eca628331064897863069f1364227c0c5a4fc8e26ca880c88bbe9d8973d1faf4'
+            '1f0c8c2d659a193f275bd5fa5ff1a9179c543576cf5df2d9ac0c047a75987b6b'
+            '77bc966c05afd90edc4dbb817e72e55d8b6fe11ef60ccf4444c1dccc02327c25')
+
+build() {
+  cd $_name-$pkgver
+  mvn clean install
+}
+
+package() {
+  cd $_name-$pkgver
+  install -Dm644 target/lib/*.jar -t "$pkgdir"/usr/share/$_name
+  install -Dm644 "$srcdir"/$_name.desktop -t "$pkgdir"/usr/share/applications
+  install -Dm644 "$srcdir"/$pkgname.png -t "$pkgdir"/usr/share/pixmaps
+  install -Dm755 "$srcdir"/$pkgname.sh "$pkgdir"/usr/bin/$pkgname
+}
