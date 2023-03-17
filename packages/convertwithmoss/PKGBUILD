@@ -23,7 +23,7 @@ sha256sums=('8d3d24e3ff79f745f2e3f968d2e714cc50fb8d2a2a1bff900d01b34ef694ecb2'
 
 build() {
   cd $_name-$pkgver
-  mvn clean install
+  mvn -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH clean install
 }
 
 package() {
