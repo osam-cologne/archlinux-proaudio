@@ -4,7 +4,7 @@
 
 _name=OctaSine
 pkgname=${_name,,}
-pkgver=0.8.4
+pkgver=0.8.5
 pkgrel=1
 pkgdesc='A four-operator stereo FM synthesizer VST2 plugin'
 arch=(aarch64 x86_64)
@@ -18,7 +18,7 @@ optdepends=(
   'vst-host: for loading the VST2 plugin'
 )
 source=("$pkgname-$pkgver.tar.gz::https://github.com/greatest-ape/$_name/archive/refs/tags/v$pkgver.tar.gz")
-sha256sums=('94c05b0fea28ebc12f6c08a460d52a31f42d8e237ad83aabe0fa9761cdd18b24')
+sha256sums=('edac07a2bc91883305f5d57468ca4d66967d13a1ad300732709b45de967b85bb')
 
 build() {
   cd $_name-$pkgver
