@@ -2,7 +2,7 @@
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
 pkgname=faustlive
-pkgver=2.5.13
+pkgver=2.5.15
 pkgrel=1
 pkgdesc='Faust prototyping environment'
 arch=(x86_64 aarch64)
@@ -12,7 +12,7 @@ groups=(pro-audio)
 depends=(hicolor-icon-theme qt6-base)
 makedepends=(alsa-lib cmake faust jack libmicrohttpd libsndfile)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/grame-cncm/$pkgname/archive/refs/tags/$pkgver.tar.gz")
-sha256sums=('46e65b81ad0811ce4758e4c31edec7706bfcf60595cf260347ea5594ee7c7c6a')
+sha256sums=('5ba5af7b19fa050cb8ccb1d6b3875af4907dfef62b810e171d6467641d6b944c')
 
 prepare() {
   # use libraries from faust package instead of submodule
