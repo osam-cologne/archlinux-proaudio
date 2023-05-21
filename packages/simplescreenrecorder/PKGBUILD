@@ -1,5 +1,6 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
 # Contributor: this.ven <misgi@ven.uber.space>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
 
 _name=ssr
 pkgname=simplescreenrecorder
@@ -9,7 +10,6 @@ pkgdesc='A feature-rich screen recorder that supports X11 and OpenGL'
 arch=(x86_64 aarch64)
 url='https://www.maartenbaert.be/simplescreenrecorder'
 license=(GPL3)
-groups=(pro-audio)
 depends=(alsa-lib desktop-file-utils ffmpeg glu gtk-update-icon-cache jack
          libgl libpulse libx11 libxext libxfixes libxi libxinerama qt5-base
          qt5-x11extras)
@@ -24,12 +24,13 @@ sha256sums=('69fccf8df6e7285d4df5033eed8748f4eae13b407488906dcf4810a277d557b8'
 prepare() {
   cd $_name-$pkgver
   mkdir -p build
-  patch -p1 -i ../ffmpeg5.patch # Fix build with ffmpeg 5
+  patch -p1 -i "$srcdir"/ffmpeg5.patch # Fix build with ffmpeg 5
 }
 
 build() {
   cd $_name-$pkgver/build
-  cmake -DCMAKE_INSTALL_PREFIX="/usr" -DCMAKE_BUILD_TYPE=Release \
+  cmake -DCMAKE_INSTALL_PREFIX="/usr" \
+    -DCMAKE_BUILD_TYPE=Release \
     -DWITH_QT5=on \
     -DCMAKE_INSTALL_LIBDIR='lib' ../
   make
