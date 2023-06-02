@@ -14,8 +14,8 @@ depends=(alsa-lib desktop-file-utils ffmpeg glu gtk-update-icon-cache jack
          libgl libpulse libx11 libxext libxfixes libxi libxinerama qt5-base
          qt5-x11extras)
 makedepends=(git cmake qt5-tools)
-optdepends=('lib32-simplescreenrecorder: OpenGL recording of 32-bit applications
-            ')
+#optdepends=('lib32-simplescreenrecorder: OpenGL recording of 32-bit applications
+            ') # unused, see: https://github.com/osam-cologne/archlinux-proaudio/pull/237#discussion_r1213428473
 source=("https://github.com/MaartenBaert/$_name/archive/refs/tags/$pkgver.tar.gz"
          ffmpeg5.patch::https://patch-diff.githubusercontent.com/raw/MaartenBaert/ssr/pull/934.patch)
 sha256sums=('69fccf8df6e7285d4df5033eed8748f4eae13b407488906dcf4810a277d557b8'
