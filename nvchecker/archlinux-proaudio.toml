@@ -285,6 +285,11 @@ prefix = "v"
 source = "pypi"
 pypi = "rtcqs"
 
+[simplescreenrecorder]
+source = "github"
+github = "MaartenBaert/ssr"
+use_max_tag = true
+
 [sfzlint]
 source = "github"
 github = "jisaacstone/sfzlint"
