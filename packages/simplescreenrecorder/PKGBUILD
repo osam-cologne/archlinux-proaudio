@@ -5,9 +5,9 @@
 _name=ssr
 pkgname=simplescreenrecorder
 pkgver=0.4.4
-pkgrel=1
+pkgrel=2
 pkgdesc='A feature-rich screen recorder that supports X11 and OpenGL'
-arch=(x86_64 aarch64)
+arch=(x86_64)
 url='https://www.maartenbaert.be/simplescreenrecorder'
 license=(GPL3)
 depends=(alsa-lib desktop-file-utils ffmpeg glu gtk-update-icon-cache jack
