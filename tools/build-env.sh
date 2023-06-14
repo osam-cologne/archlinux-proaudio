@@ -16,4 +16,6 @@ export LOGDEST=${LOGDEST:-$PKGDEST}
 export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-${DRONE_BUILD_STARTED:-$(date +%s)}}
 export HOME=/tmp
 mkdir -p .tmp/pkgs
+echo "Fixing sudo permissions"
+chmod u+s /usr/sbin/sudo
 alias run_nobody='PACKAGES="$(cd .tmp/pkgs; ls -1)" sudo -u nobody --preserve-env=HOME,CI,PACKAGER,PKGDEST,LOGDEST,SRCDEST,SRCPKGDEST,BUILDDIR,PACKAGE,PACKAGES,SOURCE_DATE_EPOCH,IGNOREDB,DRONE_TARGET_BRANCH,MAKEPKG_ARGS,MAKEFLAGS,DRONE_COMMIT_MESSAGE,PKGEXT'
