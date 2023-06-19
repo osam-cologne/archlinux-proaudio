@@ -50,7 +50,7 @@ build() {
     -DSMTG_RUN_VST_VALIDATOR=Off \
     -DSMTG_CREATE_PLUGIN_LINK=Off \
     -Wno-dev
-  cmake --build $pkgname-build -j
+  cmake --build $pkgname-build
 }
 
 check() {
