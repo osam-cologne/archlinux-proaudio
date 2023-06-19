@@ -26,11 +26,9 @@ sha256sums=('ae3f609a26e8b5ddac0203602535524a1ba14706b618221e3a0361b886ff81ff'
 
 prepare() {
   cd $_name$pkgver
-
   # link submodules
   rm -r lib/pocketfft && ln -s "$srcdir"/pocketfft-$_pocketfft_ref lib/pocketfft
   rm -r lib/vcl && ln -s "$srcdir"/version2-$_vcl_ref* lib/vcl
-
   # copy and patch vst3sdk
   rm -rf lib/vst3sdk
   if [[ -d /usr/src/vst3sdk ]]; then
@@ -38,7 +36,6 @@ prepare() {
   else
     cp -r /usr/share/vst3sdk lib
   fi
-
   cp -f ci/linux_patch/cairocontext.cpp \
     lib/vst3sdk/vstgui4/vstgui/lib/platform/linux/cairocontext.cpp
 }
