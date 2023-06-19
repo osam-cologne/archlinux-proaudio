@@ -26,38 +26,44 @@ sha256sums=('ae3f609a26e8b5ddac0203602535524a1ba14706b618221e3a0361b886ff81ff'
 
 prepare() {
   cd $_name$pkgver
+
   # link submodules
   rm -r lib/pocketfft && ln -s "$srcdir"/pocketfft-$_pocketfft_ref lib/pocketfft
   rm -r lib/vcl && ln -s "$srcdir"/version2-$_vcl_ref* lib/vcl
+
   # copy and patch vst3sdk
-  cp -r /usr/src/vst3sdk ../ || cp -r /usr/share/vst3sdk ../
-  cp ci/linux_patch/cairocontext.cpp ../vst3sdk/vstgui4/vstgui/lib/platform/linux/cairocontext.cpp
+  rm -rf lib/vst3sdk
+  if [[ -d /usr/src/vst3sdk ]]; then
+    cp -r /usr/src/vst3sdk lib
+  else
+    cp -r /usr/share/vst3sdk lib
+  fi
+
+  cp -f ci/linux_patch/cairocontext.cpp \
+    lib/vst3sdk/vstgui4/vstgui/lib/platform/linux/cairocontext.cpp
 }
 
 build() {
-  cmake -B build -S vst3sdk \
+  cmake -B $pkgname-build -S $_name$pkgver \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DSMTG_MYPLUGINS_SRC_PATH=./$_name$pkgver \
-    -DSMTG_ENABLE_VST3_HOSTING_EXAMPLES=Off \
-    -DSMTG_ENABLE_VST3_PLUGIN_EXAMPLES=Off \
-    -DSMTG_CREATE_PLUGIN_LINK=Off \
     -DSMTG_RUN_VST_VALIDATOR=Off \
+    -DSMTG_CREATE_PLUGIN_LINK=Off \
     -Wno-dev
-  cmake --build build
+  cmake --build $pkgname-build -j
 }
 
 check() {
-  for _plugin in build/VST3/Release/*.vst3; do
+  for _plugin in $pkgname-build/VST3/Release/*.vst3; do
     # many plugins seem to use a lot of memory during validation so let's only test basics
-    build/bin/Release/validator -suite "General Tests" $_plugin
+    $pkgname-build/bin/Release/validator -suite "General Tests" $_plugin
   done
 }
 
 package() {
   depends+=(libxkbcommon.so libxkbcommon-x11.so libpangocairo-1.0.so libpangoft2-1.0.so
     libpango-1.0.so libgobject-2.0.so ttf-croscore)
-  cd "$srcdir"/build/VST3/Release
+  cd  $pkgname-build/VST3/Release
   for plugin in *.vst3; do
     # skip vst3sdk samples
     [ ! -f $plugin/Contents/moduleinfo.json ] && continue
