@@ -441,3 +441,45 @@ when:
   status:
     - success
     - failure
+
+---
+kind: pipeline
+name: Send notification
+
+steps:
+- name: Notify Matrix chat
+  image: spotlightkid/drone-matrixchat-notify
+  settings:
+    homeserver: 'https://sonoj.org'
+    roomid: '!AkWpRHuPJQwVbEpayh:sonoj.org'
+    userid: '@bot-archlinux-proaudio:sonoj.org'
+    accesstoken:
+      from_secret: matrix-bot-token
+    deviceid: 'HOFQKIPDQE'
+    template: |
+      CI pipeline `${DRONE_REPO}` build #${DRONE_BUILD_NUMBER} status: **${DRONE_BUILD_STATUS}**
+
+      Build logs: [#${DRONE_BUILD_NUMBER}](${DRONE_BUILD_LINK})
+
+      PR: [#${DRONE_PULL_REQUEST} ${DRONE_PULL_REQUEST_TITLE}](${DRONE_COMMIT_LINK}) by *${DRONE_COMMIT_AUTHOR}*
+
+      ```
+      ${DRONE_COMMIT_MESSAGE}
+      ```
+    markdown: 'yes'
+
+depends_on:
+  - Build and check
+  - Build arm64
+  - Website
+
+trigger:
+  ref:
+    include:
+      - refs/heads/master
+      - refs/pull/**
+
+when:
+  status:
+    - success
+    - failure
