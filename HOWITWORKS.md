@@ -6,15 +6,15 @@ for the `proaudio` package repository are built.
 ## Build Process
 
 We use an automatic process to build binary Arch packages for the amd64 (aka
-`x86_64`) and arm64 (aka `aarch64`) architectires from `PKGBUILD` files
+`x86_64`) and arm64 (aka `aarch64`) architectures from `PKGBUILD` files
 organized in a single [source repository] hosted on GitHub. If a package is
-succesfully built and the updated `PKGBUILD` file is merged into the `master`
+successfully built and the updated `PKGBUILD` file is merged into the `master`
 branch of the repository, the package is uploaded by the CI to the
 [package repository] and the package listing on the [website] is also updated.
 
-Our build process is rather ideosyncratic. We use [drone.io] as the CI,
-employing a self-hosted drone server at `drone.cbix.org`. The CI is triggered
-via Webhooks from the Github repo. For each major phase of the build process
+Our build process is rather idiosyncratic. We use [drone.io] as the CI,
+employing a self-hosted drone server at `drone.cbix.de`. The CI is triggered
+via webhooks from the Github repo. For each major phase of the build process
 a [shell script] or a [drone.io plugin] is run as a separate step of our CI
 [pipeline] in its own docker container.
 
@@ -23,7 +23,7 @@ image. The build steps are defined in the file [.drone.yml] located in the
 repository root.
 
 For a more detailed and technical description of the various build steps,
-the [README.md] file in the `tools` directory.
+consult the [README.md] file in the `tools` directory.
 
 
 ## Pros and Cons
@@ -35,7 +35,7 @@ Pros:
 * We support building for the `aarch64` architecture.
 * One can test the build locally on any Linux system, not just Arch Linux, when
   one has `drone-cli` installed.
-* We can sync package updates to AUR packages repositories.
+* We can sync package updates to AUR package repositories.
 
 Cons:
 
@@ -55,4 +55,4 @@ Cons:
 [readme.md]: ./tools/README.md
 [shell script]: ./tools
 [source repository]: https://github.com/osam-cologne/archlinux-proaudio
-[website]: http://arch.osamc.de
+[website]: https://arch.osamc.de
