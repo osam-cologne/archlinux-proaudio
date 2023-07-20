@@ -232,7 +232,7 @@ def main(args=None):
         for version in versions:
             state[version["name"]] = version["newver"]
 
-        log.debug("Writing seeen versions state.")
+        log.debug("Writing seen versions state.")
         write_state(STATE_FILENAME, state)
         log.debug("Done.")
     else:
