@@ -48,7 +48,7 @@ Cons:
 
 [.drone.yml]: ./.drone.yml
 [archlinux/archlinux:base-devel]: https://hub.docker.com/r/archlinux/archlinux/tags?page=1&name=base-devel
-[drone.io plugins]: https://docs.drone.io/plugins/overview/
+[drone.io plugin]: https://docs.drone.io/plugins/overview/
 [drone.io]: https://www.drone.io/
 [package repository]: https://arch.osamc.de/proaudio/
 [pipeline]: https://docs.drone.io/pipeline/overview/
