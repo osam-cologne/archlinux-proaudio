@@ -31,6 +31,7 @@ ninjam-server
 ola
 ot-simian
 paulxstretch
+python-miditk-smf
 python-mido
 python-pyjacklib
 python-soundfile

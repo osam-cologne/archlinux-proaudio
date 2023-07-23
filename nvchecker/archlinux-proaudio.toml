@@ -250,6 +250,10 @@ github = "essej/paulxstretch"
 use_max_tag = true
 prefix = "v"
 
+[python-miditk-smf]
+source = "pypi"
+pypi = "miditk-smf"
+
 [python-mido]
 source = "pypi"
 pypi = "mido"
