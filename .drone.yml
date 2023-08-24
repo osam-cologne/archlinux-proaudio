@@ -27,7 +27,8 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
-      - pacman -S --noconfirm namcap
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Syu --noconfirm namcap
       - if [ -n "$PACKAGE" ]; then
         namcap packages/$PACKAGE/PKGBUILD;
         else namcap packages/*/PKGBUILD; fi
@@ -46,7 +47,7 @@ steps:
       PKGDEST: /drone/src/out
     commands:
       - source tools/build-env.sh
-      - pacman -Syu --noconfirm
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
       - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
         mv out/*-debug-*$PKGEXT out-debug/; fi
@@ -74,7 +75,8 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - pacman -S --noconfirm namcap >/dev/null
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Syu --noconfirm namcap
       - cd out
       - if ls -1 *$PKGEXT 2>/dev/null 1>&2; then namcap *$PKGEXT; fi
     depends_on:
@@ -97,19 +99,16 @@ steps:
     commands:
       - sleep 9  # backoff to prevent false positives
       - source ./tools/build-env.sh
-      - pacman -Syu --noconfirm
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
     depends_on:
       - Prepare
 
   - name: Check reproduced checksums
-    image: alpine:3.15
+    image: archlinux/archlinux:base-devel
     commands:
-      - cd out
-      - (if ls -1 *.pkg.tar.zst 2>/dev/null 1>&2; then
-        sha512sum *.pkg.tar.zst; fi) > ../out.SHA512
-      - cd ../out2
-      - if [[ -s ../out.SHA512 ]]; then sha512sum -c ../out.SHA512; fi
+      - source ./tools/build-env.sh
+      - run_nobody ./tools/compare-checksums.sh
     depends_on:
       - Build packages
       - Reproduce packages
@@ -127,9 +126,9 @@ steps:
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - pacman -S --noconfirm diffoscope unzip
-      - cd out && shopt -s nullglob
-      - for PKG in *$PKGEXT; do diffoscope $PKG ../out2/$PKG; done
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Syu --noconfirm diffoscope unzip
+      - run_nobody ./tools/diff-packages.sh
     depends_on:
       - Build packages
       - Reproduce packages
@@ -223,9 +222,10 @@ steps:
         from_secret: ssh-key
     commands:
       - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Syu --noconfirm git openssh
       - echo "$${SSH_KEY}" > aur/.ssh/id_osamc
       - cp -a aur/.ssh /root && chmod 600 /root/.ssh/*
-      - pacman -S --noconfirm git openssh
       - tools/push-aur.sh
       - rm -rf /root/.ssh
     depends_on:
@@ -288,7 +288,7 @@ steps:
       MAKEPKG_ARGS: -A
     commands:
       - source tools/build-env.sh
-      - pacman -Syu --noconfirm
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
       - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
         mv out/*-debug-*$PKGEXT out-debug/; fi
