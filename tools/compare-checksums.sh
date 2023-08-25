@@ -15,6 +15,10 @@ for PACKAGE in $PACKAGES; do
         PKGFILES=($(cd packages/$PACKAGE; makepkg --packagelist))
 
         for PKG in "${PKGFILES[@]}"; do
+            if [[ "$PKG" =~ '-debug-' ]]; then
+                continue
+            fi
+
             echo "Comparing checksum of out/${PKG##*/}..."
             cd out
             sha512sum "${PKG##*/}" > "${TMP:-/tmp}/${PKG##*/}".sha512
