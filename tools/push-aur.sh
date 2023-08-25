@@ -10,8 +10,6 @@ cd "${0%/*}/.."
 ROOT="$(pwd)"
 TMP="$ROOT/.tmp"
 
-sudo pacman -Syu --noconfirm git openssh
-
 PACKAGES="$(cd "$TMP"/pkgs; ls -1)"
 for PKG in $PACKAGES; do
     if ! grep -Fxq $PKG "$ROOT"/aur/packages; then
