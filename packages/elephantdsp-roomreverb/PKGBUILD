@@ -4,7 +4,7 @@
 _plugin_name=RoomReverb
 pkgname="elephantdsp-${_plugin_name,,}"
 _plugin_uri="https://www.ElephantDSP.com/plugins/Room_Reverb"
-pkgver=1.0.0
+pkgver=1.1.0
 pkgrel=1
 pkgdesc='A mono and stereo algorithmic room reverb audio effect plugin'
 arch=(x86_64 aarch64)
@@ -19,18 +19,18 @@ optdepends=(
   'vst3-host: for VST3 plugin'
 )
 groups=(clap-plugins lv2-plugins pro-audio vst3-plugins)
-_clap_commit='af1e05ce6487151c6b36003fdb47566dbb50194e'
-_clap_ext_commit='cf93cac7ca6a1c0c548c2bda85d49e9bfdb979e1'
-_clap_helpers_commit='f0b6802305ef628c18a597878e304f9f72aaac99'
+_clap_commit='41964fa3f44fdbf6feb20df528a9cdf2cc3b05ba'
+_clap_ext_commit='10bc7d4ddb82eab4796b1ce7d1d2dadd46552f27'
+_clap_helpers_commit='41e1086488f5cd27da871d07edb8eccea99e556d'
 source=("$pkgname-$pkgver.tar.gz::https://github.com/cvde/RoomReverb/archive/refs/tags/v$pkgver.tar.gz"
         "clap-juce-extensions-$_clap_ext_commit.tar.gz::https://github.com/free-audio/clap-juce-extensions/archive/$_clap_ext_commit.tar.gz"
         "clap-$_clap_commit.tar.gz::https://github.com/free-audio/clap/archive/$_clap_commit.tar.gz"
         "clap-helpers-$_clap_helpers_commit.tar.gz::https://github.com/free-audio/clap-helpers/archive/$_clap_helpers_commit.tar.gz"
         "roomreverb-devendor_juce.patch")
-sha256sums=('d49ddec65c793abb7092c43344e25aa17d1a1370ac5427c6a79bae99e7626836'
-            '7d411dc16f8cfdf5dc7e664b90890058521c51e745212c84dffcb0f9cc2bd5ed'
-            '3092d3dab522229cd55f50a239f9e5aab2631bc561f0ed4b069eacadfb6a65bb'
-            '94ed48d50a24934b2f018507fd0111d31246d378943edb4cc3ca22bafab0a6af'
+sha256sums=('f31b826e0695c007be61618125e4a14cee59529e8e7047baa1a435b0236bc2c5'
+            '76714952d4886f445e7db0d0fc005a9012a5d943e91b5c606a158806beace56d'
+            '34bab5c07fddbc2ccc5e5d5177b67abd835a9b9af845f50f154a59622f227891'
+            '49b3d5a3813c73ba023e7d3e0702dd70b51706a0e556d9f0639cc18b6f388cfa'
             'a7478a0113128e55fdc14e4b861f95bd65c1c64cc20c0d544bce07f90c0a6ede')
 
 prepare() {
