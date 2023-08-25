@@ -279,6 +279,12 @@ source = "github"
 github = "Stazed/rakarrack-plus"
 use_max_tag = true
 
+[raysesion]
+source = "github"
+github = "Houston4444/RaySession"
+use_max_tag = true
+prefix = "v"
+
 [rezonateur]
 source = "github"
 github = "jpcima/rezonateur"
