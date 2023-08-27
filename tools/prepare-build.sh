@@ -25,6 +25,13 @@ if [ -d "$CACHE"/pkgdb ]; then
 fi
 
 # Update pacman cache
+echo "Updating package databases..."
+sudo pacman -Sy
+echo "Initializing pacman keyring"
+sudo pacman-key --init
+echo "Updating pacman keyring..."
+sudo pacman -S --noconfirm archlinux-keyring
+echo "Updating installed and installing extra packages..."
 sudo pacman -Syyu --noconfirm git $PACMAN_EXTRA
 
 # some helpers
@@ -49,6 +56,7 @@ get_pkgs() {
 }
 
 final() {
+    echo "Cleaning up ..."
     # sort + uniq full package list for later
     cat "$TMP"/packagelist | sort | uniq > "$TMP"/packagelist.uniq
     mv "$TMP"/packagelist.uniq "$TMP"/packagelist
@@ -80,16 +88,24 @@ source /etc/makepkg.conf
 
 # Fetch current database
 cd "$ROOT"/out
-curl -fOs "https://arch.osamc.de/proaudio/${CARCH}/proaudio.db.tar.gz"
-cd -
+echo "Downloading proaudio package database from arch.osamc.de..."
+curl -fO --progress-bar "https://arch.osamc.de/proaudio/${CARCH}/proaudio.db.tar.gz"
+cd "$ROOT"/packages
 
 # Flag packages to ignore during build
 
 # Ignore packages where the current version is already in the repo
+echo "Examining package database to determine which package(s) to build..."
 if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
     DB_PKGS=($(bsdtar -xOf "$ROOT"/out/proaudio.db.tar.gz '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
     for PKG in $ALLPKGS; do
         IGN=true
+
+        if [[ ! -f "$PKG/PKGBUILD" ]]; then
+            echo "Directory $PKG does not contain a PKGBUILD file"
+            continue
+        fi
+
         PKGFILES=($(cd $PKG; makepkg --packagelist))
         # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
         for PKGPATH in "${PKGFILES[@]/\-debug}"; do

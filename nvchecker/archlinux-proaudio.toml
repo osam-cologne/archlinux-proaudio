@@ -111,6 +111,13 @@ use_max_tag = true
 include_regex = '^v\d+(\.\d+)+$'
 prefix = "v"
 
+[freemajor]
+source = "github"
+github = "linuxmao-org/FreeMajor"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
 [glasscoder]
 source = "github"
 github = "ElvishArtisan/GlassCoder"
@@ -278,6 +285,13 @@ pypi = "QJackCapture"
 source = "github"
 github = "Stazed/rakarrack-plus"
 use_max_tag = true
+
+[raysession]
+source = "github"
+github = "Houston4444/RaySession"
+use_max_tag = true
+prefix = "v"
+exclude_regex = 'v\d+\.\d+\.\d+-alpha.*'
 
 [rezonateur]
 source = "github"

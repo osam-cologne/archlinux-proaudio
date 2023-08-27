@@ -11,6 +11,7 @@ fatfrog.lv2
 faustlive
 fluida.lv2
 fogpad
+freemajor
 glasscoder
 gnome-shell-extension-gsjackctl
 hpklinux
@@ -37,6 +38,7 @@ python-pyjacklib
 python-soundfile
 qjackcapture
 rakarrack-plus
+raysession
 rezonateur
 rtcqs
 sfzlint
