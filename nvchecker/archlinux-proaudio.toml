@@ -303,9 +303,9 @@ prefix = "v"
 source = "pypi"
 pypi = "rtcqs"
 
-[simplescreenrecorder]
+[seq66]
 source = "github"
-github = "MaartenBaert/ssr"
+github = "ahlstromcj/seq66"
 use_max_tag = true
 
 [sfzlint]
@@ -313,6 +313,11 @@ source = "github"
 github = "jisaacstone/sfzlint"
 use_max_tag = true
 prefix = "v"
+
+[simplescreenrecorder]
+source = "github"
+github = "MaartenBaert/ssr"
+use_max_tag = true
 
 [stone-phaser]
 source = "github"
