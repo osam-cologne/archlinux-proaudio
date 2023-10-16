@@ -3,7 +3,7 @@
 
 _name=DXconvert
 pkgname=${_name,,}
-pkgver=3.2.0
+pkgver=3.2.1
 pkgrel=1
 pkgdesc='A file conversion and manipulation toolkit for Yamaha FM synth patches'
 arch=(any)
@@ -18,8 +18,8 @@ optdepends=(
   'zbar: convert patches from QR codes to SysEx'
 )
 groups=(pro-audio)
-source=("http://home.kpn.nl/m.tarenskeen/download/sysex/$_name/$_name-$pkgver.zip")
-sha256sums=('d4f20b7ea6240fdbf5b91f74315d4490a72c780c2662131bbe911e3858ff406b')
+source=("https://dxconvert.martintarenskeen.nl/$_name-$pkgver.zip")
+sha256sums=('3495e3ee1f60e556001a7ab03dddec4fb190e2f1cbdc3f3503311d3f43181a21')
 
 prepare() {
   cd $_name-$pkgver
