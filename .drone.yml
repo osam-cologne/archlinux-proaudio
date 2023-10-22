@@ -97,7 +97,7 @@ steps:
       SRCDEST: /drone/src/.tmp/cache/srcdest
       PKGDEST: /drone/src/out2
     commands:
-      - sleep 9  # backoff to prevent false positives
+      - sleep 9 # backoff to prevent false positives
       - source ./tools/build-env.sh
       - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
@@ -267,7 +267,7 @@ steps:
         path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
-    failure: ignore  # arm64 is not critical for now
+    failure: ignore # arm64 is not critical for now
     environment:
       PKGDEST: /drone/src/out
       MAKEPKG_ARGS: -A
@@ -406,6 +406,10 @@ steps:
         mkdir -p .tmp/db/$ARCH &&
         curl https://arch.osamc.de/proaudio/$ARCH/proaudio.files.tar.gz |
         bsdtar -xC .tmp/db/$ARCH; done
+    when:
+      status:
+        - success
+        - failure
 
   - name: Build site
     image: klakegg/hugo:busybox
@@ -449,26 +453,30 @@ kind: pipeline
 name: Send notification
 
 steps:
-- name: Notify Matrix chat
-  image: spotlightkid/drone-matrixchat-notify
-  settings:
-    homeserver: 'https://sonoj.org'
-    roomid: '!AkWpRHuPJQwVbEpayh:sonoj.org'
-    userid: '@bot-archlinux-proaudio:sonoj.org'
-    accesstoken:
-      from_secret: matrix-bot-token
-    deviceid: 'HOFQKIPDQE'
-    template: |
-      CI pipeline `${DRONE_REPO}` build #${DRONE_BUILD_NUMBER} status: **${DRONE_BUILD_STATUS}**
+  - name: Notify Matrix chat
+    image: spotlightkid/drone-matrixchat-notify
+    settings:
+      homeserver: "https://sonoj.org"
+      roomid: "!AkWpRHuPJQwVbEpayh:sonoj.org"
+      userid: "@bot-archlinux-proaudio:sonoj.org"
+      accesstoken:
+        from_secret: matrix-bot-token
+      deviceid: "HOFQKIPDQE"
+      template: |
+        CI pipeline `${DRONE_REPO}` build #${DRONE_BUILD_NUMBER} status: **${DRONE_BUILD_STATUS}**
 
-      Build logs: [#${DRONE_BUILD_NUMBER}](${DRONE_BUILD_LINK})
+        Build logs: [#${DRONE_BUILD_NUMBER}](${DRONE_BUILD_LINK})
 
-      PR: [#${DRONE_PULL_REQUEST} ${DRONE_PULL_REQUEST_TITLE}](${DRONE_COMMIT_LINK}) by *${DRONE_COMMIT_AUTHOR}*
+        PR: [#${DRONE_PULL_REQUEST} ${DRONE_PULL_REQUEST_TITLE}](${DRONE_COMMIT_LINK}) by *${DRONE_COMMIT_AUTHOR}*
 
-      ```
-      ${DRONE_COMMIT_MESSAGE}
-      ```
-    markdown: 'yes'
+        ```
+        ${DRONE_COMMIT_MESSAGE}
+        ```
+      markdown: "yes"
+    when:
+      status:
+        - success
+        - failure
 
 depends_on:
   - Build and check
