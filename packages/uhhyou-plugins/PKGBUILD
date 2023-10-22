@@ -4,7 +4,7 @@
 _name=VSTPlugins-UhhyouPlugins
 pkgname=uhhyou-plugins
 pkgver=0.58.0
-pkgrel=1
+pkgrel=2
 pkgdesc='A collection of synthesizer and effect VST3 plugins'
 arch=(aarch64 x86_64)
 url='https://ryukau.github.io/VSTPlugins/'
