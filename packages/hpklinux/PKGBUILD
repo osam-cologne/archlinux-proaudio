@@ -9,7 +9,7 @@ arch=(x86_64 aarch64)
 url='https://www.audioscience.com/internet/download/linux_drivers.htm'
 license=(GPL2 ZLIB)
 groups=(pro-audio)
-provides=(python-audioscience)
+#provides=(python-audioscience)
 depends=(glibc)
 makedepends=(python-setuptools)
 optdepends=('python: for python bindings'
@@ -21,14 +21,14 @@ build() {
   cd ${pkgname}_$pkgver
   make -C hpi-lib
   make -C hpi-cli-apps
-  make -C asi-python build
+  #make -C asi-python build
 }
 
 package() {
   cd ${pkgname}_$pkgver
   make DESTDIR="$pkgdir" install-prefix=/usr -C hpi-lib install
   make DESTDIR="$pkgdir" install-prefix=/usr -C hpi-cli-apps install
-  make CMD_OPTS="--root='$pkgdir' --skip-build --optimize=1" -C asi-python install
+  #make CMD_OPTS="--root='$pkgdir' --skip-build --optimize=1" -C asi-python install
   # write custom ZLIB license header to file
   sed -n '/Copyright/,/GPLCompatibleLicenses/p' hpi-lib/hpi.h | install -Dvm644 /dev/stdin \
     "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
