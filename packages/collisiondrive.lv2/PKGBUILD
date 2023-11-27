@@ -1,0 +1,36 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+_name=CollisionDrive
+pkgname=${_name,,}.lv2
+pkgver=0.1
+pkgrel=1
+pkgdesc='A modern overdrive with built-in noise gate guitar pedal LV2 plugin'
+arch=(aarch64 x86_64)
+url="https://github.com/brummer10/$_name"
+license=(0BSD GPL3)
+groups=(lv2-plugins pro-audio)
+depends=(cairo glibc gcc-libs libx11)
+makedepends=(lv2 xxd)
+checkdepends=(lv2lint)
+optdepends=('lv2-host: for loading the LV2 plugin')
+source=("https://github.com/brummer10/$_name/releases/download/v$pkgver/$_name.lv2_$pkgver.tar.gz")
+sha256sums=('2c9327784a9b2f94853d898722dc9db7054a428cf52cf5f0ebbce4f19aafc6d3')
+_plugin_uri="https://github.com/brummer10/$_name"
+
+build() {
+  cd $_name.lv2_$pkgver
+  make
+}
+
+check() {
+  cd $_name.lv2_$pkgver
+  lv2lint -M pack -I $_name/$_name.lv2 "$_plugin_uri"
+}
+
+package() {
+  cd $_name.lv2_$pkgver
+  make DESTDIR="$pkgdir" install
+  install -vDm 644 LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname
+  install -vDm 644 README.md $_name.png -t "$pkgdir"/usr/share/doc/$pkgname
+}
