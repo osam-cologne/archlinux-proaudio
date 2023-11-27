@@ -29,6 +29,12 @@ use_max_tag = true
 include_regex = '^v[\.\d]+$'
 prefix = "v"
 
+[airwindows-lv2]
+source = "git"
+git = "https://git.sr.ht/~hannes/airwindows-lv2"
+use_max_tag = true
+prefix = "v"
+
 [a-sid]
 source = "github"
 github = "sdangelo/asid"
