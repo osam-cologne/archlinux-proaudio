@@ -363,6 +363,13 @@ github = "swh/lv2"
 use_max_tag = true
 prefix = "v"
 
+[tonetwistplugs]
+source = "github"
+github = "brummer10/ToneTwistPlugs"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
 [triceratops]
 source = "regex"
 url = "https://sourceforge.net/projects/triceratops/files/"
