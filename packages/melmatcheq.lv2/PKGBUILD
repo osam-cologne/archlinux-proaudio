@@ -13,20 +13,20 @@ groups=(lv2-plugins pro-audio)
 depends=(cairo glibc gcc-libs libx11)
 makedepends=(lv2)
 checkdepends=(lv2lint)
-optdepends=('lv2-host: for loading the LV2 plugin')
+optdepends=('lv2-host: for loading the LV2 format plugin')
 source=("$_name-$pkgver.tar.gz::https://github.com/brummer10/$_name/archive/refs/tags/v$pkgver.tar.gz"
-        'fix-shortcut.patch::https://patch-diff.githubusercontent.com/raw/brummer10/MelMatchEQ.lv2/pull/2.diff'
-        'fix-manifest.patch::https://github.com/brummer10/MelMatchEQ.lv2/pull/4.diff')
+        'fix-shortcut.patch::https://github.com/brummer10/MelMatchEQ.lv2/pull/2.patch'
+        'fix-manifest.patch::https://github.com/brummer10/MelMatchEQ.lv2/pull/4.patch')
 sha256sums=('5cd103056675f723d9f9120f2c8a43b312586caff46882dfe909602a2b10ff47'
-            '5586da33ae229a0d8ed271bb9704c8a0f2552794e1080eff8bbddac8d33417b8'
-            'd6096526f1edb15ddffe8446e7a56b5992a36a2d5eaf1f0678b762a2207319ec')
+            'dd0cdac22a24c909d09358e9694a060c58ee3d3884618a6b391ae1af2da49d3f'
+            '2d27e152e3d829544e667bcd8f64ce4a46fafcf7312ac29fee03866537ca87bd')
 _plugin_uri='https://github.com/brummer10/MelMatchEQ#_melmatcheq_'
 
 
 prepare() {
   cd $_name-$pkgver
-  patch -p1 -N -r - -i "$srcdir"/fix-shortcut.patch || true
-  patch -p1 -N -r - -i "$srcdir"/fix-manifest.patch || true
+  patch -p1 -N -r - -i "$srcdir"/fix-shortcut.patch
+  patch -p1 -N -r - -i "$srcdir"/fix-manifest.patch
 }
 
 build() {
