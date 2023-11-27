@@ -31,5 +31,3 @@ package() {
   install -vDm 644 $pkgname-v$pkgver/LICENSE \
     -t "$pkgdir"/usr/share/licenses/$pkgname
 }
-
-# vim:set ts=2 sw=2 et:
