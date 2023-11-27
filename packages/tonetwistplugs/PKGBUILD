@@ -1,0 +1,70 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+_name=ToneTwistPlugs
+pkgname=${_name,,}
+pkgver=0.6
+pkgrel=1
+pkgdesc='A small collection of multi-format, cross-platform guitar pedal effect plugins'
+arch=(aarch64 x86_64)
+url="https://github.com/brummer10/$_name"
+license=(GPL2)
+groups=(clap-plugins lv2-plugins pro-audio vst-plugins vst3-plugins)
+depends=(cairo glibc gcc-libs libx11 libxcursor libxext libxrandr)
+makedepends=(dbus lv2)
+checkdepends=(lv2lint)
+optdepends=(
+  'jack: for using the stand-alone programs with JACK'
+  'clap-host: for loading the CLAP format plugins'
+  'lv2-host: for loading the LV2 format plugins'
+  'vst-host: for loading the VST2 format plugins'
+  'vst3-host: for loading the VST3 format plugins'
+)
+_dpf_commit=47e5f3ceeccf880119be0a539f9db892dc56fbef
+_pugl_commit=88dc250bfd4ca1ccd47801acf071ebf79e1450d7
+source=(
+  "$_name-$pkgver.tar.gz::https://github.com/brummer10/$_name/archive/refs/tags/v$pkgver.tar.gz"
+  "dpf-$_dpf_commit.tar.gz::https://github.com/DISTRHO/DPF/archive/$_dpf_commit.tar.gz"
+  "pugl-$_pugl_commit.tar.gz::https://github.com/DISTRHO/pugl/archive/$_pugl_commit.tar.gz"
+)
+sha256sums=('99190f9ddc03eb8586abdf8afcaa8ec8ecf81db7af3db7791949b5702ff3df33'
+            '5e7cf7fef94240420f345fcf68bf7c920e88256a11ea3ae264f55644a2fb9995'
+            'd83e958d8d699d60c2425eb51de7b38244b3f86e7a84ede83d6454b84cbf7ce5')
+_plugins=(
+  BoobTube
+  CollisionDrive
+  MetalTone
+  Rumor
+  TubeScreamer
+  ValveCaster
+)
+
+prepare() {
+  cd $_name-$pkgver
+  rm -rf dpf; ln -s "$srcdir"/DPF-$_dpf_commit dpf
+  rm -rf dpf/dgl/src/pugl-upstream; ln -s "$srcdir"/pugl-$_pugl_commit dpf/dgl/src/pugl-upstream
+}
+
+build() {
+  cd $_name-$pkgver
+  make SKIP_NATIVE_AUDIO_FALLBACK=true
+}
+
+check() {
+  cd $_name-$pkgver
+  local _plugin_name
+  local base_url="urn:brummer10:"
+  for _plugin in "${_plugins[@]}"; do
+    lv2lint -s lv2_generate_ttl -Mpack -I bin/${_plugin,,}.lv2 "$base_url${_plugin,,}"
+  done
+}
+
+package() {
+  depends+=(libdbus-1.so)
+  cd $_name-$pkgver
+  make DESTDIR="$pkgdir" PREFIX=/usr install
+  install -vDm 644 README.md -t "$pkgdir"/usr/share/doc/$pkgname
+  for _plugin in "${_plugins[@]}"; do
+    install -vDm 644 $_plugin.png -t "$pkgdir"/usr/share/doc/$pkgname
+  done
+}
