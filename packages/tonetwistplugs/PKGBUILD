@@ -3,7 +3,7 @@
 
 _name=ToneTwistPlugs
 pkgname=${_name,,}
-pkgver=0.6
+pkgver=0.7
 pkgrel=1
 pkgdesc='A small collection of multi-format, cross-platform guitar pedal effect plugins'
 arch=(aarch64 x86_64)
@@ -20,16 +20,16 @@ optdepends=(
   'vst-host: for loading the VST2 format plugins'
   'vst3-host: for loading the VST3 format plugins'
 )
-_dpf_commit=47e5f3ceeccf880119be0a539f9db892dc56fbef
-_pugl_commit=88dc250bfd4ca1ccd47801acf071ebf79e1450d7
+_dpf_commit=df2afed246113e4459808b112583d54cf7e433e9
+_pugl_commit=21cb3c8b480f4c97f888e3d08630ded9c8bf04a2
 source=(
   "$_name-$pkgver.tar.gz::https://github.com/brummer10/$_name/archive/refs/tags/v$pkgver.tar.gz"
   "dpf-$_dpf_commit.tar.gz::https://github.com/DISTRHO/DPF/archive/$_dpf_commit.tar.gz"
   "pugl-$_pugl_commit.tar.gz::https://github.com/DISTRHO/pugl/archive/$_pugl_commit.tar.gz"
 )
-sha256sums=('99190f9ddc03eb8586abdf8afcaa8ec8ecf81db7af3db7791949b5702ff3df33'
-            '5e7cf7fef94240420f345fcf68bf7c920e88256a11ea3ae264f55644a2fb9995'
-            'd83e958d8d699d60c2425eb51de7b38244b3f86e7a84ede83d6454b84cbf7ce5')
+sha256sums=('f07d415de898d76ac9c156ceb6e51564a6a8f5068adcb39f32bec85eea06e6f1'
+            '4fc868815cfb1027d784cc64fca83a5fd01c7b6f3ac6cc7199ae9708654e1ff2'
+            'aca3420ae9db14cacfba21bfb83d7277886f9d3a7117d18611455d4383ad6606')
 _plugins=(
   BoobTube
   CollisionDrive
@@ -43,6 +43,9 @@ prepare() {
   cd $_name-$pkgver
   rm -rf dpf; ln -s "$srcdir"/DPF-$_dpf_commit dpf
   rm -rf dpf/dgl/src/pugl-upstream; ln -s "$srcdir"/pugl-$_pugl_commit dpf/dgl/src/pugl-upstream
+  touch pugl_patch.flag
+  cd dpf/dgl/src/pugl-upstream
+  patch -p1 -N -r - -i "$srcdir"/$_name-$pkgver/pugl.patch
 }
 
 build() {
