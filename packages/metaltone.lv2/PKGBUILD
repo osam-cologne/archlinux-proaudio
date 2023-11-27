@@ -1,0 +1,45 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+_name=MetalTone
+pkgname=${_name,,}.lv2
+pkgver=0.1
+pkgrel=1
+pkgdesc='A high gain distortion with an advanced EQ section guitar pedal LV2 plugin'
+arch=(aarch64 x86_64)
+url="https://github.com/brummer10/$_name"
+license=(0BSD GPL3)
+groups=(lv2-plugins pro-audio)
+depends=(cairo glibc gcc-libs libx11)
+makedepends=(lv2 xxd)
+checkdepends=(lv2lint)
+optdepends=('lv2-host: for loading the LV2 plugin')
+source=("https://github.com/brummer10/$_name/releases/download/v$pkgver/$_name.lv2_$pkgver.tar.gz"
+        'fix-asprintf.patch::https://github.com/brummer10/libxputty/commit/7eb70bf3f7bce0af9e1919d6c875cdb8efca734e.patch'
+        'https://raw.githubusercontent.com/brummer10/MetalTone/27553c5681ef3d9fdc49edd39a682567012ad35d/LICENSE.txt')
+sha256sums=('43eb8e6c04194f010b37ee330390703020b1b42ae0069eed78c1def74a4c03f7'
+            '15fe7e3e2ec8efe62dc9bb4c0830eaf3ed0373cd39ebd755f2d9193710ebbf76'
+            '85906cb54c5dbdadbf97316f432882e4a4ccf9ec7599923017f0e3077b52eec1')
+_plugin_uri="https://github.com/brummer10/$_name"
+
+prepare() {
+  cd $_name.lv2_$pkgver/libxputty
+  patch -p1 -N -r - -i "$srcdir"/fix-asprintf.patch || true
+}
+
+build() {
+  cd $_name.lv2_$pkgver
+  make
+}
+
+check() {
+  cd $_name.lv2_$pkgver
+  lv2lint -M pack -I $_name/$_name.lv2 "$_plugin_uri"
+}
+
+package() {
+  cd $_name.lv2_$pkgver
+  make DESTDIR="$pkgdir" install
+  install -vDm 644 "$srcdir"/LICENSE.txt -t "$pkgdir"/usr/share/licenses/$pkgname
+  install -vDm 644 README.md $_name.png -t "$pkgdir"/usr/share/doc/$pkgname
+}
