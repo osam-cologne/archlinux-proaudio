@@ -1,0 +1,48 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+_name=MelMatchEQ.lv2
+pkgname=${_name,,}
+pkgver=0.1
+pkgrel=1
+pkgdesc='A profiling EQ using a 26 step Mel Frequency Band LV2 plugin'
+arch=(aarch64 x86_64)
+url="https://github.com/brummer10/$_name"
+license=(GPL2)
+groups=(lv2-plugins pro-audio)
+depends=(cairo glibc gcc-libs libx11)
+makedepends=(lv2)
+checkdepends=(lv2lint)
+optdepends=('lv2-host: for loading the LV2 plugin')
+source=("$_name-$pkgver.tar.gz::https://github.com/brummer10/$_name/archive/refs/tags/v$pkgver.tar.gz"
+        'fix-shortcut.patch::https://patch-diff.githubusercontent.com/raw/brummer10/MelMatchEQ.lv2/pull/2.diff'
+        'fix-manifest.patch::https://github.com/brummer10/MelMatchEQ.lv2/pull/4.diff')
+sha256sums=('5cd103056675f723d9f9120f2c8a43b312586caff46882dfe909602a2b10ff47'
+            '5586da33ae229a0d8ed271bb9704c8a0f2552794e1080eff8bbddac8d33417b8'
+            'd6096526f1edb15ddffe8446e7a56b5992a36a2d5eaf1f0678b762a2207319ec')
+_plugin_uri='https://github.com/brummer10/MelMatchEQ#_melmatcheq_'
+
+
+prepare() {
+  cd $_name-$pkgver
+  patch -p1 -N -r - -i "$srcdir"/fix-shortcut.patch || true
+  patch -p1 -N -r - -i "$srcdir"/fix-manifest.patch || true
+}
+
+build() {
+  cd $_name-$pkgver
+  export CXXFLAGS="$CXXFLAGS -fvisibility=hidden"
+  make
+}
+
+check() {
+  cd $_name-$pkgver
+  # Compiled-in UI image resources are externally visible symbols
+  lv2lint -s '_binary*' -M pack -I gx_${_name,,} "$_plugin_uri"
+}
+
+package() {
+  cd $_name-$pkgver
+  make DESTDIR="$pkgdir" install
+  install -vDm 644 README.md ${_name/.lv2/}.png -t "$pkgdir"/usr/share/doc/$pkgname
+}
