@@ -227,6 +227,13 @@ github = "x42/mclk.lv2"
 use_max_tag = true
 prefix = "v"
 
+["melmatcheq.lv2"]
+source = "github"
+github = "brummer10/MelMatchEQ.lv2"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
 ["metaltone.lv2"]
 source = "github"
 github = "brummer10/MetalTone"
