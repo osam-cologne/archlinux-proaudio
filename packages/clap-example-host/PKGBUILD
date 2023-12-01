@@ -5,7 +5,7 @@ _name=clap-host
 # clap-host as pkgname is not ideal due to other hosts using that as a virtual provides
 pkgname=clap-example-host
 pkgver=1.0.3
-pkgrel=1
+pkgrel=2
 pkgdesc='CLAP example audio plugin host'
 arch=(aarch64 x86_64)
 url='https://github.com/free-audio/clap-host'
