@@ -91,12 +91,6 @@ url = "http://home.kpn.nl/m.tarenskeen/download/sysex/DXconvert/dxconvert.html"
 regex = 'DXconvert-(\d+\.\d+(?:\.\d+)?).zip'
 encoding = "utf-8"
 
-[elephantdsp-roomreverb]
-source = "github"
-github = "cvde/RoomReverb"
-use_max_tag = true
-prefix = "v"
-
 ["fatfrog.lv2"]
 source = "github"
 github = "brummer10/FatFrog.lv2"
