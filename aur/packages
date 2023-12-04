@@ -7,7 +7,6 @@ clap-validator
 darkice
 die-plugins
 dxconvert
-elephantdsp-roomreverb
 fatfrog.lv2
 faustlive
 fluida.lv2
@@ -31,8 +30,6 @@ mclk.lv2
 midiomatic
 ninjam-server
 ola
-ot-cryptid
-ot-simian
 paulxstretch
 python-miditk-smf
 python-mido

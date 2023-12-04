@@ -91,12 +91,6 @@ url = "http://home.kpn.nl/m.tarenskeen/download/sysex/DXconvert/dxconvert.html"
 regex = 'DXconvert-(\d+\.\d+(?:\.\d+)?).zip'
 encoding = "utf-8"
 
-[elephantdsp-roomreverb]
-source = "github"
-github = "cvde/RoomReverb"
-use_max_tag = true
-prefix = "v"
-
 ["fatfrog.lv2"]
 source = "github"
 github = "brummer10/FatFrog.lv2"
@@ -271,18 +265,6 @@ prefix = "v"
 source = "github"
 github = "OpenLightingProject/ola"
 use_max_tag = true
-
-[ot-cryptid]
-source = "regex"
-url = "https://punklabs.com/ot-cryptid"
-regex = 'OneTrick-CRYPTID-(\d+\.\d+\.\d+)-Source.zip'
-encoding = "utf-8"
-
-[ot-simian]
-source = "regex"
-url = "https://punklabs.com/ot-simian"
-regex = 'OneTrick-SIMIAN-(\d+\.\d+\.\d+)-Source.zip'
-encoding = "utf-8"
 
 [paulxstretch]
 source = "github"
