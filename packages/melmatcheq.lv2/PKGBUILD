@@ -22,7 +22,6 @@ sha256sums=('5cd103056675f723d9f9120f2c8a43b312586caff46882dfe909602a2b10ff47'
             '2d27e152e3d829544e667bcd8f64ce4a46fafcf7312ac29fee03866537ca87bd')
 _plugin_uri='https://github.com/brummer10/MelMatchEQ#_melmatcheq_'
 
-
 prepare() {
   cd $_name-$pkgver
   patch -p1 -N -r - -i "$srcdir"/fix-shortcut.patch
