@@ -95,6 +95,8 @@ cd "$ROOT"/packages
 # Flag packages to ignore during build
 
 # Ignore unchanged packages
+sudo git status
+sudo git diff master
 for PKG in $ALLPKGS; do
     if ! sudo git diff --quiet master ./$PKG; then
         disable_pkgs "unchanged" $PKG
