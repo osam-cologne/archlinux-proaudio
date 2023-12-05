@@ -96,7 +96,7 @@ cd "$ROOT"/packages
 
 # Ignore unchanged packages
 for PKG in $ALLPKGS; do
-    if sudo git diff --quiet origin/master ./$PKG; then
+    if sudo git diff --quiet $DRONE_COMMIT_BEFORE..$DRONE_COMMIT_AFTER ./$PKG; then
         disable_pkgs "unchanged" $PKG
     fi
 done
