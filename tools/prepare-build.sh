@@ -105,9 +105,11 @@ done
 
 # Ignore packages where the current version is already in the repo
 echo "Examining package database to determine which package(s) to build..."
+echo "Packages: $(get_pkgs)"
 if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
     DB_PKGS=($(bsdtar -xOf "$ROOT"/out/proaudio.db.tar.gz '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
     for PKG in $(get_pkgs); do
+        echo "Checking $PKG"
         IGN=true
 
         if [[ ! -f "$PKG/PKGBUILD" ]]; then
@@ -116,6 +118,7 @@ if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
         fi
 
         PKGFILES=($(cd $PKG; makepkg --packagelist))
+        echo "pkgfiles $PKGFILES"
         # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
         for PKGPATH in "${PKGFILES[@]/\-debug}"; do
             PKGFILE=$(basename $PKGPATH)
