@@ -94,11 +94,18 @@ cd "$ROOT"/packages
 
 # Flag packages to ignore during build
 
+# Ignore unchanged packages
+for PKG in $ALLPKGS; do
+    if sudo git diff --quiet $DRONE_COMMIT_BEFORE..$DRONE_COMMIT_AFTER ./$PKG; then
+        disable_pkgs "unchanged" $PKG
+    fi
+done
+
 # Ignore packages where the current version is already in the repo
 echo "Examining package database to determine which package(s) to build..."
 if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
     DB_PKGS=($(bsdtar -xOf "$ROOT"/out/proaudio.db.tar.gz '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
-    for PKG in $ALLPKGS; do
+    for PKG in $(get_pkgs); do
         IGN=true
 
         if [[ ! -f "$PKG/PKGBUILD" ]]; then
