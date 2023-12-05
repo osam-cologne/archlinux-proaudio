@@ -41,8 +41,10 @@ _plugins=(
 
 prepare() {
   cd $_name-$pkgver
-  rm -rf dpf; ln -s "$srcdir"/DPF-$_dpf_commit dpf
-  rm -rf dpf/dgl/src/pugl-upstream; ln -s "$srcdir"/pugl-$_pugl_commit dpf/dgl/src/pugl-upstream
+  rm -rf dpf
+  ln -s "$srcdir"/DPF-$_dpf_commit dpf
+  rm -rf dpf/dgl/src/pugl-upstream
+  ln -s "$srcdir"/pugl-$_pugl_commit dpf/dgl/src/pugl-upstream
   touch pugl_patch.flag
   cd dpf/dgl/src/pugl-upstream
   patch -p1 -N -r - -i "$srcdir"/$_name-$pkgver/pugl.patch
