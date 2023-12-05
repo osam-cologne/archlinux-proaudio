@@ -96,9 +96,9 @@ cd "$ROOT"/packages
 
 # Ignore unchanged packages
 sudo git status
-sudo git diff master
+sudo git diff origin/master
 for PKG in $ALLPKGS; do
-    if ! sudo git diff --quiet master ./$PKG; then
+    if ! sudo git diff --quiet origin/master ./$PKG; then
         disable_pkgs "unchanged" $PKG
     fi
 done
