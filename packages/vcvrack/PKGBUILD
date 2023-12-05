@@ -17,7 +17,7 @@ _plugin_name=Fundamental
 _plugin_ver=2.6.0
 _plugin_pkg=$pkgname-${_plugin_name,,}
 depends=(glfw-x11 jansson)
-makedepends=(alsa-lib curl gendesk git glew jack jq libarchive libpulse openssl rtmidi simde
+makedepends=(alsa-lib cmake curl gendesk git glew jack jq libarchive libpulse openssl rtmidi simde
   speexdsp zstd)
 provides=("$_plugin_pkg=$_plugin_ver")
 conflicts=($_plugin_pkg)
