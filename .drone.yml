@@ -19,6 +19,16 @@ steps:
       - source tools/build-env.sh
       - run_nobody tools/prepare-build.sh namcap diffoscope openssh unzip
 
+  - name: Generate package list
+    image: archlinux/archlinux:base-devel
+    commands:
+      - source tools/build-env.sh
+      - run_nobody tools/gen-packagelist.sh
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
     volumes:
@@ -167,6 +177,7 @@ steps:
       - tools/update-db.sh
     depends_on:
       - Sign packages
+      - Generate package list
     when:
       ref:
         include:
@@ -275,6 +286,16 @@ steps:
       - source tools/build-env.sh
       - run_nobody tools/prepare-build.sh
 
+  - name: Generate package list
+    image: lopsided/archlinux-arm64v8:devel
+    commands:
+      - source tools/build-env.sh
+      - run_nobody tools/gen-packagelist.sh
+    when:
+      ref:
+        include:
+          - refs/heads/master
+
   - name: Build packages
     image: lopsided/archlinux-arm64v8:devel
     volumes:
@@ -337,6 +358,7 @@ steps:
       - tools/update-db.sh
     depends_on:
       - Sign packages
+      - Generate package list
     when:
       ref:
         include:
