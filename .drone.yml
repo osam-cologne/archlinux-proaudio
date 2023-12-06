@@ -283,7 +283,7 @@ steps:
       - run_nobody tools/prepare-build.sh
 
   - name: Generate package list
-    image: archlinux/archlinux:base-devel
+    image: lopsided/archlinux-arm64v8:devel
     commands:
       - source tools/build-env.sh
       - run_nobody tools/gen-packagelist.sh
