@@ -21,9 +21,15 @@ for PKG in $ALLPKGS; do
     # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
     for PKGPATH in "${PKGFILES[@]/\-debug}"; do
         PKGFILE=$(basename $PKGPATH)
-        echo $PKGFILE >> "$TMP"/packagelist
+        echo $PKGFILE >> "$TMP"/pkgfiles
     done
+    (
+        source $PKG/PKGBUILD
+        printf "%s\n" "${pkgname[@]}"
+    ) >> "$TMP"/pkgnames
 done
 
-cat "$TMP"/packagelist | sort | uniq > "$TMP"/packagelist.uniq
-mv "$TMP"/packagelist.uniq "$TMP"/packagelist
+cat "$TMP"/pkgfiles | sort | uniq > "$TMP"/pkgfiles.uniq
+mv "$TMP"/pkgfiles.uniq "$TMP"/pkgfiles
+cat "$TMP"/pkgnames | sort | uniq > "$TMP"/pkgnames.uniq
+mv "$TMP"/pkgnames.uniq "$TMP"/pkgnames

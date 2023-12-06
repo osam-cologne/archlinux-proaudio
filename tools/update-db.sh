@@ -18,17 +18,16 @@ curl -fO "https://arch.osamc.de/proaudio/${CARCH}/proaudio.{db,files}.tar.gz"
 mkdir -p "$TMP"/repo
 bsdtar -xf proaudio.db.tar.gz -C "$TMP"/repo
 
-# Cleanup old packages from db. $TMP/packagelist was created in an earlier
-# step and contains a list of package files built from all packages
+# Cleanup old packages from db. $TMP/pkg{files,names} were created in an earlier
+# step and contain all package files/names from all packages
 # in this repo. This allows checking (and removing) packages simply by removing
 # their PKGBUILD from this repo.
 # This also covers renaming packages or merging split packages.
 REMOVAL=()
 for PKGPATH in "$TMP"/repo/*/desc; do
-    FILENAME="$(sed -n '/^%FILENAME%$/ {n;p}' "$PKGPATH")"
-    if ! grep -qxF "$FILENAME" "$TMP"/packagelist; then
-        # $FILENAME is not built by any of our packages, let's remove it from the db
-        PKGNAME="$(sed -n '/^%NAME%$/ {n;p}' "$PKGPATH")"
+    PKGNAME="$(sed -n '/^%NAME%$/ {n;p}' "$PKGPATH")"
+    if ! grep -qxF "$PKGNAME" "$TMP"/pkgnames; then
+        # $PKGNAME is not built by any of our packages, let's remove it from the db
         REMOVAL+=(${PKGNAME})
     fi
 done
@@ -38,8 +37,8 @@ printf " %s\n" "${REMOVAL[@]}"
 
 # Fix accidentally removed packages
 DB_PKGS=($(bsdtar -xOf proaudio.db.tar.gz '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
-cat "$TMP"/packagelist | while read PKGFILE; do
-    if [[ ! " ${DB_PKGS[@]} " =~ " $PKGFILE " ]]; then
+cat "$TMP"/pkgfiles | while read PKGFILE; do
+    if [[ ! -f $PKGFILE && ! " ${DB_PKGS[@]} " =~ " $PKGFILE " ]]; then
         curl -fsO "https://arch.osamc.de/proaudio/${CARCH}/${PKGFILE}{,.sig}" || echo "Failed to fix missing package file $PKGFILE, bump pkgrel to rebuild"
     fi
 done
