@@ -57,9 +57,6 @@ get_pkgs() {
 
 final() {
     echo "Cleaning up ..."
-    # sort + uniq full package list for later
-    cat "$TMP"/packagelist | sort | uniq > "$TMP"/packagelist.uniq
-    mv "$TMP"/packagelist.uniq "$TMP"/packagelist
 
     # fetch all dependencies to pacman cache
     export PACKAGES="$(get_pkgs)"
@@ -117,7 +114,6 @@ if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
         # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
         for PKGPATH in "${PKGFILES[@]/\-debug}"; do
             PKGFILE=$(basename $PKGPATH)
-            echo $PKGFILE >> "$TMP"/packagelist
             if [[ ! " ${DB_PKGS[@]} " =~ " $PKGFILE " ]]; then
                 IGN=false
             fi

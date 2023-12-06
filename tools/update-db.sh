@@ -18,8 +18,8 @@ curl -fO "https://arch.osamc.de/proaudio/${CARCH}/proaudio.{db,files}.tar.gz"
 mkdir -p "$TMP"/repo
 bsdtar -xf proaudio.db.tar.gz -C "$TMP"/repo
 
-# Cleanup old packages from db. $TMP/packagelist was created in the earlier
-# prepare step and contains a list of package files built from all packages
+# Cleanup old packages from db. $TMP/packagelist was created in an earlier
+# step and contains a list of package files built from all packages
 # in this repo. This allows checking (and removing) packages simply by removing
 # their PKGBUILD from this repo.
 # This also covers renaming packages or merging split packages.
