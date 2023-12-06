@@ -36,6 +36,11 @@ repo-remove proaudio.db.tar.gz ${REMOVAL[@]}
 echo "Packages removed from db:"
 printf " %s\n" "${REMOVAL[@]}"
 
+# Fix accidentally removed packages
+cat "$TMP"/packagelist | while read PKGFILE; do
+    curl -fsO "https://arch.osamc.de/proaudio/${CARCH}/${PKGFILE}{,.sig}" || true
+done
+
 # Add newly built packages to db
 repo-add proaudio.db.tar.gz *$PKGEXT
 
