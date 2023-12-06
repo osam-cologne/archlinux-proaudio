@@ -37,8 +37,11 @@ echo "Packages removed from db:"
 printf " %s\n" "${REMOVAL[@]}"
 
 # Fix accidentally removed packages
+DB_PKGS=($(bsdtar -xOf proaudio.db.tar.gz '*/desc' | sed -n '/^%FILENAME%$/ {n;p}'))
 cat "$TMP"/packagelist | while read PKGFILE; do
-    curl -fsO "https://arch.osamc.de/proaudio/${CARCH}/${PKGFILE}{,.sig}" || true
+    if [[ ! " ${DB_PKGS[@]} " =~ " $PKGFILE " ]]; then
+        curl -fsO "https://arch.osamc.de/proaudio/${CARCH}/${PKGFILE}{,.sig}" || echo "Failed to fix missing package file $PKGFILE, bump pkgrel to rebuild"
+    fi
 done
 
 # Add newly built packages to db
