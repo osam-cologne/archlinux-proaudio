@@ -1,5 +1,6 @@
 dpf/
 pkg/
 src/
-ssr-git-*.pkg.tar.*
-ssr/
+pugl/
+sympathetic-string-resonator/
+sympathetic-string-resonator-git-*.pkg.tar.*
