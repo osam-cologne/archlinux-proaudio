@@ -56,7 +56,7 @@ build() {
   ln -rs build $_name-$pkgver/src/.libs
   cd $_name-$pkgver/python
   PROTOC="$srcdir"/build/protoc \
-  python -m build --wheel --no-isolation
+    python -m build --wheel --no-isolation
 }
 
 check() {
@@ -86,4 +86,3 @@ package() {
   rm "$pkgdir"/usr/lib/libprotoc.so.3.21.12.0
   rm "$pkgdir"/usr/lib/libprotoc.so.32
 }
-
