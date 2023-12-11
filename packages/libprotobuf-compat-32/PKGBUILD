@@ -35,8 +35,6 @@ prepare() {
   patch -Rp1 < ../fix-abi.patch
   # fix for python 3.11
   patch -Np1 -i ../python3.11.patch
-  # lets not call setup.py like a script and just build...
-  #patch -Np1 -i ../pep517.patch
 }
 
 build() {
@@ -69,10 +67,6 @@ package() {
 
   cd $_name-$pkgver
   install -vDm 644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
-  #install -vDm 644 editors/protobuf-mode.el \
-  #  -t "$pkgdir/usr/share/emacs/site-lisp/"
-  #install -vDm 644 editors/proto.vim \
-  #  -t "$pkgdir/usr/share/vim/vimfiles/syntax"
 
   rm -r "$pkgdir"/usr/bin
   rm -r "$pkgdir"/usr/include
