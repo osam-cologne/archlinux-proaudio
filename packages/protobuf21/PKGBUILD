@@ -74,6 +74,7 @@ _pick() {
 
 
 package_protobuf21() {
+  provides=("protobuf=$pkgver")
   conflicts=(protobuf)
   depends+=(protobuf21-lib)
   DESTDIR="$pkgdir" cmake --install build
