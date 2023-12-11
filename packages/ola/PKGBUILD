@@ -10,7 +10,7 @@ arch=(x86_64 aarch64)
 url='https://www.openlighting.org'
 license=(LGPL2.1 GPL2)
 depends=()
-makedepends=(avahi cppunit doxygen flake8 libftdi-compat liblo libmicrohttpd ncurses protobuf
+makedepends=(avahi cppunit doxygen flake8 libftdi-compat liblo libmicrohttpd ncurses protobuf-21
   python-numpy python-protobuf util-linux-libs)
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/OpenLightingProject/$pkgbase/archive/refs/tags/$pkgver.tar.gz"
         "fix-protobuf-v20.patch::https://github.com/OpenLightingProject/$pkgbase/pull/1875.patch")
@@ -24,15 +24,21 @@ prepare() {
 }
 
 build() {
+  local config_options=(
+    --prefix=/usr
+    --enable-silent-rules
+    --enable-python-libs
+    --enable-rdm-tests
+    --enable-ja-rule
+    --enable-e133
+    --with-protoc=protoc-21
+    #--enable-java-libs
+  )
   cd $pkgbase-$pkgver
   autoreconf -i
-  ./configure --prefix=/usr \
-    --enable-silent-rules \
-    --enable-python-libs \
-    --enable-rdm-tests \
-    --enable-ja-rule \
-    --enable-e133
-    # --enable-java-libs
+  export CXXFLAGS="$CXXFLAGS -I/usr/include/abseil-cpp11 -I/usr/include/protobuf-21"
+  export LDFLAGS="$LDFLAGS -L/usr/lib/protobuf-21"
+  ./configure "${config_options[@]}"
   make
   make doxygen-doc
 }
