@@ -11,18 +11,19 @@
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
 _name=protobuf
-pkgname=libprotobuf-compat-32
+pkgbase=protobuf21
+pkgname=(protobuf21 protobuf21-lib)
 # DO NOT UPDATE, the point of this package is to pin the version
 pkgver=21.12
 pkgrel=1
-pkgdesc='Protocol Buffers – Compatibility package for libprotobuf.so=32'
+pkgdesc='Protocol Buffers (legacy)'
 arch=(aarch64 x86_64)
 url='https://developers.google.com/protocol-buffers/'
 license=(BSD)
 depends=(gcc-libs glibc zlib)
 makedepends=(cmake gtest python-build python-installer python-setuptools python-wheel)
 checkdepends=(python-pytest)
-source=("https://github.com/protocolbuffers/$_name/archive/v$pkgver/$pkgname-$pkgver.tar.gz"
+source=("https://github.com/protocolbuffers/$_name/archive/v$pkgver/$_name-$pkgver.tar.gz"
         "python3.11.patch::https://github.com/protocolbuffers/$_name/commit/da973aff.patch"
         "fix-abi.patch::https://github.com/protocolbuffers/$_name/commit/101b6199.patch")
 sha256sums=('22fdaf641b31655d4b2297f9981fa5203b2866f8332d3c6333f6b0107bb320de'
@@ -61,22 +62,28 @@ check() {
   cmake --build build --target check
 }
 
-package() {
-  provides=(libprotobuf.so)
+_pick() {
+  local p="$1" f d; shift
+  for f; do
+    d="$srcdir/$p/${f#$pkgdir/}"
+    mkdir -p "$(dirname "$d")"
+    mv "$f" "$d"
+    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
+  done
+}
+
+
+package_protobuf21() {
+  conflicts=(protobuf)
+  depends+=(protobuf21-lib)
   DESTDIR="$pkgdir" cmake --install build
 
-  cd $_name-$pkgver
-  install -vDm 644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
+  cd "$pkgdir"
+  _pick libs usr/lib/*.so.* usr/bin/protoc-*
+}
 
-  rm -r "$pkgdir"/usr/bin
-  rm -r "$pkgdir"/usr/include
-  rm -r "$pkgdir"/usr/lib/cmake
-  rm -r "$pkgdir"/usr/lib/pkgconfig
-  rm "$pkgdir"/usr/lib/libprotobuf-lite.so
-  rm "$pkgdir"/usr/lib/libprotobuf-lite.so.3.21.12.0
-  rm "$pkgdir"/usr/lib/libprotobuf-lite.so.32
-  rm "$pkgdir"/usr/lib/libprotobuf.so
-  rm "$pkgdir"/usr/lib/libprotoc.so
-  rm "$pkgdir"/usr/lib/libprotoc.so.3.21.12.0
-  rm "$pkgdir"/usr/lib/libprotoc.so.32
+package_protobuf21-lib() {
+  provides=(libprotobuf.so)
+  pkgdesc+=' (shared libraries)'
+  mv libs/* "$pkgdir"
 }
