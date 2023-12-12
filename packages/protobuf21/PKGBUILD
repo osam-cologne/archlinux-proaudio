@@ -43,6 +43,7 @@ build() {
     -D CMAKE_BUILD_TYPE=None
     -D CMAKE_INSTALL_PREFIX=/usr
     -D CMAKE_INSTALL_INCLUDEDIR=/usr/include/$pkgname
+    -D CMAKE_INSTALL_LIBDIR=/usr/lib/$pkgname
     -D protobuf_BUILD_SHARED_LIBS=ON
     -D protobuf_BUILD_TESTS=OFF
     -S $_name-$pkgver
@@ -58,40 +59,10 @@ build() {
     python -m build --wheel --no-isolation
 }
 
-#_pick() {
-#  local p="$1" f d
-#  shift
-#  for f; do
-#    d="$srcdir/$p/${f#$pkgdir/}"
-#    mkdir -p "$(dirname "$d")"
-#    mv "$f" "$d"
-#    rmdir -p --ignore-fail-on-non-empty "$(dirname "$f")"
-#  done
-#}
-
 package_protobuf21() {
   provides=("protobuf=$pkgver")
-  #conflicts=(protobuf)
-  #depends+=(protobuf21-headers protobuf21-lib)
   DESTDIR="$pkgdir" cmake --install build
   cd "$pkgdir"
-  rm usr/{bin/protoc,lib/*.so}
+  mv usr/bin/protoc{,21}
   mv usr/lib/cmake/protobuf{,21}
-  mv usr/lib/pkgconfig/protobuf{,21}.pc
-  mv usr/lib/pkgconfig/protobuf-lite{,21}.pc
-
-  #_pick libs usr/lib/*.so.* usr/bin/protoc-*
-  #cd usr/include
-  #_pick headers/usr/include/$pkgbase google/protobuf
 }
-
-#package_protobuf21-headers() {
-#  pkgdesc+=' (headers)'
-#  #mv headers/* "$pkgdir"
-#}
-#
-#package_protobuf21-lib() {
-#  provides=(libprotobuf.so)
-#  pkgdesc+=' (shared libraries)'
-#  mv libs/* "$pkgdir"
-#}
