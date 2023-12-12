@@ -58,10 +58,6 @@ build() {
     python -m build --wheel --no-isolation
 }
 
-check() {
-  cmake --build build --target check
-}
-
 _pick() {
   local p="$1" f d; shift
   for f; do
