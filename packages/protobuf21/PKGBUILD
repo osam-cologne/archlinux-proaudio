@@ -11,7 +11,6 @@
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
 _name=protobuf
-#pkgbase=protobuf21
 pkgname=protobuf21
 # DO NOT UPDATE, the point of this package is to pin the version
 pkgver=21.12
@@ -43,7 +42,6 @@ build() {
     -D CMAKE_BUILD_TYPE=None
     -D CMAKE_INSTALL_PREFIX=/usr
     -D CMAKE_INSTALL_INCLUDEDIR=/usr/include/$pkgname
-    -D CMAKE_INSTALL_LIBDIR=/usr/lib/$pkgname
     -D protobuf_BUILD_SHARED_LIBS=ON
     -D protobuf_BUILD_TESTS=OFF
     -S $_name-$pkgver
@@ -60,9 +58,9 @@ build() {
 }
 
 package_protobuf21() {
-  provides=("protobuf=$pkgver")
+  provides=("protobuf=$pkgver" libprotoc.so libprotobuf.so libprotobuf-lite.so)
   DESTDIR="$pkgdir" cmake --install build
   cd "$pkgdir"
   mv usr/bin/protoc{,21}
-  mv usr/lib/cmake/protobuf{,21}
+  rm -r usr/lib/{cmake,pkgconfig,*.so}
 }
