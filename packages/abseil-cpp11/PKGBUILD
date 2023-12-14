@@ -28,8 +28,7 @@ build() {
     -DABSL_BUILD_TEST_HELPERS=ON \
     -DABSL_USE_EXTERNAL_GOOGLETEST=ON \
     -DABSL_FIND_GOOGLETEST=ON
-  cd build
-  cmake --build .
+  cmake --build build
 }
 
 package() {
