@@ -18,7 +18,7 @@ pkgdesc='Protocol Buffers (legacy)'
 arch=(aarch64 x86_64)
 url='https://developers.google.com/protocol-buffers/'
 license=(BSD)
-depends=(gcc-libs glibc zlib)
+depends=(abseil-cpp11 gcc-libs glibc zlib)
 makedepends=(cmake python-build python-installer python-setuptools python-wheel)
 source=("https://github.com/protocolbuffers/$_name/archive/v$pkgver/$_name-$pkgver.tar.gz"
         "python3.11.patch::https://github.com/protocolbuffers/$_name/commit/da973aff.patch"
