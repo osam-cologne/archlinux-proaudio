@@ -57,7 +57,7 @@ build() {
     python -m build --wheel --no-isolation
 }
 
-package_protobuf21() {
+package() {
   provides=("protobuf=$pkgver" libprotoc.so libprotobuf.so libprotobuf-lite.so)
   DESTDIR="$pkgdir" cmake --install build
   cd "$pkgdir"
