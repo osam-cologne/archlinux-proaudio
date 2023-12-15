@@ -1,5 +1,6 @@
 abcm2ps
 abcpp
+abseil-cpp11
 aether.lv2
 a-sid
 audiowmark
@@ -31,6 +32,7 @@ midiomatic
 ninjam-server
 ola
 paulxstretch
+protobuf-21
 python-miditk-smf
 python-mido
 python-pyjacklib
