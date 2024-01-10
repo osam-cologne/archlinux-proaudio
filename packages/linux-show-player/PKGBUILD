@@ -4,12 +4,12 @@
 
 pkgname=linux-show-player
 pkgver=0.6
-pkgrel=1
+pkgrel=2
 pkgdesc='Cue player designed for stage productions'
 url='https://www.linux-show-player.org/'
 arch=(any)
 license=(GPL3)
-depends=(gobject-introspection-runtime
+depends=(gobject-introspection-runtime gst-plugins-good
          python-pyalsa python-appdirs python-falcon python-humanize
          python-pyliblo python-pyqt5 python-gobject python-mido
          python-requests python-rtmidi python-sortedcontainers qt5-svg)
