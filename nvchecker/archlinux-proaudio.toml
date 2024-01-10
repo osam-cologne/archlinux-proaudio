@@ -87,7 +87,7 @@ prefix = "v"
 
 [dxconvert]
 source = "regex"
-url = "http://home.kpn.nl/m.tarenskeen/download/sysex/DXconvert/dxconvert.html"
+url = "https://dxconvert.martintarenskeen.nl/"
 regex = 'DXconvert-(\d+\.\d+(?:\.\d+)?).zip'
 encoding = "utf-8"
 
