@@ -5,7 +5,7 @@
 _name=abseil-cpp
 pkgname=abseil-cpp11
 pkgver=20220623.1
-pkgrel=1
+pkgrel=2
 pkgdesc='Common C++ libraries (legacy for C++11)'
 arch=(aarch64 x86_64)
 url='https://abseil.io'
