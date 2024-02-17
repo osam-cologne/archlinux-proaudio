@@ -4,7 +4,7 @@
 
 _name=ConvertWithMoss
 pkgname=${_name,,}
-pkgver=7.3.0
+pkgver=7.4.0
 pkgrel=1
 pkgdesc='A tool for converting multi-samples from one format to another'
 url='https://mossgrabers.de/Software/ConvertWithMoss/ConvertWithMoss.html'
@@ -13,7 +13,7 @@ license=(LGPL)
 depends=('java-runtime>=16')
 makedepends=(maven)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/git-moss/ConvertWithMoss/archive/refs/tags/$pkgver.tar.gz")
-sha256sums=('feeccb94d62acee2d6bf00118af2fcde5112ca7c5e53cd69d4d001fb4f930ea3')
+sha256sums=('6cc15ff398ae497067e1b8b5fe99d2057ebd3450054abc8d9f9d850c6bb4bb48')
 
 build() {
   cd $_name-$pkgver
