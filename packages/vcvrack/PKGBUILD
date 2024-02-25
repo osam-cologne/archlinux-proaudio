@@ -8,7 +8,7 @@
 _name=Rack
 pkgname=vcvrack
 pkgver=2.4.1
-pkgrel=2
+pkgrel=3
 pkgdesc='Open-source Eurorack modular synthesizer simulator'
 url='https://vcvrack.com/'
 license=(custom CCPL GPL3)
