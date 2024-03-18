@@ -284,10 +284,6 @@ pypi = "mido"
 source = "pypi"
 pypi = "pyjacklib"
 
-[python-pysimplegui]
-source = "pypi"
-pypi = "PySimpleGUI"
-
 [python-soundfile]
 source = "pypi"
 pypi = "soundfile"
