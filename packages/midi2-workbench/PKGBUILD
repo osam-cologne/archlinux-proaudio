@@ -7,10 +7,10 @@ pkgver=1.5.6
 _ver=${pkgver}p
 pkgrel=1
 pkgdesc='MIDI 2.0 debugging utility'
-arch=(aarch64 x86_64)
+arch=(x86_64)
 url='https://github.com/midi2-dev/MIDI2.0Workbench'
 license=(MIT)
-_electron=electron
+_electron=electron29
 depends=($_electron)
 makedepends=(node-gyp npm)
 groups=(pro-audio)
@@ -20,7 +20,7 @@ source=(
   'midi2-workbench.desktop'
 )
 sha256sums=('317fe57e371af684c557c167de0d5a824fe231b58af6a7baece8d565ddf76bf2'
-            '906e911a62453d22d63a25d9ae4ec31c6811b37cd041f061d0ebaadb04be630f'
+            '44e91ab899876b333c4e4d23acdc3c00604017326402af2fecdc5f63c28d6d16'
             'fe31fc81dfc72fbbb131c3a187b90cd924948c1bad5a0cbb6421771b92eb2c8c')
 # build target flag for electron-builder
 case $CARCH in
