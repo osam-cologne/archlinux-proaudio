@@ -12,7 +12,7 @@ url='https://github.com/midi2-dev/MIDI2.0Workbench'
 license=(MIT)
 _electron=electron
 depends=($_electron)
-makedepends=(node-gyp nodejs)
+makedepends=(node-gyp npm)
 groups=(pro-audio)
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/midi2-dev/$_name/archive/refs/tags/v$_ver.tar.gz"
