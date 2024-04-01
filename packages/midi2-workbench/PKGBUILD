@@ -1,0 +1,54 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+_name=MIDI2.0Workbench
+pkgname=midi2-workbench
+pkgver=1.5.6
+_ver=${pkgver}p
+pkgrel=1
+pkgdesc='MIDI 2.0 debugging utility'
+arch=(aarch64 x86_64)
+url='https://github.com/midi2-dev/MIDI2.0Workbench'
+license=(MIT)
+_electron=electron
+depends=($_electron)
+makedepends=(node-gyp nodejs)
+groups=(pro-audio)
+source=(
+	"$pkgname-$pkgver.tar.gz::https://github.com/midi2-dev/$_name/archive/refs/tags/v$_ver.tar.gz"
+	'midi2-workbench.sh'
+	'midi2-workbench.desktop'
+)
+sha256sums=('317fe57e371af684c557c167de0d5a824fe231b58af6a7baece8d565ddf76bf2'
+            '906e911a62453d22d63a25d9ae4ec31c6811b37cd041f061d0ebaadb04be630f'
+            'fe31fc81dfc72fbbb131c3a187b90cd924948c1bad5a0cbb6421771b92eb2c8c')
+
+prepare() {
+	_npmargs=("--openssl-fips=''" --cache "$srcdir"/npm-cache --no-audit --no-fund)
+	_electron_ver="$(</usr/lib/${_electron}/version)"
+	cd $_name-$_ver
+	HOME="$srcdir"/.electron-gyp npm "${_npmargs[@]}" install
+	# use system node-gyp
+	ln -sf /usr/bin/node-gyp node_modules/.bin/node-gyp
+}
+
+build() {
+	local aarch64=arm64 x86_64=x64
+	cd $_name-$_ver
+	npx "${_npmargs[@]}" electron-builder -- \
+		--linux --"${!CARCH}" --dir \
+		-c.electronDist=/usr/lib/"$_electron" \
+		-c.electronVersion="$_electron_ver" \
+		-c.asar=false \
+		--publish=never
+}
+
+package() {
+	install -vDm755 $pkgname.sh "$pkgdir"/usr/bin/$pkgname
+	install -vDm644 $pkgname.desktop -t "$pkgdir"/usr/share/applications
+	cd $_name-$_ver
+	install -vDm644 icon.png "$pkgdir"/usr/share/pixmaps/$pkgname.png
+	install -d "$pkgdir"/usr/lib/$pkgname
+	cp -a dist/linux-unpacked/resources/app "$pkgdir"/usr/lib/$pkgname/
+	#install -vDm644 dist/linux-unpacked/resources/app.asar -t "$pkgdir"/usr/lib/$pkgname
+}
