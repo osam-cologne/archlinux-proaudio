@@ -34,6 +34,8 @@ prepare() {
   _electron_ver="$(< /usr/lib/${_electron}/version)"
   cd $_name-$_ver
   HOME="$srcdir"/.electron-gyp npm "${_npmargs[@]}" install
+  # use system node-gyp
+  ln -sf /usr/bin/node-gyp node_modules/.bin/node-gyp
 }
 
 build() {
