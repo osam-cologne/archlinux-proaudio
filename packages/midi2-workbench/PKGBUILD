@@ -51,9 +51,13 @@ build() {
 package() {
   install -vDm755 $pkgname.sh "$pkgdir"/usr/bin/$pkgname
   install -vDm644 $pkgname.desktop -t "$pkgdir"/usr/share/applications
+
   cd $_name-$_ver
   install -vDm644 icon.png "$pkgdir"/usr/share/pixmaps/$pkgname.png
   install -d "$pkgdir"/usr/lib/$pkgname
-  cp -a dist/linux-unpacked/resources/app "$pkgdir"/usr/lib/$pkgname/
-  #install -vDm644 dist/linux-unpacked/resources/app.asar -t "$pkgdir"/usr/lib/$pkgname
+
+  cd dist/linux-unpacked/resources
+  # some cleanup
+  rm -r app/midi2usb/build
+  cp -a app "$pkgdir"/usr/lib/$pkgname/
 }
