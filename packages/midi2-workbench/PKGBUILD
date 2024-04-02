@@ -20,7 +20,7 @@ source=(
   'midi2-workbench.desktop'
 )
 sha256sums=('317fe57e371af684c557c167de0d5a824fe231b58af6a7baece8d565ddf76bf2'
-            '44e91ab899876b333c4e4d23acdc3c00604017326402af2fecdc5f63c28d6d16'
+            '438541598069093106c78b4bacdf76b63abc1cc7df1daae9dc96e75b6c4a2236'
             'fe31fc81dfc72fbbb131c3a187b90cd924948c1bad5a0cbb6421771b92eb2c8c')
 # build target flag for electron-builder
 case $CARCH in
@@ -62,6 +62,6 @@ package() {
   cd dist/linux-unpacked/resources
   # some cleanup
   rm -r app/midi2usb
-  install -d "$pkgdir"/usr/lib/$pkgname
-  cp -a app "$pkgdir"/usr/lib/$pkgname/
+  install -d "$pkgdir"/usr/lib
+  cp -a app "$pkgdir"/usr/lib/$pkgname
 }
