@@ -34,8 +34,10 @@ prepare() {
   _electron_ver="$(< /usr/lib/$_electron/version)"
   cd $_name-$_ver
   # remove unused dependencies
-  sed -e /serialport/d -i package.json
+  sed -e /serialport/d -e /bonjour-service/d -e /cobs/d -e /sanitize-filename/d -i package.json
   HOME="$srcdir"/.electron-gyp npm "${_npmargs[@]}" install --os linux --cpu $_arch
+  # don't use prebuilt binaries
+  rm -r node_modules/usb/prebuilds
   # use system node-gyp
   ln -sf /usr/bin/node-gyp node_modules/.bin/node-gyp
 }
@@ -61,7 +63,7 @@ package() {
 
   cd dist/linux-unpacked/resources
   # some cleanup
-  rm -r app/midi2usb
+  rm -rf app/{midi2usb,winmidi2,*.png}
   install -d "$pkgdir"/usr/lib
   cp -a app "$pkgdir"/usr/lib/$pkgname
 }
