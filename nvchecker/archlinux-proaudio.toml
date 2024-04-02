@@ -235,6 +235,13 @@ use_max_tag = true
 include_regex = '^v\d+(\.\d+)+$'
 prefix = "v"
 
+[midi2-workbench]
+source = "github"
+github = "midi2-dev/MIDI2.0Workbench"
+use_max_tag = true
+from_pattern = '^v(.*)p$'
+to_pattern = '\1'
+
 [midimonster]
 source = "github"
 github = "cbdevnet/midimonster"
@@ -489,14 +496,14 @@ github = "mhampton/ZetaCarinaeModules"
 use_max_tag = true
 prefix = "v"
 
-[ykchorus]
-source = "github"
-github = "SpotlightKid/ykchorus"
-use_max_tag = true
-prefix = "v"
-
 [xtuner]
 source = "github"
 github = "brummer10/XTuner"
+use_max_tag = true
+prefix = "v"
+
+[ykchorus]
+source = "github"
+github = "SpotlightKid/ykchorus"
 use_max_tag = true
 prefix = "v"
