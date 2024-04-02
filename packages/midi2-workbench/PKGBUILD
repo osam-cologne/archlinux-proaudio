@@ -10,7 +10,7 @@ pkgdesc='MIDI 2.0 debugging utility'
 arch=(x86_64)
 url='https://github.com/midi2-dev/MIDI2.0Workbench'
 license=(MIT)
-_electron=electron28
+_electron=electron27
 depends=($_electron gcc-libs glibc)
 makedepends=(alsa-lib node-gyp npm systemd-libs)
 groups=(pro-audio)
@@ -20,7 +20,7 @@ source=(
   'midi2-workbench.desktop'
 )
 sha256sums=('317fe57e371af684c557c167de0d5a824fe231b58af6a7baece8d565ddf76bf2'
-            '2cd36e2f2177e8723031857e95f5b689c01c89f6e7a3249d1281b684e617294b'
+            '79191c43cc81a733e4f24f929f5b489bcc10e5c2256dec6507d04fdb34862e3d'
             'fe31fc81dfc72fbbb131c3a187b90cd924948c1bad5a0cbb6421771b92eb2c8c')
 case $CARCH in
  aarch64) _arch=arm64 ;;
