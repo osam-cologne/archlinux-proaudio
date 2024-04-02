@@ -11,8 +11,8 @@ arch=(x86_64)
 url='https://github.com/midi2-dev/MIDI2.0Workbench'
 license=(MIT)
 _electron=electron29
-depends=($_electron)
-makedepends=(alsa-lib node-gyp npm)
+depends=($_electron gcc-libs glibc)
+makedepends=(alsa-lib node-gyp npm systemd-libs)
 groups=(pro-audio)
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/midi2-dev/$_name/archive/refs/tags/v$_ver.tar.gz"
@@ -22,7 +22,6 @@ source=(
 sha256sums=('317fe57e371af684c557c167de0d5a824fe231b58af6a7baece8d565ddf76bf2'
             '438541598069093106c78b4bacdf76b63abc1cc7df1daae9dc96e75b6c4a2236'
             'fe31fc81dfc72fbbb131c3a187b90cd924948c1bad5a0cbb6421771b92eb2c8c')
-# build target flag for electron-builder
 case $CARCH in
  aarch64) _arch=arm64 ;;
  x86_64) _arch=x64 ;;
@@ -53,7 +52,7 @@ build() {
 }
 
 package() {
-  depends+=(libasound.so)
+  depends+=(libasound.so libudev.so)
   install -vDm755 $pkgname.sh "$pkgdir"/usr/bin/$pkgname
   install -vDm644 $pkgname.desktop -t "$pkgdir"/usr/share/applications
 
