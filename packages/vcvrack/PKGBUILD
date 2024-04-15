@@ -8,7 +8,7 @@
 _name=Rack
 pkgname=vcvrack
 pkgver=2.5.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Open-source Eurorack modular synthesizer simulator'
 url='https://vcvrack.com/'
 license=(custom CCPL GPL3)
@@ -22,7 +22,7 @@ makedepends=(alsa-lib cmake curl gendesk git glew jack jq libarchive libpulse op
 provides=("$_plugin_pkg=$_plugin_ver")
 conflicts=($_plugin_pkg)
 groups=(pro-audio)
-_tag=8c6f41b778b4bf8860b89b36d5503fd37924077f
+_tag=f9e90eda901dad84f80f93d61f92afc5e37ad2bb
 source=(
   "$_name::git+https://github.com/VCVRack/$_name#tag=$_tag"
   'filesystem.git::git+https://github.com/gulrak/filesystem'
