@@ -15,7 +15,7 @@ makedepends=(maven)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/git-moss/ConvertWithMoss/archive/refs/tags/$pkgver.tar.gz"
         convertwithmoss.sh)
 sha256sums=('ed85ba80d0e10f3bcb8693e79612394e55a9aa59fa07d75051fe91411c17bc91'
-            '2fdfdd27e993349f78137f0e1bf1b06891638a787509924abe2c816775e34a09')
+            '119c190f92a96c3556b770d504ada91fc89d522e837bf490dd3c6b4577d7ca3d')
 
 build() {
   cd $_name-$pkgver
