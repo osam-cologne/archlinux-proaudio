@@ -5,7 +5,7 @@
 # Contributor: Miroslav Koškár <http://mkoskar.com/>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
-_name=Rack
+_repo=Rack
 pkgname=vcvrack
 pkgver=2.5.1
 pkgrel=2
@@ -24,7 +24,7 @@ conflicts=($_plugin_pkg)
 groups=(pro-audio)
 _tag=3f133d8a0359b539bd262a4c3e1e6b4fb2ef83e6
 source=(
-  "$_name::git+https://github.com/VCVRack/$_name#tag=$_tag"
+  "$_repo::git+https://github.com/VCVRack/$_repo#tag=$_tag"
   'filesystem.git::git+https://github.com/gulrak/filesystem'
   'fuzzysearchdatabase.git::git+https://bitbucket.org/j_norberg/fuzzysearchdatabase'
   'nanosvg.git::git+https://github.com/memononen/nanosvg'
@@ -57,14 +57,18 @@ sha256sums=('SKIP'
             '21ac35c6ad4e5a29c32939b17baaf7ac1936077eda2214e28675eefcf2021db8'
             'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f'
             '1159629aa90abb7c972c0f630d55d018b88a6b3bc3ff0bb9466cc06982f38641')
+_name='VCV Rack'
+_categories='AudioVideo;Audio'
 
 pkgver() {
-  cd $_name
+  cd $_repo
   git describe --tags | tr -d v
 }
 
 prepare() {
-  cd $_name
+  gendesk -f -n
+
+  cd $_repo
   # setup submodules
   for _module in filesystem fuzzysearchdatabase nanosvg nanovg osdialog oui-blendish pffft rtaudio tinyexpr; do
     git submodule init dep/$_module
@@ -79,12 +83,10 @@ prepare() {
   patch -p1 -i ../plugins.patch
   # set proper window manager class
   patch -p1 -i ../wmclass.patch
-
-  gendesk -f -n --name "VCV Rack" --categories "AudioVideo;Audio"
 }
 
 build() {
-  cd $_name
+  cd $_repo
   _ldflags="-Wl,--whole-archive \
     dep/lib/librtaudio.a \
     -Wl,--no-whole-archive \
@@ -97,14 +99,15 @@ build() {
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS="$LDFLAGS"
   cd ../$_plugin_name-$_plugin_ver
-  VERSION=$_plugin_ver RACK_DIR=../$_name \
+  VERSION=$_plugin_ver RACK_DIR=../$_repo \
     LDFLAGS+=" $(pkg-config --libs samplerate)" make dist
 }
 
 package() {
   depends+=(libcurl.so libGLEW.so libarchive.so libcrypto.so librtmidi.so
     libsamplerate.so libspeexdsp.so zenity)
-  cd $_name
+  install -vDm644 $pkgname.desktop -t "$pkgdir"/usr/share/applications/
+  cd $_repo
   install -vDm755 Rack -t "$pkgdir"/usr/lib/$pkgname
   install -vDm755 libRack.so -t "$pkgdir"/usr/lib
   install -vDm755 "$srcdir"/vcvrack.sh "$pkgdir"/usr/bin/$pkgname
@@ -124,7 +127,6 @@ package() {
   install -vDm644 {arch,compile,dep,plugin}.mk -t "$pkgdir"/usr/share/$pkgname
 
   # xdg desktop integration
-  install -vDm644 $pkgname.desktop -t "$pkgdir"/usr/share/applications/
   install -vDm644 res/icon.png "$pkgdir"/usr/share/pixmaps/$pkgname.png
   # licenses
   install -vDm644 LICENSE.md "$srcdir"/trademark.eml -t "$pkgdir"/usr/share/licenses/$pkgname
