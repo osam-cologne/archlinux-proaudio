@@ -5,7 +5,7 @@
 # Contributor: Miroslav Koškár <http://mkoskar.com/>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
-_repo=Rack
+_name=Rack
 pkgname=vcvrack
 pkgver=2.5.1
 pkgrel=2
@@ -25,7 +25,7 @@ conflicts=($_plugin_pkg)
 groups=(pro-audio)
 _tag=3f133d8a0359b539bd262a4c3e1e6b4fb2ef83e6
 source=(
-  "$_repo::git+https://github.com/VCVRack/$_repo#tag=$_tag"
+  "$_name::git+https://github.com/VCVRack/$_name#tag=$_tag"
   'filesystem.git::git+https://github.com/gulrak/filesystem'
   'fuzzysearchdatabase.git::git+https://bitbucket.org/j_norberg/fuzzysearchdatabase'
   'nanosvg.git::git+https://github.com/memononen/nanosvg'
@@ -60,12 +60,12 @@ sha256sums=('SKIP'
             '1159629aa90abb7c972c0f630d55d018b88a6b3bc3ff0bb9466cc06982f38641')
 
 pkgver() {
-  cd $_repo
+  cd $_name
   git describe --tags | tr -d v
 }
 
 prepare() {
-  cd $_repo
+  cd $_name
   # setup submodules
   for _module in filesystem fuzzysearchdatabase nanosvg nanovg osdialog oui-blendish pffft rtaudio tinyexpr; do
     git submodule init dep/$_module
@@ -89,7 +89,7 @@ prepare() {
 }
 
 build() {
-  cd $_repo
+  cd $_name
   _ldflags="-Wl,--whole-archive \
     dep/lib/librtaudio.a \
     -Wl,--no-whole-archive \
@@ -102,14 +102,14 @@ build() {
   VERSION=$pkgver make -C dep includes
   VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS="$LDFLAGS"
   cd ../$_plugin_name-$_plugin_ver
-  VERSION=$_plugin_ver RACK_DIR=../$_repo \
+  VERSION=$_plugin_ver RACK_DIR=../$_name \
     LDFLAGS+=" $(pkg-config --libs samplerate)" make dist
 }
 
 package() {
   depends+=(libcurl.so libGLEW.so libarchive.so libcrypto.so librtmidi.so
     libsamplerate.so libspeexdsp.so zenity)
-  cd $_repo
+  cd $_name
   install -vDm755 Rack -t "$pkgdir"/usr/lib/$pkgname
   install -vDm755 libRack.so -t "$pkgdir"/usr/lib
   install -vDm755 "$srcdir"/vcvrack.sh "$pkgdir"/usr/bin/$pkgname
