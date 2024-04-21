@@ -80,7 +80,7 @@ prepare() {
   # set proper window manager class
   patch -p1 -i ../wmclass.patch
 
-  gendesk -n \
+  gendesk -f -n \
     --pkgname $pkgname \
     --pkgdesc "$pkgdesc" \
     --name "VCV Rack" \
