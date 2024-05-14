@@ -303,7 +303,6 @@ steps:
         path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
-    failure: ignore
     environment:
       PKGDEST: /drone/src/out
       MAKEPKG_ARGS: -A

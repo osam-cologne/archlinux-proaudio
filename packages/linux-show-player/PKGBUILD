@@ -3,8 +3,8 @@
 # Contributor: Marco Asa <marcoasa90[at]gmail[dot]com>
 
 pkgname=linux-show-player
-pkgver=0.6.2
-pkgrel=1
+pkgver=0.6.3
+pkgrel=2
 pkgdesc='Cue player designed for stage productions'
 url='https://www.linux-show-player.org/'
 arch=(any)
@@ -25,7 +25,7 @@ optdepends=(
 )
 options=('!emptydirs')
 source=("$pkgname-$pkgver.tar.gz::https://github.com/FrancescoCeruti/$pkgname/archive/v$pkgver.tar.gz")
-sha256sums=('ec95d9cb6850a8414397a70605f619e810232a01f325450f3c26e43014b2f5d6')
+sha256sums=('a7cd3276f76696bc8f6b3ed513b076ba7e1e36c0f3ab56d53506f4c55c21bc36')
 
 build() {
   cd $pkgname-$pkgver
