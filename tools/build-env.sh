@@ -8,10 +8,10 @@ cat tools/pacman.conf >> /etc/pacman.conf
 cat tools/makepkg.conf >> /etc/makepkg.conf
 source /etc/makepkg.conf
 export PACKAGER
-export SRCDEST=${SRCDEST:-/tmp/build}
-export SRCPKGDEST=/tmp/build
+export SRCDEST=${SRCDEST:-/tmp/src}
+export SRCPKGDEST=/tmp/srcpkg
 export BUILDDIR=/tmp/build
-export PKGDEST=${PKGDEST:-/tmp/build}
+export PKGDEST=${PKGDEST:-/tmp/pkg}
 export LOGDEST=${LOGDEST:-$PKGDEST}
 export SOURCE_DATE_EPOCH=${DRONE_BUILD_CREATED:-${DRONE_BUILD_STARTED:-$(date +%s)}}
 export HOME=/tmp
