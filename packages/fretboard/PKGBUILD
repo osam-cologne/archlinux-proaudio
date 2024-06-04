@@ -10,7 +10,7 @@ url='https://apps.gnome.org/Fretboard/'
 license=(GPL-3.0-only)
 groups=(pro-audio)
 depends=(gtk4)
-makedepends=(blueprint-compiler git meson rust)
+makedepends=(blueprint-compiler git libadwaita meson rust)
 source=("git+https://github.com/bragefuglseth/$pkgname#tag=v$pkgver-fixed")
 sha256sums=('1125cbfc343c05a1cd2ca91c6cbeda6cb2e3f237e77ee841f500fe8c252b65e4')
 
@@ -24,5 +24,6 @@ check() {
 }
 
 package() {
+  depends+=(libadwaita-1.so)
   meson install -C build --destdir "$pkgdir"
 }
