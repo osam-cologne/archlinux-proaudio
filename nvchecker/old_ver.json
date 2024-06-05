@@ -1,7 +1,7 @@
 {
   "a-sid": "1.0.4",
   "abcm2ps": "8.14.15",
-  "abcmidi": "2024.04.30",
+  "abcmidi": "2024.06.03",
   "abcpp": "1.4.6",
   "aether.lv2": "1.2.1",
   "airwindows-lv2": "28.0",
@@ -77,7 +77,7 @@
   "vcvrack-axioma": "2.0.0",
   "vcvrack-bastl": "2.0.0",
   "vcvrack-collection-one": "2.0.4",
-  "vcvrack-computerscare": "2.0.3",
+  "vcvrack-computerscare": "2.1.7",
   "vcvrack-cvly": "2.0.1",
   "vcvrack-freesurface": "2.0.5",
   "vcvrack-goodsheperd": "2.0.0",
