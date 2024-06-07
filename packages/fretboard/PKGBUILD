@@ -22,7 +22,7 @@ prepare() {
 
 build() {
   export RUSTUP_TOOLCHAIN=stable
-  arch-meson --reconfigure -Dsandboxed=true $pkgname build
+  arch-meson --reconfigure -Dsandboxed=true -Dprofile=development $pkgname build
   meson compile -C build
 }
 
