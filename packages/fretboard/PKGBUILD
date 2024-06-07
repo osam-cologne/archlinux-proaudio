@@ -17,6 +17,7 @@ sha256sums=('1125cbfc343c05a1cd2ca91c6cbeda6cb2e3f237e77ee841f500fe8c252b65e4')
 prepare() {
   cd $pkgname
   export RUSTUP_TOOLCHAIN=stable
+  export CARGO_HOME="$srcdir"/$pkgname/cargo
   cargo fetch --locked
 }
 
