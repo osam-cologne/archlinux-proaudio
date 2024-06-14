@@ -20,11 +20,11 @@ optdepends=(
 )
 groups=(clap-plugins lv2-plugins pro-audio vst-plugins vst3-plugins)
 source=(
-  "$_name::git+https://github.com/brummer10/$_name#?tag=v$pkgver"
-  'DPF::git+https://github.com/DISTRHO/DPF.git'
-  'pugl::git+https://github.com/DISTRHO/pugl.git'
+  "git+https://github.com/brummer10/$_name#tag=v$pkgver"
+  'git+https://github.com/DISTRHO/DPF'
+  'git+https://github.com/DISTRHO/pugl'
 )
-sha256sums=('SKIP'
+sha256sums=('baf1b301b69e40a2e2d4c1ebfe83c9818c861f69fdf73d3ebe95e34279920aa1'
             'SKIP'
             'SKIP')
 
