@@ -336,6 +336,13 @@ source = "github"
 github = "MaartenBaert/ssr"
 use_max_tag = true
 
+[stomptuner]
+source = "github"
+github = "brummer10/StompTuner"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
+
 [stone-phaser]
 source = "github"
 github = "jpcima/stone-phaser"
