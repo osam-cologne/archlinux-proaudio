@@ -3,12 +3,12 @@
 
 _name=ToneTwistPlugs
 pkgname=${_name,,}
-pkgver=0.7
+pkgver=0.8
 pkgrel=1
 pkgdesc='A small collection of multi-format, cross-platform guitar pedal effect plugins'
 arch=(aarch64 x86_64)
 url="https://github.com/brummer10/$_name"
-license=(GPL2)
+license=(GPL-2.0-or-later)
 groups=(clap-plugins lv2-plugins pro-audio vst-plugins vst3-plugins)
 depends=(cairo glibc gcc-libs libx11 libxcursor libxext libxrandr)
 makedepends=(dbus lv2)
@@ -20,16 +20,16 @@ optdepends=(
   'vst-host: for loading the VST2 format plugins'
   'vst3-host: for loading the VST3 format plugins'
 )
-_dpf_commit=df2afed246113e4459808b112583d54cf7e433e9
-_pugl_commit=21cb3c8b480f4c97f888e3d08630ded9c8bf04a2
+_dpf_commit=29addec6f6e072162d0269fe8f1341b333c69e42
+_pugl_commit=e33b2f6b0cea6d6263990aa9abe6a69fdfba5973
 source=(
   "$_name-$pkgver.tar.gz::https://github.com/brummer10/$_name/archive/refs/tags/v$pkgver.tar.gz"
   "dpf-$_dpf_commit.tar.gz::https://github.com/DISTRHO/DPF/archive/$_dpf_commit.tar.gz"
   "pugl-$_pugl_commit.tar.gz::https://github.com/DISTRHO/pugl/archive/$_pugl_commit.tar.gz"
 )
-sha256sums=('f07d415de898d76ac9c156ceb6e51564a6a8f5068adcb39f32bec85eea06e6f1'
-            '4fc868815cfb1027d784cc64fca83a5fd01c7b6f3ac6cc7199ae9708654e1ff2'
-            'aca3420ae9db14cacfba21bfb83d7277886f9d3a7117d18611455d4383ad6606')
+sha256sums=('417810b97e7835f49f97fdcf329110da4ee50ac0e9dc0dc5ef8840e0b78a7246'
+            '30ecd4b1174d80377a679040900329ce709465406fa86e935e1ff21dba5b1c23'
+            '7e813d35d619a0ba3e790be5e102cfd2dc7c1f7b99333c9aa0a8661ca8419e02')
 _plugins=(
   BoobTube
   CollisionDrive
@@ -52,7 +52,7 @@ prepare() {
 
 build() {
   cd $_name-$pkgver
-  make SKIP_NATIVE_AUDIO_FALLBACK=true
+  make SKIP_NATIVE_AUDIO_FALLBACK=true BUILD_AU=false
 }
 
 check() {
@@ -67,7 +67,7 @@ check() {
 package() {
   depends+=(libdbus-1.so)
   cd $_name-$pkgver
-  make DESTDIR="$pkgdir" PREFIX=/usr install
+  make DESTDIR="$pkgdir" PREFIX=/usr BUILD_AU=false install
   install -vDm 644 README.md -t "$pkgdir"/usr/share/doc/$pkgname
   for _plugin in "${_plugins[@]}"; do
     install -vDm 644 $_plugin.png -t "$pkgdir"/usr/share/doc/$pkgname

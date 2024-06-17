@@ -87,7 +87,7 @@ prefix = "v"
 
 [dxconvert]
 source = "regex"
-url = "http://home.kpn.nl/m.tarenskeen/download/sysex/DXconvert/dxconvert.html"
+url = "https://dxconvert.martintarenskeen.nl/"
 regex = 'DXconvert-(\d+\.\d+(?:\.\d+)?).zip'
 encoding = "utf-8"
 
@@ -235,6 +235,13 @@ use_max_tag = true
 include_regex = '^v\d+(\.\d+)+$'
 prefix = "v"
 
+[midi2-workbench]
+source = "github"
+github = "midi2-dev/MIDI2.0Workbench"
+use_max_tag = true
+from_pattern = '^v(.*)p$'
+to_pattern = '\1'
+
 [midimonster]
 source = "github"
 github = "cbdevnet/midimonster"
@@ -248,11 +255,10 @@ use_max_tag = true
 prefix = "v"
 
 [ninjam-server]
-source = "github"
-github = "cbix/ninjam"
-use_max_tag = true
-include_regex = '^ninjamsrv\/v[\.\d]+$'
-prefix = "ninjamsrv/v"
+source = "regex"
+url = "https://raw.githubusercontent.com/justinfrankel/ninjam/main/ninjam/server/ninjamsrv.cpp"
+regex = '#define VERSION "v(\d+(?:\.\d+)+)"'
+encoding = "utf-8"
 
 [octasine]
 source = "github"
@@ -284,10 +290,6 @@ pypi = "mido"
 source = "pypi"
 pypi = "pyjacklib"
 
-[python-pysimplegui]
-source = "pypi"
-pypi = "PySimpleGUI"
-
 [python-soundfile]
 source = "pypi"
 pypi = "soundfile"
@@ -300,6 +302,13 @@ pypi = "QJackCapture"
 source = "github"
 github = "Stazed/rakarrack-plus"
 use_max_tag = true
+
+["ratatouille.lv2"]
+source = "github"
+github = "brummer10/Ratatouille.lv2"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
 
 [raysession]
 source = "github"
@@ -333,6 +342,13 @@ prefix = "v"
 source = "github"
 github = "MaartenBaert/ssr"
 use_max_tag = true
+
+[stomptuner]
+source = "github"
+github = "brummer10/StompTuner"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
 
 [stone-phaser]
 source = "github"
@@ -493,14 +509,14 @@ github = "mhampton/ZetaCarinaeModules"
 use_max_tag = true
 prefix = "v"
 
-[ykchorus]
-source = "github"
-github = "SpotlightKid/ykchorus"
-use_max_tag = true
-prefix = "v"
-
 [xtuner]
 source = "github"
 github = "brummer10/XTuner"
+use_max_tag = true
+prefix = "v"
+
+[ykchorus]
+source = "github"
+github = "SpotlightKid/ykchorus"
 use_max_tag = true
 prefix = "v"

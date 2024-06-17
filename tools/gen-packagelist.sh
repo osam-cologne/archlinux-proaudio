@@ -33,3 +33,4 @@ cat "$TMP"/pkgfiles | sort | uniq > "$TMP"/pkgfiles.uniq
 mv "$TMP"/pkgfiles.uniq "$TMP"/pkgfiles
 cat "$TMP"/pkgnames | sort | uniq > "$TMP"/pkgnames.uniq
 mv "$TMP"/pkgnames.uniq "$TMP"/pkgnames
+cat "$TMP"/pkgnames

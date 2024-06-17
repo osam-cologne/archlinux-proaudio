@@ -3,7 +3,7 @@
   <head>
     <title>{{ .Site.Title }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    {{ $water := resources.GetRemote "https://cdn.jsdelivr.net/npm/water.css@2/out/water.min.css" }}
+    {{ $water := resources.GetRemote "https://fastly.jsdelivr.net/npm/water.css@2/out/water.min.css" }}
     <link rel="stylesheet" href="{{ $water.RelPermalink }}">
   </head>
   <body>

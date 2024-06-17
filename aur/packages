@@ -2,9 +2,11 @@ abcm2ps
 abcpp
 abseil-cpp11
 aether.lv2
+airwindows-lv2
 a-sid
 audiowmark
 clap-validator
+convertwithmoss
 darkice
 die-plugins
 dxconvert
@@ -28,6 +30,7 @@ littlefly.lv2
 lpd8editor
 mamba
 mclk.lv2
+midi2-workbench
 midiomatic
 ninjam-server
 ola
@@ -39,11 +42,13 @@ python-pyjacklib
 python-soundfile
 qjackcapture
 rakarrack-plus
+ratatouille.lv2
 raysession
 rezonateur
 rtcqs
 seq66
 sfzlint
+stomptuner
 stone-phaser
 string-machine
 swh-plugins.lv2
