@@ -1,0 +1,12 @@
+diff -uNr juce.orig/modules/juce_core/system/juce_TargetPlatform.h juce/modules/juce_core/system/juce_TargetPlatform.h
+--- juce.orig/modules/juce_core/system/juce_TargetPlatform.h	2024-06-17 15:16:57.761956075 +0200
++++ juce/modules/juce_core/system/juce_TargetPlatform.h	2024-06-17 15:17:45.290753161 +0200
+@@ -172,7 +172,7 @@
+     #define JUCE_BIG_ENDIAN 1
+   #endif
+ 
+-  #if defined (__LP64__) || defined (_LP64) || defined (__arm64__)
++  #if defined (__LP64__) || defined (_LP64) || defined (__arm64__) || defined (__aarch64__)
+     #define JUCE_64BIT 1
+   #else
+     #define JUCE_32BIT 1
