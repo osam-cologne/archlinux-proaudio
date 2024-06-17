@@ -12,24 +12,20 @@ depends=(freetype2 glibc gcc-libs)
 makedepends=(alsa-lib cmake ladspa webkit2gtk)
 groups=(pro-audio)
 # Commit, which has tag for last 7.0.x release
-_juce_commit='4f43011b96eb0636104cb3e433894cda98243626'
+_juce_commit='f9b6e2ef69692527e637f741ebc5fe0d79d7ed35'
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/Tracktion/pluginval/archive/refs/tags/v$pkgver.tar.gz"
   "JUCE-$_juce_commit.tar.gz::https://github.com/juce-framework/JUCE/archive/$_juce_commit.tar.gz"
-  'juce-issue-1314.patch'
 )
 
 sha256sums=('fdc7a7a31823cdf69aef15fd90d6723819f19082136f3edf5683718d33a80d28'
-            'efaeeed2ca988d3ade7b21dd01dca5c79fd9a2fb5884ea6140b31a7a87e61053'
-            'a1e524c5b5ed13f988712043632360e6549c397390f09c29804e08a5605434fc')
+            '8d1235bd0a6df819ad36e5678929376796362c9eeb5a3bdaa69317e296e685d3')
 
 
 prepare() {
   cd $pkgname-$pkgver
   test -d modules/juce && rmdir modules/juce
   ln -s "$srcdir"/JUCE-$_juce_commit modules/juce
-  cd modules/juce
-  patch -p1 -N -r - -i "$srcdir"/juce-issue-1314.patch
 }
 
 build() {
