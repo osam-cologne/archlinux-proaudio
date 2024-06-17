@@ -3,10 +3,10 @@
 
 _name=CloudReverb
 pkgname=${_name,,}
-_plugin_uri='http://github.com/xunil-cloud/$_name'
+_plugin_uri="http://github.com/xunil-cloud/$_name"
 pkgver=0.2
 pkgrel=1
-pkgdesc='An algorithmic reverb plugin/app for creating huge, endless spaces and modulated echoes'
+pkgdesc='An algorithmic reverb plugin and app for creating huge, endless spaces and modulated echoes'
 arch=(x86_64 aarch64)
 url='https://github.com/xunil-cloud/CloudReverb'
 license=(MIT)
@@ -14,7 +14,7 @@ depends=(alsa-lib freetype2 glibc gcc-libs)
 makedepends=(cmake webkit2gtk)
 checkdepends=(lv2lint)
 optdepends=(
-  'jack: for running the standalone version with JACKs'
+  'jack: for running the standalone version with JACK'
   'lv2-host: for loading the LV2 plugin'
   'vst3-host: for loading the VST3 plugin'
 )
@@ -46,7 +46,9 @@ build() {
 
 check() {
   cd $_name-$pkgver-build
-  echo lv2lint -Mpack -q \
+  lv2lint -Mpack -q \
+    -s '_Z*' \
+    -t 'Parameter Range' \
     -I "${_name}_artefacts/Release/LV2/$_name.lv2/" \
     "$_plugin_uri"
 }
