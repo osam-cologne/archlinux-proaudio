@@ -9,21 +9,20 @@ arch=(x86_64 aarch64)
 url='https://github.com/Tracktion/pluginval/'
 license=(GPL-3.0-only)
 depends=(freetype2 glibc gcc-libs)
-makedepends=(alsa-lib cmake ladspa webkit2gtk)
+makedepends=(alsa-lib cmake  git ladspa webkit2gtk)
 groups=(pro-audio)
-# Commit, which has tag for last 7.0.x release
-_juce_commit='f9b6e2ef69692527e637f741ebc5fe0d79d7ed35'
+_juce_commit='113009c07431bdb7952d2564a0039354d03f452b'
 source=(
-  "$pkgname-$pkgver.tar.gz::https://github.com/Tracktion/pluginval/archive/refs/tags/v$pkgver.tar.gz"
+  "$pkgname::git+https://github.com/Tracktion/$pkgname.git#branch=develop"
   "JUCE-$_juce_commit.tar.gz::https://github.com/juce-framework/JUCE/archive/$_juce_commit.tar.gz"
 )
 
-sha256sums=('fdc7a7a31823cdf69aef15fd90d6723819f19082136f3edf5683718d33a80d28'
-            '8d1235bd0a6df819ad36e5678929376796362c9eeb5a3bdaa69317e296e685d3')
+sha256sums=('SKIP'
+            '5e253e530bb68abfb6dce01d8474700255a81a5a5cc3f8774f2ae8c6dc9fcf20')
 
 
 prepare() {
-  cd $pkgname-$pkgver
+  cd $pkgname
   test -d modules/juce && rmdir modules/juce
   ln -s "$srcdir"/JUCE-$_juce_commit modules/juce
 }
@@ -33,7 +32,7 @@ build() {
     -DCMAKE_BUILD_TYPE=Release \
     -Wno-dev \
     -B $pkgname-$pkgver-build \
-    -S $pkgname-$pkgver
+    -S $pkgname
   cmake --build $pkgname-$pkgver-build
 }
 
@@ -42,7 +41,7 @@ package() {
   install -vDm 755 $pkgname-$pkgver-build/${pkgname}_artefacts/Release/$pkgname \
     -t "$pkgdir"/usr/bin
   # Docs
-  cd $pkgname-$pkgver
+  cd $pkgname
   install -vDm 644 README.md docs/*.md -t "$pkgdir"/usr/share/doc/$pkgname
   install -vDm 644 docs/images/*.png -t "$pkgdir"/usr/share/doc/$pkgname/images
 }
