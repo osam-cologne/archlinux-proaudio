@@ -60,6 +60,13 @@ source = "github"
 github = "free-audio/clap-validator"
 use_max_tag = true
 
+[cloudreverb]
+source = "github"
+github = "xunil-cloud/CloudReverb"
+include_regex = '^v\d+(\.\d+)+$'
+use_max_tag = true
+prefix = "v"
+
 ["collisiondrive.lv2"]
 source = "github"
 github = "brummer10/CollisionDrive"
@@ -308,6 +315,13 @@ pypi = "QJackCapture"
 source = "github"
 github = "Stazed/rakarrack-plus"
 use_max_tag = true
+
+["ratatouille.lv2"]
+source = "github"
+github = "brummer10/Ratatouille.lv2"
+use_max_tag = true
+include_regex = '^v\d+(\.\d+)+$'
+prefix = "v"
 
 [raysession]
 source = "github"

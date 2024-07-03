@@ -6,6 +6,7 @@ airwindows-lv2
 a-sid
 audiowmark
 clap-validator
+cloudreverb
 convertwithmoss
 darkice
 die-plugins
@@ -43,6 +44,7 @@ python-pyjacklib
 python-soundfile
 qjackcapture
 rakarrack-plus
+ratatouille.lv2
 raysession
 rezonateur
 rtcqs
