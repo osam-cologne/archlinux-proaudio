@@ -5,7 +5,7 @@ _name=clap-host
 # clap-host as pkgname is not ideal due to other hosts using that as a virtual provides
 pkgname=clap-example-host
 pkgver=1.0.3
-pkgrel=3
+pkgrel=4
 pkgdesc='CLAP example audio plugin host'
 arch=(aarch64 x86_64)
 url='https://github.com/free-audio/clap-host'
@@ -14,19 +14,12 @@ depends=(gcc-libs qt6-base)
 makedepends=(catch2-v2 cmake git rtaudio rtmidi)
 provides=(clap-host)
 groups=(pro-audio)
-_tag=a86f5474f325bb78c574cae82f51043806f75967
-source=("$_name::git+https://github.com/free-audio/$_name#tag=$_tag"
-        'clap::git+https://github.com/free-audio/clap'
-        'clap-helpers::git+https://github.com/free-audio/clap-helpers')
-sha256sums=('SKIP'
+source=("git+https://github.com/free-audio/$_name#tag=$pkgver"
+        'git+https://github.com/free-audio/clap'
+        'git+https://github.com/free-audio/clap-helpers')
+sha256sums=('84b1e4265abc1481bf29075125ffbda179b065635a39fa4971f267aba23590a8'
             'SKIP'
             'SKIP')
-
-pkgver() {
-  cd $_name
-  #git describe --tags
-  echo 1.0.3
-}
 
 prepare() {
   cd $_name
