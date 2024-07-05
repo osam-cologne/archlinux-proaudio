@@ -1,0 +1,47 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+pkgname=pluginval
+pkgver=1.0.3
+pkgrel=1
+pkgdesc='Cross platform DAW plugin testing and validation tool'
+arch=(x86_64 aarch64)
+url='https://github.com/Tracktion/pluginval/'
+license=(GPL-3.0-only)
+depends=(freetype2 glibc gcc-libs)
+makedepends=(alsa-lib cmake  git ladspa webkit2gtk)
+groups=(pro-audio)
+_juce_commit='113009c07431bdb7952d2564a0039354d03f452b'
+source=(
+  "$pkgname::git+https://github.com/Tracktion/$pkgname.git#branch=develop"
+  "JUCE-$_juce_commit.tar.gz::https://github.com/juce-framework/JUCE/archive/$_juce_commit.tar.gz"
+)
+
+sha256sums=('SKIP'
+            '5e253e530bb68abfb6dce01d8474700255a81a5a5cc3f8774f2ae8c6dc9fcf20')
+
+
+prepare() {
+  cd $pkgname
+  test -d modules/juce && rmdir modules/juce
+  ln -s "$srcdir"/JUCE-$_juce_commit modules/juce
+}
+
+build() {
+  cmake \
+    -DCMAKE_BUILD_TYPE=Release \
+    -Wno-dev \
+    -B $pkgname-$pkgver-build \
+    -S $pkgname
+  cmake --build $pkgname-$pkgver-build
+}
+
+package() {
+  depends+=(libfreetype.so)
+  install -vDm 755 $pkgname-$pkgver-build/${pkgname}_artefacts/Release/$pkgname \
+    -t "$pkgdir"/usr/bin
+  # Docs
+  cd $pkgname
+  install -vDm 644 README.md docs/*.md -t "$pkgdir"/usr/share/doc/$pkgname
+  install -vDm 644 docs/images/*.png -t "$pkgdir"/usr/share/doc/$pkgname/images
+}
