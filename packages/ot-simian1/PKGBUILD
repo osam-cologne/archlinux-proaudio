@@ -1,0 +1,80 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+_pkgname=ot-simian
+pkgname=${_pkgname}1
+pkgver=1.1.0
+pkgrel=1
+pkgdesc='Drum synthesizer inspired by the Simmons SDS-V (legacy version 1)'
+arch=(aarch64 x86_64)
+url='https://punklabs.com/ot-simian'
+license=(GPL-3.0-or-later)
+depends=(gcc-libs glibc libx11)
+makedepends=(dub faust ldc python)
+optdepends=(
+  'lv2-host: for LV2 plugin'
+  'vst3-host: for VST3 plugin'
+)
+groups=(lv2-plugins pro-audio vst3-plugins)
+source=("https://punklabs.com/content/projects/ot-simian/downloads/OneTrick-SIMIAN-$pkgver-Source.zip"
+        'generate-manifest-ttl.py'
+        'dub.json')
+sha256sums=('ef84e856a3b9579cfa1b43c840d758d490accd0ef478cfd55318c2a60e897b66'
+            '261c2bfe8c692ce7df4d376b869cb832d5b3a668d3960cfef62f52d2a39d0f6f'
+            '61965bc4c08e62af250b7b0d2d0595e58a5d6d82e102c1f14cc0899a9ea7e904')
+noextract=("OneTrick-SIMIAN-$pkgver-Source.zip")
+
+_plugin_name="Punk Labs LLC OneTrick SIMIAN"
+_lv2_name="$_plugin_name.lv2"
+_lv2_libname="${_plugin_name// /}.so"
+_vst3_libpath="$_plugin_name.vst3/Contents/$(uname -m)-linux"
+_vst3_libname="$_plugin_name.so"
+
+prepare() {
+  mkdir -p $pkgname-$pkgver
+  bsdtar -xf "$srcdir"/OneTrick-SIMIAN-$pkgver-Source.zip -C $pkgname-$pkgver
+
+  cd $pkgname-$pkgver
+  # make dub build use LDFLAGS
+  if ! grep -q -- -Wl dub.json; then
+    export LDFLAGS
+    cp -f "$srcdir"/dub.json .
+    python -c 'import os; ldflags=os.environ.get("LDFLAGS", ""); json=open("dub.json").read().replace("@@LDFLAGS@@", ", ".join(f"\"{x}\"" for x in ldflags.split())); open("dub.json", "w").write(json)'
+  fi
+}
+
+build() {
+  cd $pkgname-$pkgver
+  # Generate D sources from FAUST .dsp files
+  faust \
+    --process-name processDrum \
+    -lang dlang \
+    -A "OneTrick/DSP" \
+    -a arch.fastmath.d.template \
+    -o DSP/Generated/DSP_Drum.d \
+    --class-name DSP_Drum "DSP/Main.dsp"
+  faust \
+    --process-name processOutput \
+    -lang dlang \
+    -A "OneTrick/DSP" \
+    -a arch.fastmath.d.template \
+    -o "DSP/Generated/DSP_Output.d" \
+    --class-name DSP_Output "DSP/Main.dsp"
+  # Build LV2 plugin
+  dub build --build=release-nobounds --arch=$CARCH --compiler=ldc2 --combined --config=LV2
+  mkdir -p "$_lv2_name"
+  mv libonetrick_simian.so "$_lv2_name/$_lv2_libname"
+  python "$srcdir"/generate-manifest-ttl.py "$_lv2_name/$_lv2_libname" "$_lv2_name" "$_lv2_libname"
+  # Build VST3 plugin
+  dub build --build=release-nobounds --arch=$CARCH --compiler=ldc2 --combined --config=VST3
+  mv libonetrick_simian.so "$_vst3_libname"
+}
+
+package() {
+  cd $pkgname-$pkgver
+  # LV2 plugin bundle
+  install -Dm644 "$_lv2_name"/*.ttl -t "$pkgdir/usr/lib/lv2/$_lv2_name"
+  install -Dm755 "$_lv2_name"/*.so -t "$pkgdir/usr/lib/lv2/$_lv2_name"
+  # VST3 plugin bundle
+  install -Dm755 "$_vst3_libname" -t "$pkgdir/usr/lib/vst3/$_vst3_libpath"
+}
