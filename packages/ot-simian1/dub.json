@@ -1,0 +1,287 @@
+{
+  "$schema": "https://raw.githubusercontent.com/Pure-D/code-d/master/json-validation/dub.schema.json",
+  "name": "onetrick_simian",
+  "license": "GPL-3.0-or-later",
+  "importPaths": [
+    "."
+  ],
+  "sourcePaths": [
+    "."
+  ],
+  "stringImportPaths": [
+    "Assets",
+    "OneTrick/Assets",
+    "."
+  ],
+  "copyright": "Copyright 2022 Punk Labs LLC",
+  "dflags-linux-dmd": [
+    "-defaultlib=libphobos2.a"
+  ],
+  "dflags-osx-ldc": [
+    "-static"
+  ],
+  "dflags-linux-ldc": [
+    "-link-defaultlib-shared=false"
+  ],
+  "dflags-linux-x86_64-ldc": [
+    "-fvisibility=hidden"
+  ],
+  "dflags-windows-ldc": [
+    "-mscrtlib=libcmt",
+    "-fvisibility=hidden",
+    "-link-defaultlib-shared=false"
+  ],
+  "comment-WARNING-READ-THIS-IS-IMPORTANT": [
+    "    When making your own plug-in you have to CHANGE THESE DEPENDENCY    ",
+    "    SPECIFICATIONS below from path-based to ~>MAJOR.MINOR               ",
+    "      Example: ~>7.0                                                    ",
+    "    This way you can move the project out of the Dplug tree.            ",
+    "    See also the DUB documentation:                                     ",
+    "         https://code.dlang.org/package-format?lang=json#version-specs  ",
+    "    So... Use { 'path': '../Dplug' } or '~>12.8.0'                      "
+  ],
+  "dependencies": {
+    "dplug:lv2": "13.0.5",
+    "dplug:vst3": "13.0.5",
+    "dplug:au": "13.0.5",
+    "dplug:gui": "13.0.5",
+    "dplug:canvas": "13.0.5",
+    "dplug:flat-widgets": "13.0.5"
+  },
+  "comment": "Configuration Options",
+  "versions": [
+    "futureMouseDrag"
+  ],
+  "buildTypes": {
+    "debug": {
+      "buildOptions": [
+        "debugMode",
+        "debugInfo"
+      ]
+    },
+    "release": {
+      "buildOptions": [
+        "releaseMode",
+        "optimize",
+        "inline",
+        "noBoundsCheck"
+      ]
+    }
+  },
+  "configurations": [
+    {
+      "name": "VST3",
+      "versions": [
+        "VST3"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-vst3.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-vst3.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "VST3-PRE",
+      "versions": [
+        "VST3",
+        "Prerelease"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-vst3.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-vst3.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "VST3-LITE",
+      "versions": [
+        "VST3",
+        "Lite"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-vst3.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-vst3.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "VST2",
+      "versions": [
+        "VST2"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-vst2.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-vst2.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "VST2-PRE",
+      "versions": [
+        "VST2",
+        "Prerelease"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-vst2.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-vst2.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "VST2-LITE",
+      "versions": [
+        "VST2",
+        "Lite"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-vst2.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-vst2.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "AU",
+      "versions": [
+        "AU"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-au.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "AU-PRE",
+      "versions": [
+        "AU",
+        "Prerelease"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-au.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "AU-LITE",
+      "versions": [
+        "AU",
+        "Lite"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-au.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "LV2",
+      "versions": [
+        "LV2"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-lv2.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-lv2.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "LV2-PRE",
+      "versions": [
+        "LV2",
+        "Prerelease"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-lv2.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-lv2.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "LV2-LITE",
+      "versions": [
+        "LV2",
+        "Lite"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-lv2.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-lv2.ver",
+        @@LDFLAGS@@
+      ]
+    },
+    {
+      "name": "LV2-TEST",
+      "versions": [
+        "LV2",
+        "StressTest"
+      ],
+      "targetType": "dynamicLibrary",
+      "lflags-osx-ldc": [
+        "-exported_symbols_list",
+        "module-lv2.lst",
+        "-dead_strip"
+      ],
+      "lflags-linux-ldc": [
+        "--version-script=module-lv2.ver",
+        @@LDFLAGS@@
+      ]
+    }
+  ]
+}
