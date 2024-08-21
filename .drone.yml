@@ -480,8 +480,8 @@ steps:
     image: spotlightkid/drone-matrixchat-notify
     settings:
       homeserver: "https://sonoj.org"
-      roomid: "!AkWpRHuPJQwVbEpayh:sonoj.org"
-      userid: "@bot-archlinux-proaudio:sonoj.org"
+      roomid: "!WYagUGTylkAMKoxcVa:sonoj.org"
+      userid: "@arch-bot:sonoj.org"
       accesstoken:
         from_secret: matrix-bot-token
       deviceid: "HOFQKIPDQE"
