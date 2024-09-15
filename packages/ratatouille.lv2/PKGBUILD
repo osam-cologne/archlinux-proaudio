@@ -20,7 +20,11 @@ _plugin_uri="urn:brummer:ratatouille"
 
 build() {
   cd $_name-v$pkgver
-  make
+  if [[ "$CARCH" = "aarch64" ]]; then
+    make SSE_CFLAGS=""
+  else
+    make
+  fi
 }
 
 check() {
