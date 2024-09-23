@@ -5,10 +5,10 @@
 
 pkgbase=jamulus
 pkgname=(jamulus jamulus-headless)
-pkgver=3.10.0
-pkgrel=2
+pkgver=3.11.0
+pkgrel=1
 pkgdesc="Internet jam session software"
-arch=(x86_64 aarch64)
+arch=(aarch64 x86_64)
 url='https://jamulus.io/'
 license=(GPL2 BSD custom:STK)
 depends=(gcc-libs qt6-base)
