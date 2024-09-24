@@ -14,7 +14,7 @@ license=(GPL-2.0-only BSD-3-Clause custom:STK)
 depends=(gcc-libs qt6-base)
 provides=(jamulus-server)
 conflicts=(jamulus-git)
-makedepends=(jack qt6-multimedia)
+makedepends=(jack qt6-multimedia qt6-tools)
 groups=(pro-audio)
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/jamulussoftware/$pkgbase/archive/r${pkgver//./_}.tar.gz"
   'jamulus.service'
