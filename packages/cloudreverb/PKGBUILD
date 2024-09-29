@@ -28,7 +28,6 @@ source=(
 sha256sums=('e7cfa6d8070e1f60a2bf0499994b1b55e3e8620591411f2dd37a7ae7175db7ae'
             '4b80c74d6eac9a4003f40b11a63f4bb73d25b934613cba59a0e4d7f9ffc7ea40')
 
-
 prepare() {
   cd $_name-$pkgver
   test -d JUCE && rmdir JUCE
