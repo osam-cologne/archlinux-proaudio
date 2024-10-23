@@ -9,22 +9,25 @@ arch=(x86_64 aarch64)
 url='https://github.com/Tracktion/pluginval/'
 license=(GPL-3.0-only)
 depends=(freetype2 glibc gcc-libs)
-makedepends=(alsa-lib cmake  git ladspa webkit2gtk)
+makedepends=(alsa-lib cmake git ladspa webkit2gtk)
 groups=(pro-audio)
-_juce_commit='113009c07431bdb7952d2564a0039354d03f452b'
+_pluginval_commit='6b028fd2e77759eb5c6acdefea7b0e3c34429192'
+_juce_commit='5179f4e720d8406ebd1b5401c86aea8da6cc83c9'
 source=(
-  "$pkgname::git+https://github.com/Tracktion/$pkgname.git#branch=develop"
+  "$pkgname-$_pluginval_commit.tar.gz::https://github.com/Tracktion/pluginval/archive/$_pluginval_commit.tar.gz"
   "JUCE-$_juce_commit.tar.gz::https://github.com/juce-framework/JUCE/archive/$_juce_commit.tar.gz"
 )
 
-sha256sums=('SKIP'
-            '5e253e530bb68abfb6dce01d8474700255a81a5a5cc3f8774f2ae8c6dc9fcf20')
+sha256sums=('c7e7df87674fadc6820469cc65fc73337d69b156d706281414e9a75c30799219'
+            '74c34535a848687aaa2f283ad5e77033e5690df8d359fd1891cbe292928812c0')
 
 
 prepare() {
+  rm -f $pkgname
+  ln -s $pkgname-$_pluginval_commit $pkgname
   cd $pkgname
   test -d modules/juce && rmdir modules/juce
-  ln -s "$srcdir"/JUCE-$_juce_commit modules/juce
+  ln -sf "$srcdir"/JUCE-$_juce_commit modules/juce
 }
 
 build() {
