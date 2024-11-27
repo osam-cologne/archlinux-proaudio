@@ -20,6 +20,8 @@ _plugin_uri="urn:brummer:ratatouille"
 
 build() {
   cd $_name-v$pkgver
+  # Workaround for https://github.com/brummer10/libxputty/issues/13
+  export CFLAGS="$CFLAGS -Wno-format-security"
   make
 }
 
