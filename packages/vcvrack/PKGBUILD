@@ -32,7 +32,7 @@ source=(
   'osdialog.git::git+https://github.com/AndrewBelt/osdialog'
   'oui-blendish.git::git+https://github.com/VCVRack/oui-blendish'
   'pffft.git::git+https://bitbucket.org/jpommier/pffft'
-  'rtaudio.git::git+https://github.com/VCVRack/rtaudio#commit=ece277bd'
+  'rtaudio.git::git+https://github.com/VCVRack/rtaudio'
   'tinyexpr.git::git+https://github.com/codeplea/tinyexpr'
   "$_plugin_pkg-$_plugin_ver.tar.gz::https://github.com/VCVRack/$_plugin_name/archive/v$_plugin_ver.tar.gz"
   'plugins.patch'
@@ -49,7 +49,7 @@ sha256sums=('8edf15caed42cc69037e0424bfb574bb9e12aa28c2887be9022fb6c91d571848'
             'SKIP'
             'SKIP'
             'SKIP'
-            '77376304dd0b8104855883682f9e1a16eff8a97fd94ecb197b6c9122be21baa8'
+            'SKIP'
             'SKIP'
             '1e3662c1f5cf57e484e7f605028fbe032e1eab541b73e10453d36df400e68ae0'
             '3ad0ea63ce2d5bf62b27e7b51a6d098040435636939d36a584a9b609578a9c9e'
@@ -65,6 +65,8 @@ prepare() {
     git submodule init dep/$_module
     git config submodule.dep/$_module.url "$srcdir/$_module.git"
   done
+  # original submodule commit was removed by rebase
+  git update-index --cacheinfo 160000,2c5b0778e38b5030afc80c8e9d7adc9b58ef650e,dep/rtaudio
   git -c protocol.file.allow=always submodule update
 
   # add target to only build included dependencies
