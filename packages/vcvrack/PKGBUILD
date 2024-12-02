@@ -89,7 +89,6 @@ build() {
   _ldflags="-Wl,--whole-archive \
     dep/lib/librtaudio.a \
     -Wl,--no-whole-archive \
-    -z,itb,-z,shstk \
     -shared -ldl \
     $(pkg-config --libs glew \
     glfw3 jansson libcurl openssl \
