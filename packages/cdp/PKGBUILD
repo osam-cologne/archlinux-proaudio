@@ -1,0 +1,39 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+_name=CDP8
+pkgname=cdp
+pkgver=8.0
+pkgrel=1
+pkgdesc='Composers Desktop Project suite of sound manipulation tools'
+arch=(aarch64 x86_64)
+url='https://www.composersdesktop.com/'
+license=(LGPL-2.1-only)
+groups=(pro-audio)
+depends=()
+makedepends=(make)
+source=("$pkgname-$pkgver.tar.gz::https://github.com/ComposersDesktop/$_name/archive/refs/tags/CDP$pkgver.tar.gz")
+sha256sums=('2a0e33c3d8bfdd12abf013ea5fcfa33e18c87f66823aa5676667810d726ffdff')
+
+prepare() {
+  cd $_name-CDP$pkgver/libaaio
+  bsdtar -xvjf libaaio-0.3.1.tar.bz2
+}
+
+build() {
+  cd $_name-CDP$pkgver/libaaio/libaaio-0.3.1
+  ./configure
+  make
+
+  cd "$srcdir"
+  cmake -B build -S $_name-CDP$pkgver \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_LIBRARY_PATH="$srcdir/$_name-CDP$pkgver/libaaio/libaaio-0.3.1/.libs;/usr/lib" \
+    -Wno-dev
+  cmake --build build
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build
+}
