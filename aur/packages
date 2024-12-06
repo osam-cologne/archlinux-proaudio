@@ -40,7 +40,6 @@ protobuf-21
 python-miditk-smf
 python-mido
 python-pyjacklib
-python-soundfile
 qjackcapture
 rakarrack-plus
 ratatouille.lv2

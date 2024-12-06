@@ -303,10 +303,6 @@ pypi = "mido"
 source = "pypi"
 pypi = "pyjacklib"
 
-[python-soundfile]
-source = "pypi"
-pypi = "soundfile"
-
 [qjackcapture]
 source = "pypi"
 pypi = "QJackCapture"
