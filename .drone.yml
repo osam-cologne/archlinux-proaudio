@@ -37,6 +37,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
+      - source tools/build-env.sh
       - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
       - pacman -Syu --noconfirm namcap
       - if [ -n "$PACKAGE" ]; then
