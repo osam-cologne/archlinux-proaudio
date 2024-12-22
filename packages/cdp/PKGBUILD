@@ -11,7 +11,7 @@ url='https://www.composersdesktop.com/'
 license=(LGPL-2.1-only)
 groups=(pro-audio)
 depends=()
-makedepends=(make)
+makedepends=(cmake)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/ComposersDesktop/$_name/archive/refs/tags/CDP$pkgver.tar.gz")
 sha256sums=('2a0e33c3d8bfdd12abf013ea5fcfa33e18c87f66823aa5676667810d726ffdff')
 
@@ -27,6 +27,7 @@ build() {
 
   cd "$srcdir"
   cmake -B build -S $_name-CDP$pkgver \
+    -DUSE_LOCAL_PORTAUDIO=Off \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCMAKE_LIBRARY_PATH="$srcdir/$_name-CDP$pkgver/libaaio/libaaio-0.3.1/.libs;/usr/lib" \
