@@ -37,6 +37,7 @@ steps:
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
+      - source tools/build-env.sh
       - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
       - pacman -Syu --noconfirm namcap
       - if [ -n "$PACKAGE" ]; then
@@ -58,6 +59,7 @@ steps:
     commands:
       - source tools/build-env.sh
       - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
+      - pacman --noconfirm -U https://archive.archlinux.org/packages/f/fakeroot/fakeroot-1.34-1-x86_64.pkg.tar.zst
       - run_nobody tools/clean-build-all.sh
       - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
         mv out/*-debug-*$PKGEXT out-debug/; fi
@@ -110,6 +112,7 @@ steps:
       - sleep 9 # backoff to prevent false positives
       - source ./tools/build-env.sh
       - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
+      - pacman --noconfirm -U https://archive.archlinux.org/packages/f/fakeroot/fakeroot-1.34-1-x86_64.pkg.tar.zst
       - run_nobody tools/clean-build-all.sh
     depends_on:
       - Prepare
@@ -303,7 +306,6 @@ steps:
         path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
-    failure: ignore
     environment:
       PKGDEST: /drone/src/out
       MAKEPKG_ARGS: -A
@@ -479,8 +481,8 @@ steps:
     image: spotlightkid/drone-matrixchat-notify
     settings:
       homeserver: "https://sonoj.org"
-      roomid: "!AkWpRHuPJQwVbEpayh:sonoj.org"
-      userid: "@bot-archlinux-proaudio:sonoj.org"
+      roomid: "!WYagUGTylkAMKoxcVa:sonoj.org"
+      userid: "@arch-bot:sonoj.org"
       accesstoken:
         from_secret: matrix-bot-token
       deviceid: "HOFQKIPDQE"

@@ -28,14 +28,14 @@ Download, import and sign the current signing key:
 # curl https://arch.osamc.de/proaudio/osamc.gpg | pacman-key --add -
 # pacman-key --lsign-key 762AE5DB2B38786364BD81C4B9141BCC62D38EE5
 ```
-You can now install packages from the repo using `pacman -Sy`.
+You can now install packages from the repo using `pacman -Syu <package>`.
 
 ## Debug packages
 [Similar to](https://wiki.archlinux.org/title/Debugging/Getting_traces) the official repos, we provide debug symbols in separate packages and
 run a Debuginfod server under `https://arch.osamc.de`. To use this with compatible clients like `gdb`, install the `debuginfod` package and
 add the URL:
 ```
-# pacman -Sy debuginfod
+# pacman -Syu debuginfod
 # echo https://arch.osamc.de > /etc/debuginfod/proaudio.urls
 ```
 Reboot, so the `DEBUGINFOD_URLS` environment variable gets initialized correctly.
