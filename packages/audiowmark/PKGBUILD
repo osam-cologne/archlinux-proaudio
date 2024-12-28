@@ -10,7 +10,7 @@ arch=(x86_64 aarch64)
 url='https://uplex.de/audiowmark/'
 license=(GPL-3.0-or-later)
 depends=(bash gcc-libs glibc libgcrypt)
-makedepends=(ffmpeg fftw libsndfile mpg123 zita-resampler)
+makedepends=(autoconf-archive ffmpeg fftw libsndfile mpg123 zita-resampler)
 groups=(pro-audio)
 source=("https://github.com/swesterfeld/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.zst"
         'audiowmark-configure.patch::https://github.com/swesterfeld/audiowmark/compare/0.6.3...master.patch')
