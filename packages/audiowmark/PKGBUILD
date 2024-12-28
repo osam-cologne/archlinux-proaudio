@@ -3,7 +3,7 @@
 # Contributor: Christopher Arndt <osam -at- chrisarndt -dot- de>
 
 pkgname=audiowmark
-pkgver=0.6.2
+pkgver=0.6.3
 pkgrel=1
 pkgdesc='Audio and video watermarking'
 arch=(x86_64 aarch64)
@@ -13,7 +13,7 @@ depends=(bash gcc-libs glibc libgcrypt)
 makedepends=(ffmpeg fftw libsndfile mpg123 zita-resampler)
 groups=(pro-audio)
 source=("https://github.com/swesterfeld/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.zst")
-sha256sums=('aacc80be9fca2c9462be51b1cf34d9194946876ae08c7bbb13c5c3b2d9621437')
+sha256sums=('65389bb1de1d5ea40fdf010d9ca2164394550c5b921e25944a117b8f2ddad5ab')
 
 build() {
   cd $pkgname-$pkgver
