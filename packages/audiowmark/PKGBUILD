@@ -12,11 +12,19 @@ license=(GPL-3.0-or-later)
 depends=(bash gcc-libs glibc libgcrypt)
 makedepends=(ffmpeg fftw libsndfile mpg123 zita-resampler)
 groups=(pro-audio)
-source=("https://github.com/swesterfeld/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.zst")
-sha256sums=('65389bb1de1d5ea40fdf010d9ca2164394550c5b921e25944a117b8f2ddad5ab')
+source=("https://github.com/swesterfeld/$pkgname/releases/download/$pkgver/$pkgname-$pkgver.tar.zst"
+        'audiowmark-configure.patch::https://github.com/swesterfeld/audiowmark/compare/0.6.3...master.patch')
+sha256sums=('65389bb1de1d5ea40fdf010d9ca2164394550c5b921e25944a117b8f2ddad5ab'
+            'afe929c2418973fc633949cd1ff8f86abfae26630739f1e8850189921a87dca1')
+
+prepare() {
+  cd $pkgname-$pkgver
+  patch -p1 -N -r - -i "$srcdir"/audiowmark-configure.patch || :
+}
 
 build() {
   cd $pkgname-$pkgver
+  autoreconf -f -i -Wno-portability
   ./configure --prefix=/usr --with-ffmpeg
   make
 }
