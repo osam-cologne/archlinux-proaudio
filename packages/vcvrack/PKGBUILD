@@ -36,6 +36,7 @@ source=(
   'tinyexpr.git::git+https://github.com/codeplea/tinyexpr'
   "$_plugin_pkg-$_plugin_ver.tar.gz::https://github.com/VCVRack/$_plugin_name/archive/v$_plugin_ver.tar.gz"
   'plugins.patch'
+  'wayland.patch'
   'wmclass.patch'
   'vcvrack.sh'
   'profile.sh'
@@ -53,6 +54,7 @@ sha256sums=('8edf15caed42cc69037e0424bfb574bb9e12aa28c2887be9022fb6c91d571848'
             'SKIP'
             '1e3662c1f5cf57e484e7f605028fbe032e1eab541b73e10453d36df400e68ae0'
             '3ad0ea63ce2d5bf62b27e7b51a6d098040435636939d36a584a9b609578a9c9e'
+            'e6c136e55dc12023ed7820b9f6ab19aefbb3ae4053031ad6d1ef31433b128092'
             'f1abd73a4de8a97328ff0111fb59ab9f0bde42b2b8f0d2a2ee7fb964e47dbe5e'
             '21ac35c6ad4e5a29c32939b17baaf7ac1936077eda2214e28675eefcf2021db8'
             'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f'
@@ -76,6 +78,8 @@ prepare() {
   patch -p1 -i ../plugins.patch
   # set proper window manager class
   patch -p1 -i ../wmclass.patch
+  # fix for wayland
+  patch -p1 -i ../wayland.patch
 
   gendesk -f -n \
     --pkgname $pkgname \
