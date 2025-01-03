@@ -13,7 +13,6 @@ pkgdesc='Open-source Eurorack modular synthesizer simulator'
 url='https://vcvrack.com/'
 license=(LicenseRef-custom GPL-3.0-or-later)
 arch=(aarch64 x86_64)
-install=.install
 _plugin_name=Fundamental
 _plugin_ver=2.6.1
 _plugin_pkg=$pkgname-${_plugin_name,,}
@@ -54,7 +53,7 @@ sha256sums=('8edf15caed42cc69037e0424bfb574bb9e12aa28c2887be9022fb6c91d571848'
             'SKIP'
             '4ca39ba45cd1a365ccc081f479a040178eac16d7d8b51f6fa49ff64b790c1d50'
             '3ad0ea63ce2d5bf62b27e7b51a6d098040435636939d36a584a9b609578a9c9e'
-            'e6c136e55dc12023ed7820b9f6ab19aefbb3ae4053031ad6d1ef31433b128092'
+            '6974236f98cbe9753109b1c034bc3be7fb2e46f5229a1fea0395ec95f5eef6b3'
             'f1abd73a4de8a97328ff0111fb59ab9f0bde42b2b8f0d2a2ee7fb964e47dbe5e'
             '5d30bfcce54219d5b95f1cafebae64503fbf4a46d10432c1e9a3c5cd78977096'
             'e1da6ccf04bae3a2101151fec7ddd32e48ff92b0a1146b559fd3221c778d521f'
