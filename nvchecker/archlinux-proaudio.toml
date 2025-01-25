@@ -153,6 +153,12 @@ prefix = "v"
 source = "pypi"
 pypi = "jack-matchmaker"
 
+[jack_link]
+source = "git"
+github = "rncbc/jack_link"
+use_max_tag = true
+prefix = "v"
+
 [jalv-select]
 source = "github"
 github = "brummer10/jalv_select"
