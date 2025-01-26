@@ -261,6 +261,12 @@ github = "SpotlightKid/midiomatic"
 use_max_tag = true
 prefix = "v"
 
+[neural-amp-modeler-lv2]
+source = "git"
+github = "mikeoliphant/neural-amp-modeler-lv2"
+use_max_tag = true
+prefix = "v"
+
 [ninjam-server]
 source = "regex"
 url = "https://raw.githubusercontent.com/justinfrankel/ninjam/main/ninjam/server/ninjamsrv.cpp"
