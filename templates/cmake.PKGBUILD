@@ -27,7 +27,7 @@ build() {
     -D CMAKE_INSTALL_PREFIX=/usr
   )
   cmake "${cmake_options[@]}"
-  cmake --build build
+  cmake --build build-$pkgname
 }
 
 check() {
