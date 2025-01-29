@@ -19,7 +19,7 @@ prepare() {
 }
 
 build() {
-	local cmake_options=(
+  local cmake_options=(
     -B build-$pkgname
     -S $pkgname-$pkgver
     -W no-dev
@@ -31,9 +31,9 @@ build() {
 }
 
 check() {
-	ctest --test-dir build-$pkgname --output-on-failure
+  ctest --test-dir build-$pkgname --output-on-failure
 }
 
 package() {
-	DESTDIR="$pkgdir" cmake --install build-$pkgname
+  DESTDIR="$pkgdir" cmake --install build-$pkgname
 }
