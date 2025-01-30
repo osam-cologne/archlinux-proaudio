@@ -1,0 +1,5 @@
+[rezonateur]
+source = "github"
+github = "jpcima/rezonateur"
+use_max_tag = true
+prefix = "v"

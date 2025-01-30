@@ -1,0 +1,5 @@
+[mamba]
+source = "github"
+github = "brummer10/Mamba"
+use_max_tag = true
+prefix = "v"
