@@ -1,5 +1,5 @@
 [jack_link]
-source = "git"
+source = "github"
 github = "rncbc/jack_link"
 use_max_tag = true
 prefix = "v"

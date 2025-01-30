@@ -1,5 +1,5 @@
 [neural-amp-modeler-lv2]
-source = "git"
+source = "github"
 github = "mikeoliphant/neural-amp-modeler-lv2"
 use_max_tag = true
 prefix = "v"
