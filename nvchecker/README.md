@@ -4,9 +4,9 @@ This directory contains a setup to check for new versions of software, which is
 packaged by this project, using [nvchecker].
 
 It contains a script, designed to run periodically on a server, which runs
-`nvchecker` using the latest configuration from this repo and then posts a
-message to a Matrix Chat room, if `nvcmp` reports any new versions.
-
+`nvchecker` using a configuration generated from PKGBUILD and .nvchecker.toml files
+in this repo and then posts a message to a Matrix Chat room, if `nvcmp` reports any
+new versions.
 
 ## Howto
 
@@ -90,7 +90,6 @@ Command line options passed to `run-nvchecker.cron` are passed on to
 
 Note: by default, the script reporrts new version only once and records the
 latest version it has seen. To make it report all new versions, use the
-`-s|--seen` command line option. 
-
+`-s|--seen` command line option.
 
 [nvchecker]: https://github.com/lilydjwg/nvchecker

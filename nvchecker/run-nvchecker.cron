@@ -9,5 +9,6 @@ cd "$CHECKOUT"
 git stash
 git pull -q
 git stash pop
+nvchecker/gen-config.sh
 nvchecker -l warning
 $PYTHON nvchecker/nvchecker-notify-matrixchat.py "$@" # --dry-run
