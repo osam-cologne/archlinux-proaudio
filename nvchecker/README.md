@@ -88,7 +88,7 @@ NVCHECK=$HOME/.config/nvchecker/run-nvchecker.cron
 Command line options passed to `run-nvchecker.cron` are passed on to
 `nvchecker-notify-matrixchat.py`.
 
-Note: by default, the script reporrts new version only once and records the
+Note: by default, the script reports new version only once and records the
 latest version it has seen. To make it report all new versions, use the
 `-s|--seen` command line option.
 
