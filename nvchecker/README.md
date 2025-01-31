@@ -12,7 +12,7 @@ new versions.
 
 Install `nvchecker`, e.g. via `pipx`:
 
-```con
+```sh
 PYTHON=python3.9
 $PYTHON -m pip install --user pipx
 pipx install "nvchecker[pypi]"
@@ -20,14 +20,14 @@ pipx install "nvchecker[pypi]"
 
 Install Python dependencies:
 
-```con
+```sh
 $PYTHON -m pip install --user appdirs tabulate matrix-nio
 ```
 
 Clone this repository and set up the `nvchecker` sub-directory as the
 `nvchecker` configuration directory:
 
-```con
+```sh
 git clone https://github.com/osam-cologne/archlinux-proaudio
 mkdir -p ~/.config
 ln -s ../archlinux-proaudio/nvchecker ~/.config
@@ -36,7 +36,7 @@ ln -s archlinux-proaudio.toml ~/.config/nvchecker/nvchecker.toml
 
 Create a `keyfile.toml` file with an empty `[keys]` section for nvchecker:
 
-```con
+```sh
 echo -e `[keys]\n` > ~/.config/nvchecker/keyfile.toml`
 ```
 
@@ -48,7 +48,7 @@ for more information.
 Copy the configuration file template for the `nvchecker-notify-matrixchat.py`
 script and make it user-read- and -writeable only:
 
-```con
+```sh
 cd ~/.config/nvchecker/
 cp nvchecker-notify-matrixchat.json.tmpl nvchecker-notify-matrixchat.json
 chmod 600 nvchecker-notify-matrixchat.json
@@ -59,20 +59,20 @@ chmod 600 nvchecker-notify-matrixchat.json
 user account (this user must have a matching acount on the given Matrix server
 and have joined the `archlinux-proaudio` room).
 
-```
+```json
 {
-    "homeserver": "https://sonoj.org",
-    "password": "<change here>",
-    "room_id": "!AkWpRHuPJQwVbEpayh:sonoj.org",
-    "template": "{table}"
-    "user_id": "@bot-archlinux-proaudio:sonoj.org",
+  "homeserver": "https://sonoj.org",
+  "password": "<change here>",
+  "room_id": "!AkWpRHuPJQwVbEpayh:sonoj.org",
+  "template": "{table}",
+  "user_id": "@bot-archlinux-proaudio:sonoj.org"
 }
 ```
 
 Finally, add an entry to the user's crontab to run the `run-nvchecker.cron`
 script periodically (e.g. once every 6 hours):
 
-```con
+```sh
 crontab -e
 ```
 

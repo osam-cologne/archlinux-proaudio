@@ -10,13 +10,12 @@ cat > $CFG << __EOF__
 oldver = "old_ver.json"
 newver = "new_ver.json"
 keyfile = "keyfile.toml"
-
 __EOF__
 
 VER_TEMP="$(mktemp)"
 for f in packages/*/.nvchecker.toml; do
-  cat $f >> $CFG
   echo "" >> $CFG
+  cat $f >> $CFG
   pkgdir=$(dirname $f)
   pkgbase=$(basename $pkgdir)
   pkgver=$(. $pkgdir/PKGBUILD; echo $pkgver)
