@@ -18,7 +18,7 @@ for f in packages/*/.nvchecker.toml; do
   cat $f >> $CFG
   pkgdir=$(dirname $f)
   pkgbase=$(basename $pkgdir)
-  pkgver=$(. $pkgdir/PKGBUILD; echo $pkgver)
+  pkgver=$(sed -n 's/^pkgver=//p' $pkgdir/PKGBUILD)
   printf '{"%s": "%s"}\n' $pkgbase $pkgver >> "$VER_TEMP"
 done
 jq -s add "$VER_TEMP" > $VER
