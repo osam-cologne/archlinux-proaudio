@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 PYTHON="python3.9"
 CHECKOUT="$HOME/archlinux-proaudio"
