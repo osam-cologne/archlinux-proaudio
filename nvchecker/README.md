@@ -10,6 +10,12 @@ new versions.
 
 ## Howto
 
+Install `jq` using your package manager of choice, e.g.:
+
+```sh
+pacman -Syu jq
+```
+
 Install `nvchecker`, e.g. via `pipx`:
 
 ```sh
