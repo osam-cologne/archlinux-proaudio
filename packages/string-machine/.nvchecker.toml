@@ -1,0 +1,5 @@
+[string-machine]
+source = "github"
+github = "jpcima/string-machine"
+use_max_tag = true
+prefix = "v"

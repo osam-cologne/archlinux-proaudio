@@ -1,0 +1,6 @@
+["aether.lv2"]
+source = "github"
+github = "Dougal-s/Aether"
+use_max_tag = true
+include_regex = '^v[\.\d]+$'
+prefix = "v"

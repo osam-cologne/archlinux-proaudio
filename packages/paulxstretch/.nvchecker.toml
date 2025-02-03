@@ -1,0 +1,5 @@
+[paulxstretch]
+source = "github"
+github = "essej/paulxstretch"
+use_max_tag = true
+prefix = "v"

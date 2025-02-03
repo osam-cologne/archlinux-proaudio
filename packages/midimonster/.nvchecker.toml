@@ -1,0 +1,5 @@
+[midimonster]
+source = "github"
+github = "cbdevnet/midimonster"
+use_max_tag = true
+prefix = "v"

@@ -1,0 +1,5 @@
+[jmeters]
+source = "regex"
+url = "http://kokkinizita.linuxaudio.org/linuxaudio/downloads/"
+regex = 'jmeters-(\d+\.\d+(?:\.\d+)?).tar.bz2'
+encoding = "utf-8"

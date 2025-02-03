@@ -1,0 +1,5 @@
+[ildaeil]
+source = "github"
+github = "DISTRHO/Ildaeil"
+use_max_tag = true
+prefix = "v"

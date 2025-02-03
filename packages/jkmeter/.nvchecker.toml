@@ -1,0 +1,5 @@
+[jkmeter]
+source = "regex"
+url = "http://kokkinizita.linuxaudio.org/linuxaudio/downloads/"
+regex = 'jkmeter-(\d+\.\d+(?:\.\d+)?).tar.bz2'
+encoding = "utf-8"

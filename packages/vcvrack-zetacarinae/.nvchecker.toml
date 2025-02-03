@@ -1,0 +1,5 @@
+[vcvrack-zetacarinae]
+source = "github"
+github = "mhampton/ZetaCarinaeModules"
+use_max_tag = true
+prefix = "v"

@@ -1,0 +1,3 @@
+[python-mido]
+source = "pypi"
+pypi = "mido"

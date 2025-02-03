@@ -1,0 +1,5 @@
+[ninjam-server]
+source = "regex"
+url = "https://raw.githubusercontent.com/justinfrankel/ninjam/main/ninjam/server/ninjamsrv.cpp"
+regex = '#define VERSION "v(\d+(?:\.\d+)+)"'
+encoding = "utf-8"
