@@ -1,0 +1,5 @@
+[clap-example-host]
+source = "github"
+github = "free-audio/clap-host"
+include_regex = '^[\.\d]+$'
+use_max_tag = true

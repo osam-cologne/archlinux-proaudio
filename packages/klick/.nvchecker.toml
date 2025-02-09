@@ -1,0 +1,4 @@
+[klick]
+source = "github"
+github = "Allfifthstuning/klick"
+use_max_tag = true
