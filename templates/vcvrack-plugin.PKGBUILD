@@ -1,17 +1,19 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
 
-_slug=
-_name=
-pkgname=vcvrack-
-pkgver=
+_slug=Example # from plugin.json
+_name=example # e.g. repo name
+pkgname=vcvrack-example
+pkgver=2.0.0
 pkgrel=1
-pkgdesc=''
+pkgdesc='An example description'
 arch=(aarch64 x86_64)
 url=''
-license=()
+license=(GPL-3.0-or-later) # identifier from https://spdx.org/licenses/
 groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(simde zstd)
+checkdepends=()
+optdepends=()
 source=()
 sha256sums=()
 
