@@ -140,7 +140,7 @@ Increment the pkgrel of a list of packages, passed as arguments or stdin:
 
 ```bash
 ./tools/bump-pkgrel.sh abcpp faustlive
-./tools/bump-pkgrel.sh < __EOF__
+./tools/bump-pkgrel.sh << __EOF__
 abcpp
 faustlive
 __EOF__
