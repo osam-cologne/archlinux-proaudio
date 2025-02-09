@@ -1,0 +1,5 @@
+[triceratops]
+source = "regex"
+url = "https://sourceforge.net/projects/triceratops/files/"
+regex = 'triceratops_v(\d+\.\d+(?:\.\d+)?)_[^.]+\.tar.gz'
+encoding = "utf-8"

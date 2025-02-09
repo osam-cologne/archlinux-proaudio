@@ -1,0 +1,5 @@
+["mclk.lv2"]
+source = "github"
+github = "x42/mclk.lv2"
+use_max_tag = true
+prefix = "v"

@@ -1,0 +1,5 @@
+[vcf-lv2]
+source= "github"
+github = "linuxmao-org/vcf-lv2"
+use_max_tag = true
+prefix = "v"

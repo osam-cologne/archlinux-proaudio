@@ -1,0 +1,5 @@
+[jalv-select]
+source = "github"
+github = "brummer10/jalv_select"
+use_max_tag = true
+prefix = "v"

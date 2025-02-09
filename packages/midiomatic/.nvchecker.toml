@@ -1,0 +1,5 @@
+[midiomatic]
+source = "github"
+github = "SpotlightKid/midiomatic"
+use_max_tag = true
+prefix = "v"
