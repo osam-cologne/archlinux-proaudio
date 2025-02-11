@@ -8,4 +8,4 @@ Icon=vcvrack
 Terminal=false
 StartupNotify=false
 Categories=AudioVideo;Audio;
-MimeType=application/x-vcvrack-patch;
+MimeType=application/vnd.vcvrack.patch+zstd;
