@@ -11,7 +11,7 @@ url="https://github.com/brummer10/$_name"
 license=(BSD-3-Clause)
 groups=(lv2-plugins pro-audio)
 depends=(glibc gcc-libs libx11)
-makedepends=(cairo fftw libsndfile lv2 xxd)
+makedepends=(cairo libsndfile lv2 xxd)
 checkdepends=(lv2lint)
 optdepends=('lv2-host: for loading the LV2 plugin')
 source=("https://github.com/brummer10/$_name/releases/download/v$pkgver/$_name-v$pkgver-src.tar.xz")
@@ -31,7 +31,7 @@ check() {
 }
 
 package() {
-  depends+=(libcairo.so libfftw3f.so libsndfile.so)
+  depends+=(libcairo.so libsndfile.so)
   cd $_name-v$pkgver
   make DESTDIR="$pkgdir" install
   install -vDm 644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
