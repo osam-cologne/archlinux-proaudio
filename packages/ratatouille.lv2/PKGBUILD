@@ -4,7 +4,7 @@
 _name=Ratatouille.lv2
 pkgname=${_name,,}
 pkgver=0.9.7
-pkgrel=2
+pkgrel=3
 pkgdesc='A guitar amp neural model and impulse response loader and mixer LV2 plugin'
 arch=(aarch64 x86_64)
 url="https://github.com/brummer10/$_name"
@@ -20,7 +20,9 @@ _plugin_uri="urn:brummer:ratatouille"
 
 build() {
   cd $_name-v$pkgver
-  make CXX=g++
+  # https://github.com/brummer10/Ratatouille.lv2/issues/42
+  export CXXFLAGS="${CXXFLAGS/-Wp,-D_FORTIFY_SOURCE=3/}"
+  make
 }
 
 check() {
@@ -29,7 +31,7 @@ check() {
 }
 
 package() {
-  depens+=(libcairo.so libfftw3f.so libsndfile.so)
+  depends+=(libcairo.so libfftw3f.so libsndfile.so)
   cd $_name-v$pkgver
   make DESTDIR="$pkgdir" install
   install -vDm 644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
