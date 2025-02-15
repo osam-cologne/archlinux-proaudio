@@ -106,7 +106,7 @@ build() {
     libarchive libzstd speexdsp \
     rtmidi alsa jack libpulse libpulse-simple))
   VERSION=$pkgver make -C dep includes
-  VERSION=$pkgver make LDFLAGS+="${_ldflags[@]}" STANDALONE_LDFLAGS="$LDFLAGS"
+  VERSION=$pkgver make LDFLAGS+="${_ldflags[*]}" STANDALONE_LDFLAGS="$LDFLAGS"
   cd ../$_plugin_name-$_plugin_ver
   VERSION=$_plugin_ver RACK_DIR=../$_name make dist
 }
