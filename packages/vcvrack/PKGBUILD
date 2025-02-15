@@ -94,16 +94,19 @@ prepare() {
 build() {
   cd $_name
   autoreconf -f -i dep/libsamplerate-$_libsamplerate_ver
-  _ldflags="-Wl,--whole-archive \
-    dep/lib/lib{rtaudio,samplerate}.a \
-    -Wl,--no-whole-archive \
-    -shared -ldl \
+  _ldflags=(-Wl,--whole-archive
+    dep/lib/lib{rtaudio,samplerate}.a
+    -Wl,--no-whole-archive
+    -shared -ldl
+    # fixes https://github.com/osam-cologne/archlinux-proaudio/issues/544
+    -static-libstdc++
+    # dynamically linked libs
     $(pkg-config --libs glew \
     glfw3 jansson libcurl openssl \
     libarchive libzstd speexdsp \
-    rtmidi alsa jack libpulse libpulse-simple)"
+    rtmidi alsa jack libpulse libpulse-simple))
   VERSION=$pkgver make -C dep includes
-  VERSION=$pkgver make LDFLAGS+="$_ldflags" STANDALONE_LDFLAGS="$LDFLAGS"
+  VERSION=$pkgver make LDFLAGS+="${_ldflags[@]}" STANDALONE_LDFLAGS="$LDFLAGS"
   cd ../$_plugin_name-$_plugin_ver
   VERSION=$_plugin_ver RACK_DIR=../$_name make dist
 }
