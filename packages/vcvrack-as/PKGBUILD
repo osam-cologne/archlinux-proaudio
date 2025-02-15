@@ -13,7 +13,7 @@ license=(MIT CC-BY-NC-ND-4.0)
 groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(git simde zstd)
-source=("git+https://github.com/AScustomWorks/$_name.git#tag=v$pkgver")
+source=("git+https://github.com/AScustomWorks/$_name#tag=v$pkgver")
 sha256sums=('642ad28c3e054b83e0e6fc090989c0495ae1d303c55ea3313dab6ce765c928a4')
 
 build() {
