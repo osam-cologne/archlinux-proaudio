@@ -11,7 +11,7 @@ url='https://library.vcvrack.com/LilacLoop'
 license=(GPL-3.0-or-later)
 groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
-makedepends=(simde zstd)
+makedepends=(git simde zstd)
 source=("git+https://github.com/grough/lilac-loop-vcv#tag=v$pkgver")
 sha256sums=('d26664fca641351e55b917d84cff81f178ffd9cedb8e836f443c29909f583238')
 
