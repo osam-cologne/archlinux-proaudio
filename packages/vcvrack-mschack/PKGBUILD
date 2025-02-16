@@ -1,4 +1,5 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
 
 _slug=mscHack
 _name=mschack-VCV-Rack-Plugins
