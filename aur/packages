@@ -1,9 +1,9 @@
+a-sid
 abcm2ps
 abcpp
 abseil-cpp11
 aether.lv2
 airwindows-lv2
-a-sid
 audiowmark
 clap-validator
 cloudreverb
@@ -67,6 +67,9 @@ vcvrack-alikins
 vcvrack-alliewayaudio-freebies
 vcvrack-amalgamated-harmonics
 vcvrack-aridacity
+vcvrack-as
+vcvrack-auraaudio
+vcvrack-autinn
 vcvrack-axioma
 vcvrack-bastl
 vcvrack-collection-one
@@ -74,6 +77,10 @@ vcvrack-computerscare
 vcvrack-cvly
 vcvrack-freesurface
 vcvrack-goodsheperd
+vcvrack-lilacloop
+vcvrack-modllz
+vcvrack-mschack
+vcvrack-sha-bang-modules
 vcvrack-sonusmodular
 vcvrack-zetacarinae
 xtuner
