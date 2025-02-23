@@ -19,7 +19,7 @@ _plugin_pkg=$pkgname-${_plugin_name,,}
 _libsamplerate_ver=0.1.9
 depends=(glfw jansson nanosvg)
 makedepends=(alsa-lib autoconf cmake curl ghc-filesystem git glew jack jq libarchive libpulse
-  openssl rtmidi simde speexdsp zstd)
+  libxrandr openssl rtmidi simde speexdsp zstd)
 provides=("$_plugin_pkg=$_plugin_ver" vcvrack-sdk)
 conflicts=($_plugin_pkg)
 groups=(pro-audio)
