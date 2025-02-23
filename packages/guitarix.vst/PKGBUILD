@@ -15,7 +15,7 @@ depends=(
   #gcc-libs
   #glib2
   #glibc
-  #glibmm
+  glibmm
   #graphite
   #libsigc++
 )
@@ -26,7 +26,7 @@ sha256sums=('2fc71fb495695a5a98b4c2ee3997eb88803951d039e3231a9cffc721a212e402')
 
 build() {
   cd Guitarix.vst3_$pkgver
-  make
+  make V=1
 }
 
 package() {
