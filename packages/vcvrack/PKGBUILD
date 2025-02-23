@@ -30,7 +30,7 @@ source=(
   'git+https://github.com/AndrewBelt/osdialog'
   'git+https://github.com/VCVRack/oui-blendish'
   'git+https://bitbucket.org/jpommier/pffft'
-  'git+https://github.com/VCVRack/rtaudio'
+  'git+https://github.com/cbix/rtaudio#branch=fix/vcvrack-submodule'
   'git+https://github.com/codeplea/tinyexpr'
   "git+https://github.com/libsndfile/libsamplerate#tag=$_libsamplerate_ver"
   "git+https://github.com/VCVRack/$_plugin_name#tag=v$_plugin_ver"
@@ -69,8 +69,6 @@ prepare() {
     git submodule init dep/$_module
     git config submodule.dep/$_module.url "$srcdir"/$_module
   done
-  # fix invalid commit
-  git update-index --cacheinfo 160000,22d64cdcb151e388791caceee8aa0011a6aa46e0,dep/rtaudio
   git -c protocol.file.allow=always submodule update
 
   # libsamplerate needs static linking for some modules to load
