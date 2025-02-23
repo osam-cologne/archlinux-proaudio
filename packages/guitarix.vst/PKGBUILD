@@ -18,8 +18,6 @@ depends=(
   libsigc++
 )
 makedepends=(
-  #alsa-lib
-  #avahi
   boost
   curl
   eigen
@@ -44,11 +42,6 @@ build() {
 
 package() {
   depends+=(
-    #libasound.so
-    #libavahi-client.so
-    #libavahi-common.so
-    #libavahi-glib.so
-    #libavahi-gobject.so
     libcurl.so
     libfftw3f.so
     libfreetype.so
@@ -56,7 +49,7 @@ package() {
     libglib-2.0.so
     libglibmm-2.4.so
     libgobject-2.0.so
-    #liblilv-0.so
+    liblilv-0.so
     libsigc-2.0.so
     libsndfile.so
   )
