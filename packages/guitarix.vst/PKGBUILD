@@ -28,7 +28,7 @@ makedepends=(
   freetype2
   gperf
   intltool
-  #lilv
+  lilv
   libsndfile
   sassc
   waf
