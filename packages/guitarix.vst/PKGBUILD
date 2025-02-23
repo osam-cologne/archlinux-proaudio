@@ -38,7 +38,6 @@ optdepends=('vst3-host: for VST3 plugins')
 source=("https://github.com/brummer10/$pkgname/releases/download/v$pkgver/Guitarix.vst3_$pkgver.tar.gz")
 sha256sums=('2fc71fb495695a5a98b4c2ee3997eb88803951d039e3231a9cffc721a212e402')
 
-
 build() {
   cd Guitarix.vst3_$pkgver
   make
