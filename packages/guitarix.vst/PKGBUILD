@@ -23,7 +23,7 @@ makedepends=(
   curl
   #eigen
   fftw
-  #freetype2
+  freetype2
   #gperf
   #intltool
   lilv
