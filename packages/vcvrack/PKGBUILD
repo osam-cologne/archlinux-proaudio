@@ -15,13 +15,12 @@ license=(LicenseRef-custom GPL-3.0-or-later)
 arch=(aarch64 x86_64)
 _plugin_name=Fundamental
 _plugin_ver=2.6.1
-_plugin_pkg=$pkgname-${_plugin_name,,}
+_plugin_pkg=vcvrack-free
 _libsamplerate_ver=0.1.9
 depends=(glfw jansson nanosvg)
 makedepends=(alsa-lib autoconf cmake curl ghc-filesystem git glew jack jq libarchive libpulse
   libxrandr openssl rtmidi simde speexdsp zstd)
 provides=("$_plugin_pkg=$_plugin_ver" vcvrack-sdk)
-conflicts=($_plugin_pkg)
 groups=(pro-audio)
 source=(
   "git+https://github.com/VCVRack/$_name#tag=v$pkgver"
@@ -103,7 +102,7 @@ build() {
 
   # build plugin
   cd ../$_plugin_name
-  VERSION=$_plugin_ver RACK_DIR=../$_name make dist
+  RACK_DIR=../$_name make dist
 }
 
 package() {
