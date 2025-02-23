@@ -65,12 +65,10 @@ sha256sums=('8edf15caed42cc69037e0424bfb574bb9e12aa28c2887be9022fb6c91d571848'
 prepare() {
   cd $_name
   # setup submodules
-  for _module in fuzzysearchdatabase nanovg osdialog oui-blendish pffft tinyexpr; do
+  for _module in fuzzysearchdatabase nanovg osdialog oui-blendish pffft rtaudio tinyexpr; do
     git submodule init dep/$_module
     git config submodule.dep/$_module.url "$srcdir"/$_module
   done
-  # original submodule commit was removed by rebase
-  git submodule update --init -f dep/rtaudio
   git -c protocol.file.allow=always submodule update
 
   # libsamplerate needs static linking for some modules to load
