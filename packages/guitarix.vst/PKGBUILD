@@ -19,8 +19,8 @@ depends=(
   libsigc++
 )
 makedepends=(
-  alsa-lib
-  avahi
+  #alsa-lib
+  #avahi
   boost
   curl
   eigen
@@ -28,16 +28,13 @@ makedepends=(
   freetype2
   gperf
   intltool
-  lilv
+  #lilv
   libsndfile
   sassc
   waf
   webkit2gtk
 )
-optdepends=(
-  'vst3-host: for VST3 plugins'
-  'gxplugins.lv2: for additional Guitarix LV2 plugins'
-)
+optdepends=('vst3-host: for VST3 plugins')
 source=("https://github.com/brummer10/$pkgname/releases/download/v$pkgver/Guitarix.vst3_$pkgver.tar.gz")
 sha256sums=('2fc71fb495695a5a98b4c2ee3997eb88803951d039e3231a9cffc721a212e402')
 
@@ -49,11 +46,11 @@ build() {
 
 package() {
   depends+=(
-    libasound.so
-    libavahi-client.so
-    libavahi-common.so
-    libavahi-glib.so
-    libavahi-gobject.so
+    #libasound.so
+    #libavahi-client.so
+    #libavahi-common.so
+    #libavahi-glib.so
+    #libavahi-gobject.so
     libcurl.so
     libfftw3f.so
     libfreetype.so
@@ -61,7 +58,7 @@ package() {
     libglib-2.0.so
     libglibmm-2.4.so
     libgobject-2.0.so
-    liblilv-0.so
+    #liblilv-0.so
     libsigc-2.0.so
     libsndfile.so
   )
