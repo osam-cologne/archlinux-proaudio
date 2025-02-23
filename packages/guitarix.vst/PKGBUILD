@@ -9,6 +9,7 @@ arch=(aarch64 x86_64)
 url='https://github.com/brummer10/guitarix.vst'
 license=(GPL-3.0-or-later)
 groups=(vst3-plugins pro-audio)
+provides=(lv2-host)
 depends=(
   gcc-libs
   glib2
@@ -18,18 +19,18 @@ depends=(
   libsigc++
 )
 makedepends=(
-  boost
+  #boost
   curl
-  eigen
+  #eigen
   fftw
-  freetype2
-  gperf
-  intltool
+  #freetype2
+  #gperf
+  #intltool
   lilv
   libsndfile
-  sassc
-  waf
-  webkit2gtk
+  #sassc
+  #waf
+  #webkit2gtk
 )
 optdepends=('vst3-host: for VST3 plugins')
 source=("https://github.com/brummer10/$pkgname/releases/download/v$pkgver/Guitarix.vst3_$pkgver.tar.gz")
