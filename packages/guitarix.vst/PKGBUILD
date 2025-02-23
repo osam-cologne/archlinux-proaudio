@@ -19,7 +19,7 @@ depends=(
   libsigc++
 )
 makedepends=(
-  #boost
+  boost
   curl
   #eigen
   fftw
