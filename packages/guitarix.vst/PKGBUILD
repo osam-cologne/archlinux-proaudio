@@ -29,6 +29,7 @@ makedepends=(
   lilv
   libsndfile
   libx11
+  libxinerama
   libxrandr
   #sassc
   #waf
