@@ -28,6 +28,7 @@ makedepends=(
   #intltool
   lilv
   libsndfile
+  libx11
   #sassc
   #waf
   #webkit2gtk
