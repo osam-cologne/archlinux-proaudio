@@ -4,7 +4,7 @@
 
 pkgname=guitarix.vst
 pkgver=0.4
-pkgrel=2
+pkgrel=3
 pkgdesc='A versatile (guitar) amplifier VST3 plugin'
 arch=(aarch64 x86_64)
 url='https://github.com/brummer10/guitarix.vst'
