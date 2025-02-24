@@ -24,7 +24,7 @@ build() {
 
 package() {
   depends+=(libcurl.so libfftw3f.so libfreetype.so libglib-2.0.so libgio-2.0.so libglibmm-2.4.so
-    libgiomm-2.4.so libgobject-2.0.so liblilv-0.so libsigc-2.0.so libsndfile.so)
+    libgobject-2.0.so liblilv-0.so libsigc-2.0.so libsndfile.so)
   cd Guitarix.vst3_$pkgver
   make JUCE_VST3DESTDIR="$pkgdir"/usr/lib/vst3 install
 }
