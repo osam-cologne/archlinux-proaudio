@@ -1,22 +1,20 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
 # Contributor: Florian Hülsmann <fh@cbix.de>
 
-_slug=ChemicalElements
-_name=chemical-elements
-pkgname=vcvrack-chemical-elements
-pkgver=2.0.0
+_slug=dbRackModules
+_name=dbRackModules
+pkgname=vcvrack-dbrack-modules
+pkgver=2.5.0
 pkgrel=1
-pkgdesc='Chemical Elements VCV Rack modules'
+pkgdesc='dbRack VCV Rack modules'
 arch=(aarch64 x86_64)
-url='https://gitlab.com/pythongirl/chemical-elements'
-license=(GPL-3.0-or-later)
+url='https://github.com/docb/dbRackModules'
+license=(GPL-3.0-or-later MIT)
 groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(git simde zstd)
-# get commit from https://github.com/VCVRack/library/tree/v2/repos
-_commit=414e488e8db482e0d67a3294b2d8461ade36ac03
-source=("git+https://gitlab.com/pythongirl/$_name#commit=$_commit")
-sha256sums=('79b201abc903c5ff433626ebbcbee32370f6629270a621612cdb4961fa97dc1c')
+source=("git+https://github.com/docb/$_name#tag=v$pkgver")
+sha256sums=('4afb341b4e7c5146071a9dd82f0d2352c0b40ecf9e956374cbd950998a141afa')
 
 prepare() {
   cd $_name
@@ -33,4 +31,5 @@ package() {
   cd $_name
   install -d "$pkgdir"/usr/lib/vcvrack/plugins
   cp -va dist/$_slug -t "$pkgdir"/usr/lib/vcvrack/plugins
+  install -vDm644 Gamma/COPYRIGHT -t "$pkgdir"/usr/share/licenses/$pkgname
 }

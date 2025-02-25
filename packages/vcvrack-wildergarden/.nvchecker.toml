@@ -1,4 +1,4 @@
 [vcvrack-wildergarden]
 source = "jq"
-url = "https://raw.githubusercontent.com/ArdenButterfield/wildergarden-vcv/refs/heads/master/plugin.json"
+url = "https://raw.githubusercontent.com/ArdenButterfield/wildergarden-vcv/refs/heads/main/plugin.json"
 filter = ".version"
