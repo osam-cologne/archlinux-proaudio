@@ -75,6 +75,8 @@ prepare() {
   # libsamplerate needs static linking for some modules to load
   ln -sf "$srcdir"/libsamplerate dep/libsamplerate-$_libsamplerate_ver
 
+  # fix binary objects on aarch64
+  patch -p1 -i ../arm64-objcopy.patch
   # support building plugins and loading system-wide plugins
   patch -p1 -i ../plugins.patch
   # set proper window manager class
