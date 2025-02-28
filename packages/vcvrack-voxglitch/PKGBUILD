@@ -1,22 +1,22 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
-# Contributor: Florian Hülsmann <fh@cbix.de>
+# Contributor: Florian Hülsmann
 
-_slug=ChemicalElements
-_name=chemical-elements
-pkgname=vcvrack-chemical-elements
-pkgver=2.0.0
-pkgrel=2
-pkgdesc='Chemical Elements VCV Rack modules'
+_slug=voxglitch
+_name=voxglitch
+pkgname=vcvrack-voxglitch
+pkgver=2.32.3
+pkgrel=1
+pkgdesc='Voxglitch VCV Rack modules'
 arch=(aarch64 x86_64)
-url='https://gitlab.com/pythongirl/chemical-elements'
+url='https://github.com/clone45/voxglitch'
 license=(GPL-3.0-or-later)
 groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(git jq simde zstd)
-# get commit from https://github.com/VCVRack/library/tree/v2/repos
-_commit=414e488e8db482e0d67a3294b2d8461ade36ac03
-source=("git+https://gitlab.com/pythongirl/$_name#commit=$_commit")
-sha256sums=('79b201abc903c5ff433626ebbcbee32370f6629270a621612cdb4961fa97dc1c')
+# get release commit from https://github.com/VCVRack/library/tree/v2/repos
+_commit=3e3621e78b376193ef376ebc653301f6197ff110
+source=("git+https://github.com/clone45/$_name#commit=$_commit")
+sha256sums=('082c46f34a6f249224e41f984d212167bfccbd53332b801c989df84843eed21c')
 
 prepare() {
   cd $_name
@@ -26,6 +26,8 @@ prepare() {
   fi
   # common license
   rm LICENSE
+  # https://github.com/clone45/voxglitch/issues/217#issuecomment-2690344027
+  sed -i -e 's/reserve/resize/g' src/vgLib-2.0/widgets/WaveformWidget.hpp
 }
 
 build() {
