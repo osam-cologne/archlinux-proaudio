@@ -5,7 +5,7 @@ _slug=QuantalAudio
 _name=quantal-audio
 pkgname=vcvrack-quantal-audio
 pkgver=2.2.2
-pkgrel=1
+pkgrel=2
 pkgdesc='QuantalAudio VCV Rack modules'
 arch=(aarch64 x86_64)
 url='https://github.com/sumpygump/quantal-audio'
@@ -24,7 +24,7 @@ prepare() {
 
 build() {
   cd $_name
-  make SLUG=$_slug VERSION=$pkgver RACK_DIR=/usr/share/vcvrack dist
+  make SLUG=$_slug VERSION=$pkgver STRIP=: RACK_DIR=/usr/share/vcvrack dist
 }
 
 package() {
