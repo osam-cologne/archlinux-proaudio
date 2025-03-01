@@ -60,6 +60,7 @@ uhhyou-plugins
 vcf-lv2
 vcvrack
 vcvrack-21khz
+vcvrack-4ms
 vcvrack-8mode
 vcvrack-aaronstatic
 vcvrack-ahornberg
@@ -83,6 +84,7 @@ vcvrack-goodsheperd
 vcvrack-lilacloop
 vcvrack-modllz
 vcvrack-mschack
+vcvrack-not-things
 vcvrack-quantal-audio
 vcvrack-sha-bang-modules
 vcvrack-sonusmodular
