@@ -18,8 +18,10 @@ source=("git+https://github.com/4ms/$_name#tag=vcv-v$pkgver"
         'git+https://github.com/4ms/metamodule-patch-serial'
         'git+https://github.com/4ms/metamodule-core-interface'
         'git+https://github.com/4ms/metamodule-core-modules'
-        'git+https://github.com/google/flatbuffers.git')
+        'git+https://github.com/google/flatbuffers.git'
+        'sdk-path.patch')
 sha256sums=('3dd6725716dc718b61c8fb3687b36e0d6bfe4aab3eaf08163ef64198b8fc1f98'
+            'SKIP'
             'SKIP'
             'SKIP'
             'SKIP'
@@ -30,6 +32,10 @@ prepare() {
   cd $_name
   # common license
   rm LICENSE-GPL-v3.txt
+  # RackSDK.cmake expects different path
+  patch -p1 -i ../sdk-path.patch
+  # FIXME submodules
+  git submodule update --init --recursive
 }
 
 build() {
