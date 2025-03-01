@@ -46,24 +46,21 @@ prepare() {
   git config submodule.lib/CoreModules.url "$srcdir"/metamodule-core-modules
   git config submodule.lib/flatbuffers.url "$srcdir"/flatbuffers
   git -c protocol.file.allow=always submodule update
-  (
-    cd lib/patch-serial
-    git submodule init
-    git config submodule.ryml/rapidyaml.url "$srcdir"/rapidyaml
-    git -c protocol.file.allow=always submodule update
-    (
-      cd ryml/rapidyaml
-      git submodule init
-      git config submodule.ext/c4core.url "$srcdir"/c4core
-      git -c protocol.file.allow=always submodule update
-      (
-        cd ext/c4core
-        git submodule init
-        git config submodule.cmake.url "$srcdir"/cmake
-        git -c protocol.file.allow=always submodule update
-      )
-    )
-  )
+  pushd lib/patch-serial
+  git submodule init
+  git config submodule.ryml/rapidyaml.url "$srcdir"/rapidyaml
+  git -c protocol.file.allow=always submodule update
+  pushd ryml/rapidyaml
+  git submodule init
+  git config submodule.ext/c4core.url "$srcdir"/c4core
+  git -c protocol.file.allow=always submodule update
+  pushd ext/c4core
+  git submodule init
+  git config submodule.cmake.url "$srcdir"/cmake
+  git -c protocol.file.allow=always submodule update
+  popd
+  popd
+  popd
 }
 
 build() {
