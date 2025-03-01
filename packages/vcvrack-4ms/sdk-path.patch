@@ -1,11 +1,11 @@
 diff --git a/RackSDK.cmake b/RackSDK.cmake
-index 1e5a103..e3781d1 100644
+index 1e5a103..fc9707a 100644
 --- a/RackSDK.cmake
 +++ b/RackSDK.cmake
 @@ -10,12 +10,6 @@ else ()
    message(STATUS "Using Rack-SDK in '${RACK_SDK_DIR}'")
  endif ()
- 
+
 -if (EXISTS "${RACK_SDK_DIR}/include/rack.hpp")
 -  message(STATUS "Found include/rack.hpp")
 -else()
@@ -15,3 +15,12 @@ index 1e5a103..e3781d1 100644
  if ("${PLUGIN_NAME}" STREQUAL "")
    message(FATAL_ERROR "PLUGIN_NAME variable not set! Add PLUGIN_NAME variable to the project CMakeLists.txt before including RackSDK.cmake.\
   The PLUGIN_NAME must correspond to the plugin slug, as defined in plugin.json.")
+@@ -76,7 +70,7 @@ add_library(${RACK_PLUGIN_LIB} MODULE)
+ set_target_properties(${RACK_PLUGIN_LIB} PROPERTIES PREFIX "")
+
+ add_library(RackSDK INTERFACE)
+-target_include_directories(RackSDK INTERFACE ${RACK_SDK_DIR}/include ${RACK_SDK_DIR}/dep/include)
++target_include_directories(RackSDK INTERFACE /usr/include/vcvrack /usr/include/vcvrack/dep /usr/include/nanosvg)
+ target_link_directories(RackSDK INTERFACE ${RACK_SDK_DIR})
+ target_link_libraries(RackSDK INTERFACE Rack)
+ target_compile_definitions(RackSDK INTERFACE $<IF:$<STREQUAL:${CMAKE_OSX_ARCHITECTURES},arm64>,ARCH_ARM64,ARCH_X64>)

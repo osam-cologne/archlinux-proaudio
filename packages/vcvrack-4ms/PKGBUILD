@@ -26,12 +26,10 @@ sha256sums=('3dd6725716dc718b61c8fb3687b36e0d6bfe4aab3eaf08163ef64198b8fc1f98'
             'SKIP'
             'SKIP'
             'SKIP'
-            'SKIP')
+            'a48e6aefb652cc2e24d659f04c10bcdcdf77d168738fec13f89c8d5fbf937997')
 
 prepare() {
   cd $_name
-  # common license
-  rm LICENSE-GPL-v3.txt
   # RackSDK.cmake expects different path
   patch -p1 -i ../sdk-path.patch
   # FIXME submodules
@@ -40,11 +38,13 @@ prepare() {
 
 build() {
   cd $_name
-  make SLUG=$_slug VERSION=$pkgver STRIP=: RACK_DIR=/usr/share/vcvrack dist
+  make SLUG=$_slug VERSION=$pkgver STRIP=: RACK_DIR=/usr/share/vcvrack V=1 dist
 }
 
 package() {
   cd $_name
   install -d "$pkgdir"/usr/lib/vcvrack/plugins
   cp -va dist/$_slug -t "$pkgdir"/usr/lib/vcvrack/plugins
+  # common license
+  rm "$pkgdir"/usr/lib/vcvrack/plugins/$_slug/LICENSE-GPL-v3.txt
 }
