@@ -1,0 +1,44 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+_slug=4msCompany
+_name=4ms-vcv
+pkgname=vcvrack-4ms
+pkgver=2.0.11
+pkgrel=1
+pkgdesc='4ms VCV Rack modules'
+arch=(aarch64 x86_64)
+url='https://github.com/4ms/4ms-vcv'
+license=(GPL-3.0-or-later)
+groups=(pro-audio vcvrack-plugins)
+depends=(gcc-libs vcvrack)
+makedepends=(git simde zstd)
+source=("git+https://github.com/4ms/$_name#tag=vcv-v$pkgver"
+        'git+https://github.com/4ms/cpputil'
+        'git+https://github.com/4ms/metamodule-patch-serial'
+        'git+https://github.com/4ms/metamodule-core-interface'
+        'git+https://github.com/4ms/metamodule-core-modules'
+        'git+https://github.com/google/flatbuffers.git')
+sha256sums=('3dd6725716dc718b61c8fb3687b36e0d6bfe4aab3eaf08163ef64198b8fc1f98'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP')
+
+prepare() {
+  cd $_name
+  # common license
+  rm LICENSE-GPL-v3.txt
+}
+
+build() {
+  cd $_name
+  make SLUG=$_slug VERSION=$pkgver STRIP=: RACK_DIR=/usr/share/vcvrack dist
+}
+
+package() {
+  cd $_name
+  install -d "$pkgdir"/usr/lib/vcvrack/plugins
+  cp -va dist/$_slug -t "$pkgdir"/usr/lib/vcvrack/plugins
+}
