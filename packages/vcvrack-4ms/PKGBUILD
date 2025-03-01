@@ -22,7 +22,7 @@ source=("git+https://github.com/4ms/$_name#tag=vcv-v$pkgver"
         'git+https://github.com/danngreen/rapidyaml'
         'git+https://github.com/biojppm/c4core'
         'git+https://github.com/biojppm/cmake'
-        'sdk-path.patch')
+        'sdk-fixes.patch')
 sha256sums=('3dd6725716dc718b61c8fb3687b36e0d6bfe4aab3eaf08163ef64198b8fc1f98'
             'SKIP'
             'SKIP'
@@ -32,12 +32,12 @@ sha256sums=('3dd6725716dc718b61c8fb3687b36e0d6bfe4aab3eaf08163ef64198b8fc1f98'
             'SKIP'
             'SKIP'
             'SKIP'
-            'a48e6aefb652cc2e24d659f04c10bcdcdf77d168738fec13f89c8d5fbf937997')
+            '53c7ff84b0d7c05e1ff2245ff5833595c347a11ff1c7bf71201fd7628f9edd16')
 
 prepare() {
   cd $_name
   # RackSDK.cmake expects different path
-  patch -p1 -i ../sdk-path.patch
+  patch -p1 -i ../sdk-fixes.patch
   # submodules
   git submodule init
   git config submodule.lib/cpputil.url "$srcdir"/cpputil
