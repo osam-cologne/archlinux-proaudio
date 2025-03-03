@@ -1,0 +1,41 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: David Runge <dvzrv@archlinux.org>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+pkgname=ams-lv2
+pkgver=1.2.2
+pkgrel=5
+pkgdesc="A port of the internal modules found in Alsa Modular Synth"
+arch=(aarch64 x86_64)
+url="https://github.com/blablack/ams-lv2"
+license=(GPL-2.0-only)
+groups=(lv2-plugins pro-audio)
+depends=(gcc-libs glibc lv2-host)
+makedepends=(atkmm cairomm fftw glibmm gtkmm libsigc++ lv2 lvtk waf)
+source=("$pkgname-$pkgver.tar.gz::https://github.com/blablack/$pkgname/archive/v$pkgver.tar.gz")
+sha256sums=('a8be95369fc3d60c90d62df95f6c3bdfa89b43983bdb52900de9721173f94395')
+
+prepare() {
+  # remove outdated waflib
+  rm -rfv $pkgname-$pkgver/waflib
+}
+
+build() {
+  cd $pkgname-$pkgver
+  export LINKFLAGS="$LDFLAGS"
+  waf configure --prefix=/usr
+  waf
+}
+
+package() {
+  depends+=(
+    atkmm libatkmm-1.6.so
+    cairomm libcairomm-1.0.so
+    fftw libfftw3.so
+    glibmm libglibmm-2.4.so
+    gtkmm
+    libsigc++ libsigc-2.0.so
+  )
+  cd $pkgname-$pkgver
+  waf install --destdir="$pkgdir/"
+}
