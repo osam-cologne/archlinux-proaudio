@@ -84,8 +84,10 @@ vcvrack-cvly
 vcvrack-dbrack-modules
 vcvrack-dbrack-sequencer
 vcvrack-freesurface
+vcvrack-geodesics
 vcvrack-goodsheperd
 vcvrack-lilacloop
+vcvrack-mindmeld
 vcvrack-modllz
 vcvrack-mschack
 vcvrack-not-things
@@ -95,6 +97,8 @@ vcvrack-quantal-audio
 vcvrack-sha-bang-modules
 vcvrack-sicko-cv
 vcvrack-sonusmodular
+vcvrack-squinktronix
+vcvrack-tyche
 vcvrack-valley
 vcvrack-venom
 vcvrack-voxglitch
