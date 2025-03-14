@@ -112,7 +112,7 @@ package() {
   install -vDm755 Rack -t "$pkgdir"/usr/lib/$pkgname
   install -vDm755 libRack.so -t "$pkgdir"/usr/lib
   install -vDm755 "$srcdir"/vcvrack.sh "$pkgdir"/usr/bin/$pkgname
-  cp -va template.vcv Core.json cacert.pem res -t "$pkgdir"/usr/lib/$pkgname
+  cp -va template.vcv Core.json cacert.pem res translations -t "$pkgdir"/usr/lib/$pkgname
 
   # SDK
   install -vDm644 dep/include/*.h -t "$pkgdir"/usr/include/$pkgname/dep
