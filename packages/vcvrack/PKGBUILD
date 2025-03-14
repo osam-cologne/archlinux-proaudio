@@ -7,8 +7,8 @@
 
 _name=Rack
 pkgname=vcvrack
-pkgver=2.6.0
-pkgrel=7
+pkgver=2.6.1
+pkgrel=1
 pkgdesc='Open-source Eurorack modular synthesizer simulator'
 url='https://vcvrack.com/'
 license=(LicenseRef-custom GPL-3.0-or-later)
@@ -29,7 +29,7 @@ source=(
   'git+https://github.com/AndrewBelt/osdialog'
   'git+https://github.com/VCVRack/oui-blendish'
   'git+https://bitbucket.org/jpommier/pffft'
-  'git+https://github.com/cbix/rtaudio#branch=fix/vcvrack-submodule'
+  'git+https://github.com/VCVRack/rtaudio'
   'git+https://github.com/codeplea/tinyexpr'
   "git+https://github.com/libsndfile/libsamplerate#tag=$_libsamplerate_ver"
   "git+https://github.com/VCVRack/$_plugin_name#tag=v$_plugin_ver"
@@ -43,7 +43,7 @@ source=(
   'profile.sh'
   'trademark.eml'
 )
-sha256sums=('8edf15caed42cc69037e0424bfb574bb9e12aa28c2887be9022fb6c91d571848'
+sha256sums=('50c50c650e57f62ad25c09a9953c355498b224a0964bed8f3580b70d7003c021'
             'SKIP'
             'SKIP'
             'SKIP'
