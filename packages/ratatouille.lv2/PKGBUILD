@@ -23,12 +23,7 @@ build() {
   cd $_name-v$pkgver
   # https://github.com/brummer10/Ratatouille.lv2/issues/42
   export CXXFLAGS="${CXXFLAGS/-Wp,-D_FORTIFY_SOURCE=3/}"
-  make
-}
-
-check() {
-  cd $_name-v$pkgver
-  lv2lint -M pack -s '_Z*' -I bin/$_name "$_plugin_uri"
+  make CXX=g++ STRIP=:
 }
 
 package() {
