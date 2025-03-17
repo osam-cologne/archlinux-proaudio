@@ -26,6 +26,11 @@ build() {
   make CXX=g++ STRIP=:
 }
 
+check() {
+  cd $_name-v$pkgver
+  lv2lint -M pack -s '_Z*' -I bin/$_name "$_plugin_uri"
+}
+
 package() {
   depends+=(libcairo.so libsndfile.so)
   cd $_name-v$pkgver
