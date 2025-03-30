@@ -20,3 +20,5 @@ src/
 /out2
 /out-debug
 /.hugo_build.lock
+/tools/history.db
+/tools/package-db
