@@ -12,7 +12,7 @@ license=(GPL-2.0-or-later LGPL-2.1-or-later)
 depends=()
 makedepends=(avahi cppunit doxygen flake8 libftdi-compat liblo libmicrohttpd ncurses protobuf-21
   util-linux-libs)
-checkdepends=(python-numpy python-protobuf)
+checkdepends=(python-numpy python-protobuf-21)
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/OpenLightingProject/$pkgbase/archive/refs/tags/$pkgver.tar.gz"
         "fix-protobuf-v20.patch::https://github.com/OpenLightingProject/$pkgbase/pull/1875.patch"
         "fix-liblo.patch::https://github.com/OpenLightingProject/$pkgbase/pull/1954.patch"
