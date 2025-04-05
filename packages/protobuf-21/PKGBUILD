@@ -72,5 +72,7 @@ package_python-protobuf-21() {
   depends=(protobuf-21=$pkgver)
   conflicts=(python-protobuf)
   arch=(any)
-  python -m installer --destdir="$pkgdir" $_name-$pkgver/python/dist/*.whl
+  cd $_name-$pkgver
+  install -vDm 644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
+  python -m installer --destdir="$pkgdir" python/dist/*.whl
 }
