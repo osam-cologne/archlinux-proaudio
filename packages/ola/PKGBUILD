@@ -61,7 +61,7 @@ package_ola() {
   depends+=(avahi libftdi-compat liblo.so libmicrohttpd.so libncursesw.so libprotobuf.so libuuid.so)
   optdepends=('python: for python bindings'
               'python-numpy: for python bindings'
-              'python-protobuf: for python bindings')
+              'python-protobuf-21: for python bindings')
   cd $pkgbase-$pkgver
   make DESTDIR="$pkgdir" install
 }
