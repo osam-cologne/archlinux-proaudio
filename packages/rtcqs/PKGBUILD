@@ -11,8 +11,8 @@ license=(MIT)
 depends=(hicolor-icon-theme python)
 makedepends=(git python-build python-installer python-setuptools python-wheel)
 groups=(pro-audio)
-source=("git+https://codeberg.org/rtcqs/$pkgname#tag=v$pkgver")
-sha256sums=('b363bd558c82a4f0e219360705833a94b841fc959806259bbec7516e8a252b65')
+source=("$pkgname-$pkgver.tar.gz::https://codeberg.org/rtcqs/$pkgname/archive/v$pkgver.tar.gz")
+sha256sums=('826301e06da9b42466ab3cd15b3b98fcc8c30fd9026ef2c196c28bbab844b97a')
 
 build() {
   cd $pkgname
