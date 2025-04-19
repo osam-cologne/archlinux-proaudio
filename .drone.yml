@@ -503,6 +503,10 @@ depends_on:
   - Website
 
 trigger:
+  ref:
+    include:
+      - refs/heads/master
+      - refs/pull/**
   status:
     - success
     - failure
