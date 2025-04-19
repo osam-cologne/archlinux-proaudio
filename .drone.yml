@@ -496,10 +496,6 @@ steps:
         ${DRONE_COMMIT_MESSAGE}
         ```
       markdown: "yes"
-    when:
-      status:
-        - success
-        - failure
 
 depends_on:
   - Build and check
@@ -507,12 +503,6 @@ depends_on:
   - Website
 
 trigger:
-  ref:
-    include:
-      - refs/heads/master
-      - refs/pull/**
-
-when:
   status:
     - success
     - failure
