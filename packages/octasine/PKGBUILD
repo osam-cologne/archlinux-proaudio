@@ -20,7 +20,7 @@ optdepends=(
 )
 source=("$pkgname-$pkgver.tar.gz::https://github.com/greatest-ape/$_name/archive/refs/tags/v$pkgver.tar.gz")
 sha256sums=('b67fe619d799b4200956304edd3bc7f01952319fcb1a11c0109662eb23e24f75')
-options=(!lto)
+options=(!lto) # https://github.com/greatest-ape/OctaSine/issues/203
 
 build() {
   cd $_name-$pkgver
