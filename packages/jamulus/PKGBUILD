@@ -6,7 +6,7 @@
 pkgbase=jamulus
 pkgname=(jamulus jamulus-headless)
 pkgver=3.11.0
-pkgrel=2
+pkgrel=1
 pkgdesc="Internet jam session software"
 arch=(aarch64 x86_64)
 url='https://jamulus.io/'
