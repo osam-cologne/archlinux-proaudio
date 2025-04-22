@@ -11,8 +11,6 @@ steps:
   - name: Prepare
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
@@ -32,8 +30,6 @@ steps:
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
@@ -49,8 +45,6 @@ steps:
   - name: Build packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -80,8 +74,6 @@ steps:
   - name: Analyze built packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
@@ -100,8 +92,6 @@ steps:
   - name: Reproduce packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -131,8 +121,6 @@ steps:
   - name: Analyze reproduced packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
@@ -225,8 +213,6 @@ steps:
   - name: Push to AUR
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -247,10 +233,8 @@ steps:
         include:
           - refs/heads/master
 
-# use a shared pacman cache to speed up successive package installs
+# a shared package cache should be provided by the CI runner under $DRONE_CACHE
 volumes:
-  - name: pkgcache
-    temp: {}
   - name: pkgdb
     temp: {}
 
@@ -275,8 +259,6 @@ steps:
   - name: Prepare
     image: lopsided/archlinux-arm64v8:devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     failure: ignore # arm64 is not critical for now
@@ -300,8 +282,6 @@ steps:
   - name: Build packages
     image: lopsided/archlinux-arm64v8:devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -403,10 +383,8 @@ steps:
         include:
           - refs/heads/master
 
-# use a shared pacman cache to speed up successive package installs
+# a shared package cache should be provided by the CI runner under $DRONE_CACHE
 volumes:
-  - name: pkgcache
-    temp: {}
   - name: pkgdb
     temp: {}
 
