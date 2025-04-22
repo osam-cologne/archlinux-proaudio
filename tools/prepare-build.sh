@@ -32,7 +32,9 @@ sudo pacman-key --init
 echo "Updating pacman keyring..."
 sudo pacman -S --noconfirm archlinux-keyring
 echo "Updating installed and installing extra packages..."
-sudo pacman -Syyu --noconfirm git $PACMAN_EXTRA
+sudo pacman -Syyu --noconfirm git pacman-contrib $PACMAN_EXTRA
+echo "Cleaning shared cache..."
+sudo paccache -rk1
 
 # some helpers
 enable_pkgs() {
