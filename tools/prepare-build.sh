@@ -30,7 +30,7 @@ sudo pacman -Sy
 echo "Initializing pacman keyring"
 sudo pacman-key --init
 echo "Updating pacman keyring..."
-sudo pacman -S --noconfirm archlinux-keyring
+sudo pacman -S --noconfirm --needed archlinux-keyring
 echo "Updating installed and installing extra packages..."
 sudo pacman -Syyu --noconfirm git pacman-contrib $PACMAN_EXTRA
 echo "Cleaning shared cache..."
