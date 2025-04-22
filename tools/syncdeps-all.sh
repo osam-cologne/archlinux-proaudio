@@ -12,6 +12,6 @@ echo "Caching dependencies for packages: $PACKAGES"
 
 for PKG in $PACKAGES; do
     cd $PKG
-    makepkg -srcf --verifysource --noconfirm $MAKEPKG_ARGS
+    makepkg -srcf --verifysource --noconfirm MAKEPKG_LINT_PKGBUILD=0 $MAKEPKG_ARGS
     cd ..
 done

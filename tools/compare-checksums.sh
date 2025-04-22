@@ -12,7 +12,7 @@ for PACKAGE in $PACKAGES; do
     fi
 
     if [[ ! -f "packages/$PACKAGE/.no-checksum" ]]; then
-        PKGFILES=($(cd packages/$PACKAGE; makepkg --packagelist))
+        PKGFILES=($(makepkg -D packages/$PACKAGE --packagelist MAKEPKG_LINT_PKGBUILD=0))
 
         for PKG in "${PKGFILES[@]}"; do
             if [[ "$PKG" =~ '-debug-' ]]; then
