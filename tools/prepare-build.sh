@@ -66,8 +66,7 @@ final() {
     "$ROOT"/tools/syncdeps-all.sh $MAKEPKG_ARGS
 
     # Save pacman cache
-    sudo mkdir -p "$CACHE"/{pkgcache,pkgdb}
-    sudo cp -r /var/cache/pacman/pkg/* "$CACHE"/pkgcache
+    sudo mkdir -p "$CACHE"/pkgdb
     sudo cp -r /var/lib/pacman/sync/* "$CACHE"/pkgdb
 
     # print report
