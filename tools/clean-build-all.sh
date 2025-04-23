@@ -16,8 +16,8 @@ echo "Building packages: $PACKAGES"
 echo "Epoch is $SOURCE_DATE_EPOCH"
 
 for PKG in $PACKAGES; do
-    cd $PKG
-    PKGLIST=($(makepkg --packagelist))
+    pushd $PKG
+    PKGLIST=($(makepkg --packagelist MAKEPKG_LINT_PKGBUILD=0))
 
     if makepkg -srcf --noconfirm $MAKEPKG_ARGS; then
         SUCC=$((SUCC+1))
@@ -26,7 +26,7 @@ for PKG in $PACKAGES; do
         rm -f $PKGLIST
     fi
 
-    cd ..
+    popd
 done
 
 echo "$SUCC built, $FAIL failed, $((TOTAL-SUCC-FAIL)) skipped"

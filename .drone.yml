@@ -11,8 +11,6 @@ steps:
   - name: Prepare
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
@@ -32,13 +30,11 @@ steps:
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm namcap
       - if [ -n "$PACKAGE" ]; then
         namcap packages/$PACKAGE/PKGBUILD;
@@ -49,8 +45,6 @@ steps:
   - name: Build packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -58,7 +52,7 @@ steps:
       PKGDEST: /drone/src/out
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
       - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
         mv out/*-debug-*$PKGEXT out-debug/; fi
@@ -80,13 +74,11 @@ steps:
   - name: Analyze built packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm namcap
       - cd out
       - if ls -1 *$PKGEXT 2>/dev/null 1>&2; then namcap *$PKGEXT; fi
@@ -100,8 +92,6 @@ steps:
   - name: Reproduce packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -110,7 +100,7 @@ steps:
     commands:
       - sleep 9 # backoff to prevent false positives
       - source ./tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
     depends_on:
       - Prepare
@@ -131,13 +121,11 @@ steps:
   - name: Analyze reproduced packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm diffoscope unzip
       - run_nobody ./tools/diff-packages.sh
     depends_on:
@@ -225,8 +213,6 @@ steps:
   - name: Push to AUR
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -234,7 +220,7 @@ steps:
         from_secret: ssh-key
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm git openssh
       - echo "$${SSH_KEY}" > aur/.ssh/id_osamc
       - cp -a aur/.ssh /root && chmod 600 /root/.ssh/*
@@ -247,10 +233,8 @@ steps:
         include:
           - refs/heads/master
 
-# use a shared pacman cache to speed up successive package installs
+# a shared package cache should be provided by the CI runner under $DRONE_CACHE
 volumes:
-  - name: pkgcache
-    temp: {}
   - name: pkgdb
     temp: {}
 
@@ -275,8 +259,6 @@ steps:
   - name: Prepare
     image: lopsided/archlinux-arm64v8:devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     failure: ignore # arm64 is not critical for now
@@ -300,8 +282,6 @@ steps:
   - name: Build packages
     image: lopsided/archlinux-arm64v8:devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -310,7 +290,7 @@ steps:
       MAKEFLAGS: -j1
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
       - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
         mv out/*-debug-*$PKGEXT out-debug/; fi
@@ -403,10 +383,8 @@ steps:
         include:
           - refs/heads/master
 
-# use a shared pacman cache to speed up successive package installs
+# a shared package cache should be provided by the CI runner under $DRONE_CACHE
 volumes:
-  - name: pkgcache
-    temp: {}
   - name: pkgdb
     temp: {}
 
@@ -496,10 +474,6 @@ steps:
         ${DRONE_COMMIT_MESSAGE}
         ```
       markdown: "yes"
-    when:
-      status:
-        - success
-        - failure
 
 depends_on:
   - Build and check
@@ -511,8 +485,6 @@ trigger:
     include:
       - refs/heads/master
       - refs/pull/**
-
-when:
   status:
     - success
     - failure
