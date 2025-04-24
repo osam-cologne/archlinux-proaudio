@@ -17,7 +17,7 @@ for PKG in $ALLPKGS; do
         continue
     fi
 
-    PKGFILES=($(cd $PKG; makepkg --packagelist))
+    PKGFILES=($(makepkg -D $PKG --packagelist MAKEPKG_LINT_PKGBUILD=0))
     # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
     for PKGPATH in "${PKGFILES[@]/\-debug}"; do
         PKGFILE=$(basename $PKGPATH)

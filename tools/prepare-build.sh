@@ -30,9 +30,11 @@ sudo pacman -Sy
 echo "Initializing pacman keyring"
 sudo pacman-key --init
 echo "Updating pacman keyring..."
-sudo pacman -S --noconfirm archlinux-keyring
+sudo pacman -S --noconfirm --needed archlinux-keyring
 echo "Updating installed and installing extra packages..."
-sudo pacman -Syyu --noconfirm git $PACMAN_EXTRA
+sudo pacman -Syyu --noconfirm git pacman-contrib $PACMAN_EXTRA
+echo "Cleaning shared cache..."
+sudo paccache -rk1
 
 # some helpers
 enable_pkgs() {
@@ -64,8 +66,7 @@ final() {
     "$ROOT"/tools/syncdeps-all.sh $MAKEPKG_ARGS
 
     # Save pacman cache
-    sudo mkdir -p "$CACHE"/{pkgcache,pkgdb}
-    sudo cp -r /var/cache/pacman/pkg/* "$CACHE"/pkgcache
+    sudo mkdir -p "$CACHE"/pkgdb
     sudo cp -r /var/lib/pacman/sync/* "$CACHE"/pkgdb
 
     # print report
@@ -110,7 +111,7 @@ if [[ -f "$ROOT"/out/proaudio.db.tar.gz ]]; then
             continue
         fi
 
-        PKGFILES=($(cd $PKG; makepkg --packagelist))
+        PKGFILES=($(makepkg -D $PKG --packagelist MAKEPKG_LINT_PKGBUILD=0))
         # FIXME: only remove -debug when it is a suffix. A package name like "my-debug-machine" should be kept.
         for PKGPATH in "${PKGFILES[@]/\-debug}"; do
             PKGFILE=$(basename $PKGPATH)

@@ -5,6 +5,7 @@ if [ -z $CI ]; then
 fi
 
 cat tools/pacman.conf >> /etc/pacman.conf
+echo "CacheDir = ${DRONE_CACHE:-/var/cache}/pacman/pkg/" >> /etc/pacman.conf
 cat tools/makepkg.conf >> /etc/makepkg.conf
 
 source /etc/makepkg.conf

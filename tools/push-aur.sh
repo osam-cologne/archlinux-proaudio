@@ -24,7 +24,7 @@ for PKG in $PACKAGES; do
 
     # generate .SRCINFO
     echo "Generating .SRCINFO for $PKG ..."
-    sudo -Eu nobody makepkg --printsrcinfo > .SRCINFO
+    sudo -Eu nobody makepkg --printsrcinfo MAKEPKG_LINT_PKGBUILD=0 > .SRCINFO
 
     # update .gitignore
     cat "$ROOT"/aur/gitignore-base >> .gitignore
