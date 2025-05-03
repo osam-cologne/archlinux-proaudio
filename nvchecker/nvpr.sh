@@ -9,7 +9,7 @@ ROOT="$(pwd)"
 
 function bumpver() {
     sed -r -i -e "s/^pkgver=(.*)$/pkgver=$1/g" PKGBUILD
-    run_nobody updpkgsums
+    sudo -u nobody updpkgsums
     git diff
     git add .
 }
