@@ -14,6 +14,7 @@ function bumpver() {
     git add .
 }
 
+chown -R nobody: packages
 git fetch origin
 
 nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
