@@ -8,6 +8,8 @@ It contains a script, designed to run periodically on a server, which runs
 in this repo and then posts a message to a Matrix Chat room, if `nvcmp` reports any
 new versions.
 
+A CI cron job also uses a GitHub app token to automatically open pull requests for new versions.
+
 ## Howto
 
 Install `jq` using your package manager of choice, e.g.:

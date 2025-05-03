@@ -7,14 +7,6 @@ fi
 cd "${0%/*}/.."
 ROOT="$(pwd)"
 
-function bumpver() {
-    sed -r -i -e "s/^pkgver=(.*)$/pkgver=$1/g" PKGBUILD
-    chown -R nobody: .
-    sudo -u nobody updpkgsums
-    git diff
-    git add .
-}
-
 git fetch origin
 
 nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
@@ -28,6 +20,10 @@ nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
     pushd packages/$PKG
         git switch $BRANCH || git switch -c $BRANCH
         bumpver $VER
+        sed -r -i -e "s/^pkgver=(.*)$/pkgver=$1/g" PKGBUILD
+        chown -R nobody: .
+        sudo -u nobody updpkgsums
+        git add .
         git commit -m "$TITLE"
         git push -u origin $BRANCH
         gh pr edit -t "$TITLE" -b "$BODY" || gh pr create -t "$TITLE" -b "$BODY"
