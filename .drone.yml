@@ -518,7 +518,7 @@ steps:
         from_secret: gh-app-install
       pem:
         from_secret: gh-app-privkey
-      token_file: .tmp/github-token
+      token_file: .github-token
   - name: Run nvchecker
     image: archlinux/archlinux:base-devel
     volumes:
@@ -530,7 +530,7 @@ steps:
       - |
         cat > nvchecker/keyfile.toml << __EOF__
         [keys]
-        github = "$(cat .tmp/github-token)"
+        github = "$(cat .github-token)"
         __EOF__
       - nvchecker/gen-config.sh
       - nvchecker -c nvchecker/archlinux-proaudio.toml
@@ -542,7 +542,7 @@ steps:
     commands:
       - source tools/build-env.sh
       - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring git github-cli jq nvchecker pacman-contrib
-      - export GITHUB_TOKEN="$(cat .tmp/github-token)"
+      - export GITHUB_TOKEN="$(cat .github-token)"
       - nvchecker/nvpr.sh
 
 trigger:
