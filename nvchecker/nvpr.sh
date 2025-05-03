@@ -9,11 +9,11 @@ ROOT="$(pwd)"
 
 function bumpver() {
     sed -r -i -e "s/^pkgver=(.*)$/pkgver=$1/g" PKGBUILD
-    updpkgsums
+    run_nobody updpkgsums
+    git diff
     git add .
 }
 
-gh auth setup-git
 git fetch origin
 
 nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
