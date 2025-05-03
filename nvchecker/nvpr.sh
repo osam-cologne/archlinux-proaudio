@@ -26,20 +26,11 @@ nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
     BODY="$URL"
     BASE=$(git branch --show-current)
     pushd packages/$PKG
-        if git switch $BRANCH; then
-            # update
-            bumpver $VER
-            git commit -m "$TITLE"
-            git push
-            gh pr edit -t "$TITLE" -b "$BODY"
-        else
-            # create
-            git switch -c $BRANCH
-            bumpver $VER
-            git commit -m "$TITLE"
-            git push -u origin $BRANCH
-            gh pr create --dry-run -t "$TITLE" -b "$BODY"
-        fi
+        git switch $BRANCH || git switch -c $BRANCH
+        bumpver $VER
+        git commit -m "$TITLE"
+        git push -u origin $BRANCH
+        gh pr edit -t "$TITLE" -b "$BODY" || gh pr create -t "$TITLE" -b "$BODY"
         git switch $BASE
     popd
 done
