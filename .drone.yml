@@ -239,6 +239,9 @@ volumes:
     temp: {}
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -388,6 +391,9 @@ volumes:
     temp: {}
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -438,6 +444,9 @@ depends_on:
   - Build arm64
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -480,6 +489,9 @@ depends_on:
   - Website
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -487,3 +499,44 @@ trigger:
   status:
     - success
     - failure
+
+---
+kind: pipeline
+name: Nvchecker
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: Run nvchecker
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring git github-cli jq nvchecker
+      - |
+        cat > nvchecker/keyfile.toml << __EOF__
+        [keys]
+        github = "$(cut -d ' ' -f 4 $${HOME}/.netrc)"
+        __EOF__
+      - nvchecker/gen-config.sh
+      - nvchecker -c nvchecker/archlinux-proaudio.toml
+  - name: Create PR
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring git github-cli nvchecker pacman-contrib
+      - export GITHUB_TOKEN="$(cut -d ' ' -f 4 $${HOME}/.netrc)"
+      - nvchecker/nvpr.sh
+
+trigger:
+  event:
+    - cron
+  cron:
+    - nvchecker
