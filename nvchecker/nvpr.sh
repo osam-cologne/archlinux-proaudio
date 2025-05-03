@@ -13,6 +13,7 @@ function bumpver() {
     git add .
 }
 
+gh auth setup-git
 git fetch origin
 
 nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
