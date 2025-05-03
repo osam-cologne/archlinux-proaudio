@@ -22,6 +22,7 @@ nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
     TITLE="$PKG: update to v$VER"
     URL="$(jq -r '.data."'$PKG'".url // empty' nvchecker/new_ver.json)"
     BODY="$URL"
+    BASE=$(git branch --show-current)
     pushd packages/$PKG
         if git switch $BRANCH; then
             # update
@@ -37,6 +38,6 @@ nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
             git push -u origin $BRANCH
             gh pr create --dry-run -t "$TITLE" -b "$BODY"
         fi
-        git switch master
+        git switch $BASE
     popd
 done
