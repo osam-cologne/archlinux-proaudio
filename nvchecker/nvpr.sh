@@ -9,12 +9,12 @@ ROOT="$(pwd)"
 
 function bumpver() {
     sed -r -i -e "s/^pkgver=(.*)$/pkgver=$1/g" PKGBUILD
+    chown -R nobody: .
     sudo -u nobody updpkgsums
     git diff
     git add .
 }
 
-chown -R nobody: packages
 git fetch origin
 
 nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
