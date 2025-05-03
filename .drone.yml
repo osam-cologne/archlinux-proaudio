@@ -548,7 +548,6 @@ steps:
 
 trigger:
   event:
-    #- cron
-    - pull_request
-  #cron:
-  #- nvchecker
+    - cron
+  cron:
+    - nvchecker
