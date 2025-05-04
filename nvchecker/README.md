@@ -9,6 +9,11 @@ in this repo and then posts a message to a Matrix Chat room, if `nvcmp` reports 
 new versions.
 
 A CI cron job also uses a GitHub app token to automatically open pull requests for new versions.
+This is configured using [drone-cli](https://docs.drone.io/cli/cron/drone-cron-add/) to run every 6 hours:
+
+```sh
+drone cron add osam-cologne/archlinux-proaudio nvchecker "0 30 0-23/6 * * *"
+```
 
 ## Howto
 
