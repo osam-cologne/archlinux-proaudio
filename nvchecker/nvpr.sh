@@ -23,7 +23,7 @@ nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
         sed -r -i -e "s/^pkgver=(.*)$/pkgver=$1/g" -e 's/^pkgrel=(.*)$/pkgrel=1/g' PKGBUILD
         chown -R nobody: .
         sudo -u nobody updpkgsums
-        git add .
+        git add PKGBUILD
         git commit -m "$TITLE"
         git push -u origin $BRANCH
         gh pr edit -t "$TITLE" -b "$BODY" || gh pr create -t "$TITLE" -b "$BODY"
