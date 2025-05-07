@@ -239,6 +239,9 @@ volumes:
     temp: {}
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -388,6 +391,9 @@ volumes:
     temp: {}
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -438,6 +444,9 @@ depends_on:
   - Build arm64
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -480,6 +489,9 @@ depends_on:
   - Website
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -487,3 +499,55 @@ trigger:
   status:
     - success
     - failure
+
+---
+kind: pipeline
+name: Nvchecker
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: Get GitHub token
+    image: rssnyder/drone-github-app
+    settings:
+      app_id:
+        from_secret: gh-app-id
+      installation:
+        from_secret: gh-app-install
+      pem:
+        from_secret: gh-app-privkey
+      token_file: .github-token
+  - name: Run nvchecker
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring git nvchecker python-jq python-packaging
+      - |
+        cat > nvchecker/keyfile.toml << __EOF__
+        [keys]
+        github = "$(cat .github-token)"
+        __EOF__
+      - nvchecker/gen-config.sh
+      - nvchecker -c nvchecker/archlinux-proaudio.toml
+  - name: Create PRs
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring git github-cli jq nvchecker pacman-contrib
+      - export GITHUB_TOKEN="$(cat .github-token)"
+      - gh auth setup-git
+      - nvchecker/nvpr.sh
+
+trigger:
+  event:
+    - cron
+  cron:
+    - nvchecker

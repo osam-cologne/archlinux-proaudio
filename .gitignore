@@ -20,3 +20,4 @@ src/
 /out2
 /out-debug
 /.hugo_build.lock
+.github-token
