@@ -19,8 +19,7 @@ nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
     BASE=$(git branch --show-current)
     pushd packages/$PKG
         git switch $BRANCH || git switch -c $BRANCH
-        bumpver $VER
-        sed -r -i -e "s/^pkgver=(.*)$/pkgver=$1/g" -e 's/^pkgrel=(.*)$/pkgrel=1/g' PKGBUILD
+        sed -r -i -e "s/^pkgver=(.*)$/pkgver=$VER/g" -e 's/^pkgrel=(.*)$/pkgrel=1/g' PKGBUILD
         chown -R nobody: .
         sudo -u nobody updpkgsums
         git add PKGBUILD
