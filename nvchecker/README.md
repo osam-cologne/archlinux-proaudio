@@ -8,12 +8,16 @@ It contains a script, designed to run periodically on a server, which runs
 in this repo and then posts a message to a Matrix Chat room, if `nvcmp` reports any
 new versions.
 
-A CI cron job also uses a GitHub app token to automatically open pull requests for new versions.
-This is configured using [drone-cli](https://docs.drone.io/cli/cron/drone-cron-add/) to run every 6 hours:
+A CI cron job also uses a GitHub app token to automatically open pull requests for new versions using [this script](./nvpr.sh).
+The cron job is configured using [drone-cli](https://docs.drone.io/cli/cron/drone-cron-add/) to run every 6 hours:
 
 ```sh
 drone cron add osam-cologne/archlinux-proaudio nvchecker "0 30 0-23/6 * * *"
 ```
+
+The Drone CLI is available as an [Arch Linux package](https://archlinux.org/packages/extra/x86_64/drone-cli/) and
+requires a [registered user](https://docs.drone.io/server/user/registration/) with repository access (owner,
+collaborator or organization member).
 
 ## Howto
 
