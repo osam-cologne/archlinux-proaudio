@@ -8,16 +8,7 @@ It contains a script, designed to run periodically on a server, which runs
 in this repo and then posts a message to a Matrix Chat room, if `nvcmp` reports any
 new versions.
 
-A CI cron job also uses a GitHub app token to automatically open pull requests for new versions using [this script](./nvpr.sh).
-The cron job is configured using [drone-cli](https://docs.drone.io/cli/cron/drone-cron-add/) to run every 6 hours:
-
-```sh
-drone cron add osam-cologne/archlinux-proaudio nvchecker "0 30 0-23/6 * * *"
-```
-
-The Drone CLI is available as an [Arch Linux package](https://archlinux.org/packages/extra/x86_64/drone-cli/) and
-requires a [registered user](https://docs.drone.io/server/user/registration/) with repository access (owner,
-collaborator or organization member).
+[nvchecker]: https://github.com/lilydjwg/nvchecker
 
 ## Howto
 
@@ -109,4 +100,15 @@ Note: by default, the script reports new version only once and records the
 latest version it has seen. To make it report all new versions, use the
 `-s|--seen` command line option.
 
-[nvchecker]: https://github.com/lilydjwg/nvchecker
+## New version pull requests
+
+A CI cron job uses a GitHub app token to automatically open pull requests for new versions using [this script](./nvpr.sh).
+The cron job is configured using [drone-cli](https://docs.drone.io/cli/cron/drone-cron-add/) to run every 6 hours:
+
+```sh
+drone cron add osam-cologne/archlinux-proaudio nvchecker "0 30 0-23/6 * * *"
+```
+
+The Drone CLI is available as an [Arch Linux package](https://archlinux.org/packages/extra/x86_64/drone-cli/) and
+requires a [registered user](https://docs.drone.io/server/user/registration/) with repository access (owner,
+collaborator or organization member).
