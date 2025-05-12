@@ -300,7 +300,8 @@ steps:
       - Prepare
 
   - name: List built packages
-    image: alpine:3.15
+    image: alpine
+    pull: if-not-exists
     commands:
       - ls -1 out/
       - ls -1 out-debug/
@@ -464,6 +465,7 @@ name: Send notification
 steps:
   - name: Notify Matrix chat
     image: spotlightkid/drone-matrixchat-notify
+    pull: if-not-exists
     settings:
       homeserver: "https://sonoj.org"
       roomid: "!WYagUGTylkAMKoxcVa:sonoj.org"
@@ -511,6 +513,7 @@ platform:
 steps:
   - name: Get GitHub token
     image: rssnyder/drone-github-app
+    pull: if-not-exists
     settings:
       app_id:
         from_secret: gh-app-id
