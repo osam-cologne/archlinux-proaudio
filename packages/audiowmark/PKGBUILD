@@ -3,7 +3,7 @@
 # Contributor: Christopher Arndt <osam -at- chrisarndt -dot- de>
 
 pkgname=audiowmark
-pkgver=0.6.4
+pkgver=0.6.5
 pkgrel=1
 pkgdesc='Audio and video watermarking'
 arch=(x86_64 aarch64)
