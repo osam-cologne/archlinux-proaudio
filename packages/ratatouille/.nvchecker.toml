@@ -1,4 +1,4 @@
-["ratatouille.lv2"]
+[ratatouille]
 source = "github"
 github = "brummer10/Ratatouille.lv2"
 use_max_tag = true
