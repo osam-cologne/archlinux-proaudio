@@ -46,12 +46,14 @@ package_ratatouille() {
   optdepends=('ratatouille-docs: for documentation')
   cd $_name-v$pkgver
   make DESTDIR="$pkgdir" install
-  cd "$pkgdir"
-  _pick $pkgbase-clap usr/lib/clap/*
-  _pick $pkgbase-lv2 usr/lib/lv2/*
-  _pick $pkgbase-standalone usr/bin/*
-  _pick $pkgbase-standalone usr/share/{applications,pixmaps}
-  _pick $pkgbase-vst usr/lib/vst/*
+  (
+    cd "$pkgdir"
+    _pick $pkgbase-clap usr/lib/clap/*
+    _pick $pkgbase-lv2 usr/lib/lv2/*
+    _pick $pkgbase-standalone usr/bin/*
+    _pick $pkgbase-standalone usr/share/{applications,pixmaps}
+    _pick $pkgbase-vst usr/lib/vst/*
+  )
 }
 
 package_ratatouille-clap() {
@@ -59,12 +61,14 @@ package_ratatouille-clap() {
   optdepends=('clap-host: for loading the CLAP plugin')
   groups+=(clap-plugins)
   mv -v $pkgname/* "$pkgdir"
+  cd $_name-v$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
 
 package_ratatouille-docs() {
   arch=(any)
   pkgdesc+=" (documentation)"
+  cd $_name-v$pkgver
   install -vDm 644 README.md Ratatouille.png -t "$pkgdir"/usr/share/doc/$pkgbase
 }
 
@@ -75,6 +79,7 @@ package_ratatouille-lv2() {
   optdepends=('lv2-host: for loading the LV2 plugin')
   groups+=(lv2-plugins)
   mv -v $pkgname/* "$pkgdir"
+  cd $_name-v$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
 
@@ -82,6 +87,7 @@ package_ratatouille-standalone() {
   pkgdesc+=" – JACK standalone"
   depends+=(libcairo.so libsndfile.so)
   mv -v $pkgname/* "$pkgdir"
+  cd $_name-v$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
 
@@ -91,5 +97,6 @@ package_ratatouille-vst() {
   optdepends=('vst-host: for loading the VST2 plugin')
   groups+=(clap-plugins)
   mv -v $pkgname/* "$pkgdir"
+  cd $_name-v$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
