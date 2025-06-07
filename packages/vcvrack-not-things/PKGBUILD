@@ -12,7 +12,7 @@ url='https://github.com/not-things-modular/not-things-vcv'
 license=(GPL-3.0-or-later)
 groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
-makedepends=(git simde zstd)
+makedepends=(git nlohmann-json simde zstd)
 source=("git+https://github.com/not-things-modular/$_name#tag=v$pkgver")
 sha256sums=('bd7a0d648416f8dece3d9b9f6938927290ba267514e548260b0d56b5e61f464f')
 
