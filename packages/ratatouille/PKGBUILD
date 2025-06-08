@@ -57,6 +57,7 @@ package_ratatouille() {
 }
 
 package_ratatouille-clap() {
+  pkgdesc+=" – CLAP"
   depends+=(libcairo.so libsndfile.so)
   optdepends=('clap-host: for loading the CLAP plugin')
   groups+=(clap-plugins)
@@ -74,6 +75,7 @@ package_ratatouille-docs() {
 
 package_ratatouille-lv2() {
   pkgdesc+=" – LV2"
+  conflicts=(ratatouille.lv2)
   replaces=(ratatouille.lv2)
   depends+=(libcairo.so libsndfile.so)
   optdepends=('lv2-host: for loading the LV2 plugin')
