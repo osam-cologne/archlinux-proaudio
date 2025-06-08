@@ -85,7 +85,7 @@ package_ratatouille-lv2() {
 
 package_ratatouille-standalone() {
   pkgdesc+=" – JACK standalone"
-  depends+=(libasound.so libcairo.so libjack.so libportaudio.so libsndfile.so)
+  depends+=(libcairo.so libjack.so libportaudio.so libsndfile.so)
   mv -v $pkgname/* "$pkgdir"
   cd $_name-v$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
