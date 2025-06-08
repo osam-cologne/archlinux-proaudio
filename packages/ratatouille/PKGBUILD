@@ -4,7 +4,7 @@
 
 _name=Ratatouille.lv2
 pkgbase=ratatouille
-pkgname=(ratatouille-{clap,lv2,standalone,vst})
+pkgname=(ratatouille ratatouille-{clap,lv2,standalone,vst})
 pkgver=0.9.11
 pkgrel=2
 pkgdesc='Guitar amp neural model and impulse response loader and mixer'
