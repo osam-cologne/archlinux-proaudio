@@ -46,14 +46,12 @@ package_ratatouille() {
   optdepends=('ratatouille-docs: for documentation')
   cd $_name-v$pkgver
   make DESTDIR="$pkgdir" install
-  (
-    cd "$pkgdir"
-    _pick $pkgbase-clap usr/lib/clap/*
-    _pick $pkgbase-lv2 usr/lib/lv2/*
-    _pick $pkgbase-standalone usr/bin/*
-    _pick $pkgbase-standalone usr/share/{applications,pixmaps}
-    _pick $pkgbase-vst usr/lib/vst/*
-  )
+  cd "$pkgdir"
+  _pick $pkgbase-clap usr/lib/clap/*
+  _pick $pkgbase-lv2 usr/lib/lv2/*
+  _pick $pkgbase-standalone usr/bin/*
+  _pick $pkgbase-standalone usr/share/{applications,pixmaps}
+  _pick $pkgbase-vst usr/lib/vst/*
 }
 
 package_ratatouille-clap() {
@@ -97,7 +95,7 @@ package_ratatouille-vst() {
   pkgdesc+=" – VST2"
   depends+=(libcairo.so libsndfile.so)
   optdepends=('vst-host: for loading the VST2 plugin')
-  groups+=(clap-plugins)
+  groups+=(vst-plugins)
   mv -v $pkgname/* "$pkgdir"
   cd $_name-v$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
