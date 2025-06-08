@@ -13,7 +13,7 @@ url="https://github.com/brummer10/$_name"
 license=(BSD-3-Clause)
 groups=(pro-audio)
 depends=(glibc gcc-libs libx11)
-makedepends=(cairo jack libsndfile lv2 xxd)
+makedepends=(cairo jack libsndfile lv2 portaudio xxd)
 checkdepends=(lv2lint)
 source=("https://github.com/brummer10/$_name/releases/download/v$pkgver/$_name-v$pkgver-src.tar.xz")
 sha256sums=('9a8134a056b6ba62144dd49ba73b1acc9ae1015868d735ba2da4b94feeb707a1')
@@ -85,7 +85,7 @@ package_ratatouille-lv2() {
 
 package_ratatouille-standalone() {
   pkgdesc+=" – JACK standalone"
-  depends+=(libcairo.so libsndfile.so)
+  depends+=(libasound.so libcairo.so libjack.so libportaudio.so libsndfile.so)
   mv -v $pkgname/* "$pkgdir"
   cd $_name-v$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
