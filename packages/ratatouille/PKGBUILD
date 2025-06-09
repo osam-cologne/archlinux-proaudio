@@ -47,6 +47,7 @@ package_ratatouille() {
   optdepends=('ratatouille-docs: for documentation')
   cd $_name-v$pkgver
   make DESTDIR="$pkgdir" install
+  install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
   cd "$pkgdir"
   _pick $pkgbase-clap usr/lib/clap/*
   _pick $pkgbase-lv2 usr/lib/lv2/*
