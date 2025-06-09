@@ -42,6 +42,7 @@ check() {
 }
 
 package_ratatouille() {
+  arch=(any)
   depends+=(ratatouille-{clap,lv2,standalone,vst})
   optdepends=('ratatouille-docs: for documentation')
   cd $_name-v$pkgver
