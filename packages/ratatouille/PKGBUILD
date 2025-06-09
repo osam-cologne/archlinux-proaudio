@@ -71,6 +71,7 @@ package_ratatouille-docs() {
   pkgdesc+=" (documentation)"
   cd $_name-v$pkgver
   install -vDm 644 README.md Ratatouille.png -t "$pkgdir"/usr/share/doc/$pkgbase
+  install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
 
 package_ratatouille-lv2() {
