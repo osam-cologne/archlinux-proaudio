@@ -4,7 +4,7 @@
 _slug=4msCompany
 _name=4ms-vcv
 pkgname=vcvrack-4ms
-pkgver=2.0.14
+pkgver=2.0.15-rc1
 pkgrel=1
 pkgdesc='4ms VCV Rack modules'
 arch=(aarch64 x86_64)
