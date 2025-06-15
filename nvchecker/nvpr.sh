@@ -25,7 +25,7 @@ nvcmp -c nvchecker/archlinux-proaudio.toml --newer | while read -ra line; do
         git add PKGBUILD
         git commit -m "$TITLE"
         git push -u origin $BRANCH
-        gh pr edit -t "$TITLE" -b "$BODY" || gh pr create -t "$TITLE" -b "$BODY"
+        gh pr create -t "$TITLE" -b "$BODY" -l update || gh pr edit -t "$TITLE" -b "$BODY"
         git switch $BASE
     popd
 done
