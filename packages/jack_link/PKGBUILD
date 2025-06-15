@@ -27,7 +27,7 @@ prepare() {
 
 build() {
   cd $pkgname
-  make PREFIX=/usr
+  make PREFIX=/usr VERSION=$pkgver
 }
 
 package() {
