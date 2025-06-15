@@ -290,6 +290,7 @@ steps:
         path: /var/lib/pacman/sync
     environment:
       PKGDEST: /drone/src/out
+      SRCDEST: /drone/src/.tmp/cache/srcdest
       MAKEPKG_ARGS: -A
     commands:
       - source tools/build-env.sh
