@@ -29,7 +29,8 @@ prepare() {
 
 build() {
   cmake \
-    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -DCMAKE_BUILD_TYPE=None \
     -Wno-dev \
     -B $pkgname-$pkgver-build \
     -S $pkgname-$pkgver
@@ -38,7 +39,7 @@ build() {
 
 package() {
   depends+=(libfontconfig.so libfreetype.so)
-  install -vDm 755 $pkgname-$pkgver-build/${pkgname}_artefacts/Release/$pkgname \
+  install -vDm 755 $pkgname-$pkgver-build/${pkgname}_artefacts/None/$pkgname \
     -t "$pkgdir"/usr/bin
   # Docs
   cd $pkgname-$pkgver
