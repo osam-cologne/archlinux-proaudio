@@ -10,6 +10,7 @@ url='https://codeberg.org/rtcqs/rtcqs'
 license=(MIT)
 depends=(hicolor-icon-theme python)
 makedepends=(python-build python-installer python-setuptools python-wheel)
+optdepends=('python-freesimplegui: for rtcqs_gui GUI program')
 groups=(pro-audio)
 source=("$pkgname-$pkgver.tar.gz::https://codeberg.org/rtcqs/$pkgname/archive/v$pkgver.tar.gz")
 sha256sums=('4b4431f2377f5f6b151856c154daf1e4d024a4d801da7aca722972e01b2c926b')
