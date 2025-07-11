@@ -9,7 +9,7 @@ arch=(x86_64 aarch64)
 url='https://github.com/Stazed/rakarrack-plus'
 license=(GPL-2.0-only)
 depends=(alsa-utils glibc gcc-libs libx11 libxpm)
-makedepends=(cmake fftw fltk jack liblo lv2 libsndfile ntk python)
+makedepends=(cmake fftw jack liblo lv2 libsndfile ntk python)
 checkdepends=(lilv lv2lint)
 optdepends=('lv2-host: for running LV2 plugins'
             'new-session-manager: for NSM support')
@@ -28,7 +28,7 @@ build() {
 
 check() {
   mkdir -p "$srcdir"/test
-  DESTDIR="$srcdir"/test make -C build-$pkgname-$pkgver/lv2 install
+  DESTDIR="$srcdir"/test make -C build-$pkgname-$pkgver/LV2_Effects install
   local _lv2path="$srcdir"/test/usr/lib/lv2
   local _plugins=($(LV2_PATH="$_lv2path" lv2ls))
   LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack -d -q \
