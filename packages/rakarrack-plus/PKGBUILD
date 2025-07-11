@@ -21,14 +21,15 @@ build() {
   cmake -B build-$pkgname-$pkgver -S $pkgname-$pkgver \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DEnableSysex=ON -DBuildCarlaPresets=ON \
+    -DEnableSysex=ON -DBuildCarlaPresets=OFF \
+    -DEnableNTK=OFF -DBuildRakarrackPlusLV2=OFF \
     -Wno-dev
   cmake --build build-$pkgname-$pkgver
 }
 
 check() {
   mkdir -p "$srcdir"/test
-  DESTDIR="$srcdir"/test make -C build-$pkgname-$pkgver/LV2_Effects install
+  DESTDIR="$srcdir"/test cmake --install build-$pkgname-$pkgver
   local _lv2path="$srcdir"/test/usr/lib/lv2
   local _plugins=($(LV2_PATH="$_lv2path" lv2ls))
   LV2_PATH="$_lv2path":/usr/lib/lv2 lv2lint -Mpack -d -q \
