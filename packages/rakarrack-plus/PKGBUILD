@@ -9,7 +9,7 @@ arch=(x86_64 aarch64)
 url='https://github.com/Stazed/rakarrack-plus'
 license=(GPL-2.0-only)
 depends=(alsa-utils glibc gcc-libs libx11 libxpm)
-makedepends=(cmake fftw jack liblo lv2 libsndfile ntk python)
+makedepends=(cmake fftw fltk jack liblo lv2 libsndfile ntk python)
 checkdepends=(lilv lv2lint)
 optdepends=('lv2-host: for running LV2 plugins'
             'new-session-manager: for NSM support')
