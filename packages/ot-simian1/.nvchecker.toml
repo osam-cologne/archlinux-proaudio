@@ -1,0 +1,5 @@
+[ot-simian1]
+source = "regex"
+url = "https://punklabs.com/ot-simian"
+regex = 'OneTrick-SIMIAN-(1\.\d+\.\d+)-Source.zip'
+encoding = "utf-8"

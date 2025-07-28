@@ -1,0 +1,62 @@
+diff --git a/src/window/Window.cpp b/src/window/Window.cpp
+index d4eeca06..6621950d 100644
+--- a/src/window/Window.cpp
++++ b/src/window/Window.cpp
+@@ -674,24 +674,31 @@ int Window::getMods() {
+ 	int mods = 0;
+ #if defined ARCH_LIN
+ 	// On Linux X11, get mods directly from X11 display, to support X11 key remapping
+-	Display* display = glfwGetX11Display();
+-	XkbStateRec state;
+-	XkbGetState(display, XkbUseCoreKbd, &state);
+-
+-	// Derived from GLFW's translateState() from x11_window.c
+-	if (state.mods & ShiftMask)
+-		mods |= GLFW_MOD_SHIFT;
+-	if (state.mods & ControlMask)
+-		mods |= GLFW_MOD_CONTROL;
+-	if (state.mods & Mod1Mask)
+-		mods |= GLFW_MOD_ALT;
+-	if (state.mods & Mod4Mask)
+-		mods |= GLFW_MOD_SUPER;
+-	if (state.mods & LockMask)
+-		mods |= GLFW_MOD_CAPS_LOCK;
+-	if (state.mods & Mod2Mask)
+-		mods |= GLFW_MOD_NUM_LOCK;
+-#else
++	Display *display = NULL;
++	if (glfwGetPlatform() == GLFW_PLATFORM_X11) {
++		display = glfwGetX11Display();
++	}
++	if (display != NULL) {
++		XkbStateRec state;
++		XkbGetState(display, XkbUseCoreKbd, &state);
++
++		// Derived from GLFW's translateState() from x11_window.c
++		if (state.mods & ShiftMask)
++			mods |= GLFW_MOD_SHIFT;
++		if (state.mods & ControlMask)
++			mods |= GLFW_MOD_CONTROL;
++		if (state.mods & Mod1Mask)
++			mods |= GLFW_MOD_ALT;
++		if (state.mods & Mod4Mask)
++			mods |= GLFW_MOD_SUPER;
++		if (state.mods & LockMask)
++			mods |= GLFW_MOD_CAPS_LOCK;
++		if (state.mods & Mod2Mask)
++			mods |= GLFW_MOD_NUM_LOCK;
++
++		return mods;
++	}
++#endif
+ 	// Use GLFW key codes on other OS's
+ 	if (glfwGetKey(win, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_RIGHT_SHIFT) == GLFW_PRESS)
+ 		mods |= GLFW_MOD_SHIFT;
+@@ -701,7 +708,6 @@ int Window::getMods() {
+ 		mods |= GLFW_MOD_ALT;
+ 	if (glfwGetKey(win, GLFW_KEY_LEFT_SUPER) == GLFW_PRESS || glfwGetKey(win, GLFW_KEY_RIGHT_SUPER) == GLFW_PRESS)
+ 		mods |= GLFW_MOD_SUPER;
+-#endif
+ 	return mods;
+ }
+ 

@@ -1,0 +1,4 @@
+[a-sid]
+source = "github"
+github = "sdangelo/asid"
+use_max_tag = true

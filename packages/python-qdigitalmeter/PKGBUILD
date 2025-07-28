@@ -1,0 +1,29 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+_name=qdigitalmeter
+pkgname=python-$_name
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='A simple digital peak meter for use with PyQt5, PyQt6, PySide2, and PySide6'
+url='https://github.com/FrancescoCeruti/QDigitalMeter'
+arch=(any)
+depends=(python python-qtpy)
+makedepends=(python-build python-installer python-poetry python-wheel)
+license=(LGPL-2.1-only)
+source=("https://files.pythonhosted.org/packages/source/${_name::1}/$_name/$_name-$pkgver.tar.gz")
+sha256sums=('37e1b0be9e0a8ee32dd94751230a37891dda2f5b8c3bd5ca4930fc37eed8e365')
+
+build() {
+  cd $_name-$pkgver
+  python -m build --wheel --no-isolation
+}
+
+package() {
+  cd $_name-$pkgver
+  python -m installer --destdir="$pkgdir" dist/*.whl
+  # documentation
+  install -Dm644 README.md -t "$pkgdir"/usr/share/doc/$pkgname
+  # license
+  install -Dm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
+}

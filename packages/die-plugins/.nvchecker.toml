@@ -1,0 +1,5 @@
+[die-plugins]
+source = "github"
+github = "DISTRHO/DIE-Plugins"
+use_max_tag = true
+prefix = "v"

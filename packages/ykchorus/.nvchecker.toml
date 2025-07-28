@@ -1,0 +1,5 @@
+[ykchorus]
+source = "github"
+github = "SpotlightKid/ykchorus"
+use_max_tag = true
+prefix = "v"

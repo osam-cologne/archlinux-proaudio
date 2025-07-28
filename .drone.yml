@@ -11,8 +11,6 @@ steps:
   - name: Prepare
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
@@ -32,12 +30,11 @@ steps:
   - name: Analyze build scripts
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm namcap
       - if [ -n "$PACKAGE" ]; then
         namcap packages/$PACKAGE/PKGBUILD;
@@ -48,8 +45,6 @@ steps:
   - name: Build packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -57,8 +52,7 @@ steps:
       PKGDEST: /drone/src/out
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
-      - pacman --noconfirm -U https://archive.archlinux.org/packages/f/fakeroot/fakeroot-1.34-1-x86_64.pkg.tar.zst
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
       - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
         mv out/*-debug-*$PKGEXT out-debug/; fi
@@ -66,7 +60,8 @@ steps:
       - Prepare
 
   - name: List built packages
-    image: alpine:3.15
+    image: alpine
+    pull: if-not-exists
     commands:
       - ls -1 out/
       - ls -1 out-debug/
@@ -80,13 +75,11 @@ steps:
   - name: Analyze built packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm namcap
       - cd out
       - if ls -1 *$PKGEXT 2>/dev/null 1>&2; then namcap *$PKGEXT; fi
@@ -100,8 +93,6 @@ steps:
   - name: Reproduce packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -110,8 +101,7 @@ steps:
     commands:
       - sleep 9 # backoff to prevent false positives
       - source ./tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
-      - pacman --noconfirm -U https://archive.archlinux.org/packages/f/fakeroot/fakeroot-1.34-1-x86_64.pkg.tar.zst
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
     depends_on:
       - Prepare
@@ -132,13 +122,11 @@ steps:
   - name: Analyze reproduced packages
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm diffoscope unzip
       - run_nobody ./tools/diff-packages.sh
     depends_on:
@@ -226,8 +214,6 @@ steps:
   - name: Push to AUR
     image: archlinux/archlinux:base-devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
@@ -235,7 +221,7 @@ steps:
         from_secret: ssh-key
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring
       - pacman -Syu --noconfirm git openssh
       - echo "$${SSH_KEY}" > aur/.ssh/id_osamc
       - cp -a aur/.ssh /root && chmod 600 /root/.ssh/*
@@ -248,14 +234,15 @@ steps:
         include:
           - refs/heads/master
 
-# use a shared pacman cache to speed up successive package installs
+# a shared package cache should be provided by the CI runner under $DRONE_CACHE
 volumes:
-  - name: pkgcache
-    temp: {}
   - name: pkgdb
     temp: {}
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -276,8 +263,6 @@ steps:
   - name: Prepare
     image: lopsided/archlinux-arm64v8:devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     failure: ignore # arm64 is not critical for now
@@ -301,16 +286,15 @@ steps:
   - name: Build packages
     image: lopsided/archlinux-arm64v8:devel
     volumes:
-      - name: pkgcache
-        path: /var/cache/pacman/pkg
       - name: pkgdb
         path: /var/lib/pacman/sync
     environment:
       PKGDEST: /drone/src/out
+      SRCDEST: /drone/src/.tmp/cache/srcdest
       MAKEPKG_ARGS: -A
     commands:
       - source tools/build-env.sh
-      - pacman -Sy && pacman-key --init && pacman -S --noconfirm archlinux-keyring && pacman -Syu --noconfirm
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring && pacman -Syu --noconfirm
       - run_nobody tools/clean-build-all.sh
       - if ls -1 out/*-debug-*$PKGEXT 2>/dev/null 1>&2; then
         mv out/*-debug-*$PKGEXT out-debug/; fi
@@ -318,7 +302,8 @@ steps:
       - Prepare
 
   - name: List built packages
-    image: alpine:3.15
+    image: alpine
+    pull: if-not-exists
     commands:
       - ls -1 out/
       - ls -1 out-debug/
@@ -403,14 +388,15 @@ steps:
         include:
           - refs/heads/master
 
-# use a shared pacman cache to speed up successive package installs
+# a shared package cache should be provided by the CI runner under $DRONE_CACHE
 volumes:
-  - name: pkgcache
-    temp: {}
   - name: pkgdb
     temp: {}
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -461,6 +447,9 @@ depends_on:
   - Build arm64
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
@@ -478,10 +467,11 @@ name: Send notification
 steps:
   - name: Notify Matrix chat
     image: spotlightkid/drone-matrixchat-notify
+    pull: if-not-exists
     settings:
       homeserver: "https://sonoj.org"
-      roomid: "!AkWpRHuPJQwVbEpayh:sonoj.org"
-      userid: "@bot-archlinux-proaudio:sonoj.org"
+      roomid: "!WYagUGTylkAMKoxcVa:sonoj.org"
+      userid: "@arch-bot:sonoj.org"
       accesstoken:
         from_secret: matrix-bot-token
       deviceid: "HOFQKIPDQE"
@@ -496,10 +486,6 @@ steps:
         ${DRONE_COMMIT_MESSAGE}
         ```
       markdown: "yes"
-    when:
-      status:
-        - success
-        - failure
 
 depends_on:
   - Build and check
@@ -507,12 +493,66 @@ depends_on:
   - Website
 
 trigger:
+  event:
+    exclude:
+      - cron
   ref:
     include:
       - refs/heads/master
       - refs/pull/**
-
-when:
   status:
     - success
     - failure
+
+---
+kind: pipeline
+name: Nvchecker
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+  - name: Get GitHub token
+    image: rssnyder/drone-github-app
+    pull: if-not-exists
+    settings:
+      app_id:
+        from_secret: gh-app-id
+      installation:
+        from_secret: gh-app-install
+      pem:
+        from_secret: gh-app-privkey
+      token_file: .github-token
+  - name: Run nvchecker
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring git nvchecker python-jq python-packaging
+      - |
+        cat > nvchecker/keyfile.toml << __EOF__
+        [keys]
+        github = "$(cat .github-token)"
+        __EOF__
+      - nvchecker/gen-config.sh
+      - nvchecker -c nvchecker/archlinux-proaudio.toml
+  - name: Create PRs
+    image: archlinux/archlinux:base-devel
+    volumes:
+      - name: pkgdb
+        path: /var/lib/pacman/sync
+    commands:
+      - source tools/build-env.sh
+      - pacman -Sy && pacman-key --init && pacman -S --noconfirm --needed archlinux-keyring git github-cli jq nvchecker pacman-contrib
+      - export GITHUB_TOKEN="$(cat .github-token)"
+      - gh auth setup-git
+      - nvchecker/nvpr.sh
+
+trigger:
+  event:
+    - cron
+  cron:
+    - nvchecker

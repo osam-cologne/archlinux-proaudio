@@ -1,0 +1,5 @@
+[gnome-shell-extension-gsjackctl]
+source = "github"
+github = "cbix/gsjackctl"
+use_max_tag = true
+prefix = "v"

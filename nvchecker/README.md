@@ -4,15 +4,23 @@ This directory contains a setup to check for new versions of software, which is
 packaged by this project, using [nvchecker].
 
 It contains a script, designed to run periodically on a server, which runs
-`nvchecker` using the latest configuration from this repo and then posts a
-message to a Matrix Chat room, if `nvcmp` reports any new versions.
+`nvchecker` using a configuration generated from PKGBUILD and .nvchecker.toml files
+in this repo and then posts a message to a Matrix Chat room, if `nvcmp` reports any
+new versions.
 
+[nvchecker]: https://github.com/lilydjwg/nvchecker
 
 ## Howto
 
+Install `jq` using your package manager of choice, e.g.:
+
+```sh
+pacman -Syu jq
+```
+
 Install `nvchecker`, e.g. via `pipx`:
 
-```con
+```sh
 PYTHON=python3.9
 $PYTHON -m pip install --user pipx
 pipx install "nvchecker[pypi]"
@@ -20,14 +28,14 @@ pipx install "nvchecker[pypi]"
 
 Install Python dependencies:
 
-```con
+```sh
 $PYTHON -m pip install --user appdirs tabulate matrix-nio
 ```
 
 Clone this repository and set up the `nvchecker` sub-directory as the
 `nvchecker` configuration directory:
 
-```con
+```sh
 git clone https://github.com/osam-cologne/archlinux-proaudio
 mkdir -p ~/.config
 ln -s ../archlinux-proaudio/nvchecker ~/.config
@@ -36,7 +44,7 @@ ln -s archlinux-proaudio.toml ~/.config/nvchecker/nvchecker.toml
 
 Create a `keyfile.toml` file with an empty `[keys]` section for nvchecker:
 
-```con
+```sh
 echo -e `[keys]\n` > ~/.config/nvchecker/keyfile.toml`
 ```
 
@@ -48,7 +56,7 @@ for more information.
 Copy the configuration file template for the `nvchecker-notify-matrixchat.py`
 script and make it user-read- and -writeable only:
 
-```con
+```sh
 cd ~/.config/nvchecker/
 cp nvchecker-notify-matrixchat.json.tmpl nvchecker-notify-matrixchat.json
 chmod 600 nvchecker-notify-matrixchat.json
@@ -59,20 +67,20 @@ chmod 600 nvchecker-notify-matrixchat.json
 user account (this user must have a matching acount on the given Matrix server
 and have joined the `archlinux-proaudio` room).
 
-```
+```json
 {
-    "homeserver": "https://sonoj.org",
-    "password": "<change here>",
-    "room_id": "!AkWpRHuPJQwVbEpayh:sonoj.org",
-    "template": "{table}"
-    "user_id": "@bot-archlinux-proaudio:sonoj.org",
+  "homeserver": "https://sonoj.org",
+  "password": "<change here>",
+  "room_id": "!AkWpRHuPJQwVbEpayh:sonoj.org",
+  "template": "{table}",
+  "user_id": "@bot-archlinux-proaudio:sonoj.org"
 }
 ```
 
 Finally, add an entry to the user's crontab to run the `run-nvchecker.cron`
 script periodically (e.g. once every 6 hours):
 
-```con
+```sh
 crontab -e
 ```
 
@@ -88,9 +96,19 @@ NVCHECK=$HOME/.config/nvchecker/run-nvchecker.cron
 Command line options passed to `run-nvchecker.cron` are passed on to
 `nvchecker-notify-matrixchat.py`.
 
-Note: by default, the script reporrts new version only once and records the
+Note: by default, the script reports new version only once and records the
 latest version it has seen. To make it report all new versions, use the
-`-s|--seen` command line option. 
+`-s|--seen` command line option.
 
+## New version pull requests
 
-[nvchecker]: https://github.com/lilydjwg/nvchecker
+A CI cron job uses a GitHub app token to automatically open pull requests for new versions using [this script](./nvpr.sh).
+The cron job is configured using [drone-cli](https://docs.drone.io/cli/cron/drone-cron-add/) to run every 6 hours:
+
+```sh
+drone cron add osam-cologne/archlinux-proaudio nvchecker "0 30 0-23/6 * * *"
+```
+
+The Drone CLI is available as an [Arch Linux package](https://archlinux.org/packages/extra/x86_64/drone-cli/) and
+requires a [registered user](https://docs.drone.io/server/user/registration/) with repository access (owner,
+collaborator or organization member).
