@@ -5,7 +5,7 @@
 _pkgname=FreeMajor
 pkgname=${_pkgname,,}
 pkgver=1.0
-pkgrel=3
+pkgrel=4
 pkgdesc="Graphical editor for the TC Electronic G-Major guitar effect module"
 arch=(x86_64 aarch64)
 url='https://github.com/linuxmao-org/FreeMajor/'
