@@ -4,7 +4,7 @@
 _slug=voxglitch
 _name=voxglitch
 pkgname=vcvrack-voxglitch
-pkgver=2.33.0
+pkgver=2.33.1
 pkgrel=1
 pkgdesc='Voxglitch VCV Rack modules'
 arch=(aarch64 x86_64)
