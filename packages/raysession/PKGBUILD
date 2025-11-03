@@ -26,7 +26,7 @@ prepare() {
   cd $_name-$pkgver
   #patch -p1 -N -r - -i "$srcdir"/raysession-makefile-destdir.patch
   # remove unused cgitb import, incompatible with Python >= 3.13
-  sed -i -e '/cgitb/d' HoustonPatchbay/patchbay/patchcanvas/portgroup_widget.py
+  #sed -i -e '/cgitb/d' HoustonPatchbay/patchbay/patchcanvas/portgroup_widget.py
 }
 
 build() {
