@@ -22,10 +22,6 @@ source=("https://github.com/Houston4444/RaySession/releases/download/v$pkgver/$_
 sha256sums=('e879ecae851d13bdc656282645f610ebe6d7d3b0e221f1f9e47b11ac902cac28'
             '943c821d4d5cae581004ca54030b720ac835a03cd7691492bcbcb6e146bb078a')
 
-prepare() {
-  cd $_name-$pkgver
-}
-
 build() {
   cd $_name-$pkgver
   make LRELEASE=/usr/lib/qt6/bin/lrelease RCC=/usr/lib/qt6/rcc
