@@ -9,8 +9,9 @@ pkgdesc="Session manager for audio programs using the Non Session Manager (NSM) 
 arch=(any)
 url='https://github.com/Houston4444/RaySession'
 license=(GPL-2.0-only)
-depends=(hicolor-icon-theme dbus-python python-pyalsa python-pyqt5 python-pyliblo python-pyxdg qt5-svg)
-makedepends=(qt5-tools)
+depends=(hicolor-icon-theme dbus-python python-jack-client python-pyalsa python-pyqt6 python-pyliblo
+  python-pyxdg qt6-svg)
+makedepends=(qt6-tools)
 optdepends=(
   'python-gobject: additional JACK helper scripts'
   'python-pyjacklib: additional JACK helper scripts'
