@@ -65,6 +65,7 @@ prepare() {
 
 build() {
   cd $_name
+  export CXXFLAGS="$CXXFLAGS^-I/usr/include/vcvrack/dep"
   make SLUG=$_slug VERSION=$pkgver STRIP=: RACK_DIR=/usr/share/vcvrack dist
 }
 
