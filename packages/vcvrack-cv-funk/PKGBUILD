@@ -14,7 +14,7 @@ groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(git simde zstd)
 source=("git+https://github.com/codygeary/$_name#tag=v$pkgver")
-sha256sums=('faf33d33eb8536beba759c9da6779bdd2f1af2facec55ba09ed3dcc6f5fe8d9b')
+sha256sums=('f034b60ab0543a16b89068d2df99684c2adc94469a164a55b45cf2a40de4ed3f')
 
 prepare() {
   cd $_name
