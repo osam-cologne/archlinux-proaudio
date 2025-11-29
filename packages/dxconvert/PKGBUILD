@@ -20,7 +20,7 @@ optdepends=(
 )
 groups=(pro-audio)
 source=("https://dxconvert.martintarenskeen.nl/$_name-$pkgver.zip")
-sha256sums=('270c1295ede2a4a703e074079aa3806fa7596c4e11010a20f325218760e3a0ea')
+sha256sums=('38af18baa7b2d55ee4fc515b3f97e53bd11b2aa4b9c33e53f792493dfcf02bc2')
 
 prepare() {
   cd $_name-$pkgver
