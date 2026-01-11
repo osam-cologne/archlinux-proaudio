@@ -14,7 +14,7 @@ depends=(glibc gcc-libs)
 makedepends=(cmake alsa-lib fltk jack)
 groups=(pro-audio)
 source=("https://github.com/linuxmao-org/$_pkgname/releases/download/v$pkgver/$_pkgname-$pkgver.tar.gz")
-sha256sums=('f9f118ad0dc45acf500357e02c837b99aaa670ec1ecef5a17573f08269256e98')
+sha256sums=('82c0ae5037dc43093c42b3fdde3b076e682875dca968a87e7db759289a4e3550')
 
 build() {
   cmake -B $pkgname-build -S $_pkgname-$pkgver \
