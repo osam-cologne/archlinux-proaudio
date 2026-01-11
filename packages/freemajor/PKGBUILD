@@ -9,12 +9,12 @@ pkgrel=1
 pkgdesc="Graphical editor for the TC Electronic G-Major guitar effect module"
 arch=(x86_64 aarch64)
 url='https://github.com/linuxmao-org/FreeMajor/'
-license=(Boost)
+license=(BSL-1.0)
 depends=(glibc gcc-libs)
 makedepends=(cmake alsa-lib fltk jack)
 groups=(pro-audio)
 source=("https://github.com/linuxmao-org/$_pkgname/releases/download/v$pkgver/$_pkgname-$pkgver.tar.gz")
-sha256sums=('82c0ae5037dc43093c42b3fdde3b076e682875dca968a87e7db759289a4e3550')
+sha256sums=('ff0f1e7e2c3e34d7e82658c79a12ddbd05577f2204386cc0f17c0b69a1703838')
 
 build() {
   cmake -B $pkgname-build -S $_pkgname-$pkgver \
