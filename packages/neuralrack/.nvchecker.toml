@@ -1,4 +1,4 @@
-[ratatouille]
+[neuralrack]
 source = "github"
 github = "brummer10/NeuralRack"
 use_max_tag = true
