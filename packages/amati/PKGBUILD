@@ -1,0 +1,37 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+pkgname=amati
+pkgver=0.1.0
+pkgrel=1
+pkgdesc='VST3 plugin for live-coding effects in faust'
+arch=(aarch64 x86_64)
+url='<https://github.com/glocq/Amati'
+license=(GPL-3.0-or-later)
+groups=(pro-audio vst3-plugins)
+depends=(faust)
+makedepends=(cmake git)
+checkdepends=()
+optdepends=('vst3-host: for running the VST3 plugin')
+source=("git+https://github.com/glocq/$pkgname#tag=v$pkgver")
+sha256sums=('5e2704f4805add990334b479871cb31c0b52567e5006e2bd5f3c9e7b4c669259')
+
+build() {
+  local cmake_options=(
+    -B build-$pkgname
+    -S $pkgname
+    -W no-dev
+    -D CMAKE_BUILD_TYPE=None
+    -D CMAKE_INSTALL_PREFIX=/usr
+  )
+  cmake "${cmake_options[@]}"
+  cmake --build build-$pkgname
+}
+
+check() {
+  ctest --test-dir build-$pkgname --output-on-failure
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build-$pkgname
+}
