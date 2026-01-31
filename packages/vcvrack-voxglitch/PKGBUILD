@@ -14,9 +14,9 @@ groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(git jq simde zstd)
 # get release commit from https://github.com/VCVRack/library/issues/626
-_commit=6c6af439a8c427110cead2f860f1c2b69a3f2911
+_commit=c1efdd2d6d54964090745fbeb8c0140f1cdcb0c8
 source=("git+https://github.com/clone45/$_name#commit=$_commit")
-sha256sums=('aa0ebfca00f86cf6c71d4e0497c953c0a2c73450ac14d736f0f6ba6273ff67ec')
+sha256sums=('be1f024a750d37d26156c9e30f1213e79a3690b06cb7e42b2f799ca19377075c')
 
 prepare() {
   cd $_name
