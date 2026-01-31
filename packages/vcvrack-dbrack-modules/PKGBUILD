@@ -4,8 +4,8 @@
 _slug=dbRackModules
 _name=dbRackModules
 pkgname=vcvrack-dbrack-modules
-pkgver=2.5.0
-pkgrel=2
+pkgver=2.6.0-dev
+pkgrel=1
 pkgdesc='dbRack VCV Rack modules'
 arch=(aarch64 x86_64)
 url='https://github.com/docb/dbRackModules'
