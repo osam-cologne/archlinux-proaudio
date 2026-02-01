@@ -4,7 +4,7 @@
 
 pkgname=midimonster
 pkgver=0.6
-pkgrel=3
+pkgrel=4
 pkgdesc='Multi-protocol control & translation software'
 arch=(x86_64 aarch64)
 url='https://midimonster.net/'
