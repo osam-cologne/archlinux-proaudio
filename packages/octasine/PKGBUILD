@@ -6,7 +6,7 @@
 _name=OctaSine
 pkgname=${_name,,}
 pkgver=0.9.1
-pkgrel=4
+pkgrel=3
 pkgdesc='A four-operator stereo FM synthesizer CLAP/VST2 plugins'
 arch=(aarch64 x86_64)
 url='https://www.octasine.com/'

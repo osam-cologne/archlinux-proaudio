@@ -4,7 +4,7 @@
 _pkgname=ot-simian
 pkgname=${_pkgname}1
 pkgver=1.1.0
-pkgrel=2
+pkgrel=1
 pkgdesc='Drum synthesizer inspired by the Simmons SDS-V (legacy version 1)'
 arch=(aarch64 x86_64)
 url='https://punklabs.com/ot-simian'
