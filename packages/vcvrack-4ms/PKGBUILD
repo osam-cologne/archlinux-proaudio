@@ -23,7 +23,7 @@ source=("git+https://github.com/4ms/$_name#tag=vcv-v$pkgver"
         'git+https://github.com/danngreen/c4core'
         'git+https://github.com/danngreen/cmake'
         'sdk-fixes.patch')
-sha256sums=('f0a8cd07a4d8fe2b7b867bf7111c80dd515845b0e093a3cb91684b5171fcda9d'
+sha256sums=('df0fc49f23ce31cb418151a2cf72da922449342c95a0baea06844fd0096e4606'
             'SKIP'
             'SKIP'
             'SKIP'
