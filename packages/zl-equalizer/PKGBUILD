@@ -1,0 +1,93 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <osam -at- chrisarndt -dot- de>
+# Contributor: sfn
+
+_projname=ZLEqualizer
+pkgbase=zl-equalizer
+pkgname=($pkgbase $pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
+pkgver=1.1.0
+pkgrel=1
+pkgdesc='Parametric, dynamic equalizer plugin by ZL Audio'
+arch=(x86_64 aarch64)
+url='https://zl-audio.github.io/plugins/zlequalizer2/'
+license=(AGPL-3.0-only)
+depends=(fontconfig freetype2 glibc harfbuzz libgcc libstdc++ libx11 libxcursor libxinerama libxrandr)
+makedepends=(alsa-lib clang21 cmake ninja webkit2gtk)
+options=(!lto)
+groups=(zl-audio pro-audio)
+_juce_hash='6bd3353af91833ec11ebfe3ed4941c0448b2a7a4'
+_nlopt_hash='ab0fd1ca07d11d6c2f52c4af0423ec02505352ea'
+_kfr_hash='9a35250946f33c0ce61a05fba32a88223211fdae'
+source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/1.1.0.tar.gz"
+        "JUCE-$_juce_hash.tar.gz::https://github.com/ZL-Audio/JUCE/archive/$_juce_hash.tar.gz"
+        "kfr-$_kfr_hash.tar.gz::https://github.com/ZL-Audio/kfr/archive/$_kfr_hash.tar.gz"
+        "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz")
+sha256sums=('5addddd50ad95737760390c0e2f9abf8db600bfc900f75f7576b96fe45702521'
+            '715636a615911e774e1d95ac5a4efa8921a9fd2336bb12c2e4dc002cc2f500a3'
+            '3cd8ff3bb33f38cadf1a4dfad579ae8d78f8c093da44d6847c5d4415a73b8a42'
+            '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d')
+
+prepare() {
+  cd $_projname-$pkgver
+  rm -rf JUCE; ln -sf "$srcdir"/JUCE-$_juce_hash JUCE
+  rm -rf kfr; ln -sf "$srcdir"/kfr-$_kfr_hash kfr
+  rm -rf nlopt; ln -sf "$srcdir"/nlopt-$_nlopt_hash nlopt
+}
+
+build() {
+  cmake \
+    -B $pkgbase-build \
+    -S $_projname-$pkgver \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -G Ninja \
+    -Wno-dev \
+    -DCMAKE_C_COMPILER=/usr/lib/llvm21/bin/clang-21 \
+    -DCMAKE_CXX_COMPILER=/usr/lib/llvm21/bin/clang++ \
+    -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -DCMAKE_SKIP_INSTALL_RPATH=YES \
+    -DZL_JUCE_COPY_PLUGIN=FALSE \
+    -DZL_JUCE_FORMATS="VST3;LV2;Standalone" \
+    -DKFR_ENABLE_MULTIARCH=ON \
+    -DKFR_ARCHS="sse2;avx;avx2" \
+    -DZL_EQ_BAND_NUM=24
+  cmake --build $pkgbase-build
+}
+
+package_zl-equalizer() {
+  depends=($pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
+}
+
+package_zl-equalizer-lv2() {
+  pkgdesc+=' - LV2'
+  groups+=(lv2-plugins)
+  depends+=(libfontconfig.so libfreetype.so)
+  optdepends+=('lv2-host: to load LV2 plugin')
+  install -vDm 644 "$pkgbase-build"/${_projname}_artefacts/LV2/"ZL Equalizer 2.lv2"/*.ttl \
+    -t "$pkgdir"/usr/lib/lv2/"ZL Equalizer 2.lv2"
+  install -vDm 755 "$pkgbase-build"/${_projname}_artefacts/LV2/"ZL Equalizer 2.lv2"/*.so \
+    -t "$pkgdir"/usr/lib/lv2/"ZL Equalizer 2.lv2"
+  install -vDm 755 $_projname-$pkgver/LICENSE.md -t "$pkgdir"/usr/share/licenses/$pkgname
+}
+
+package_zl-equalizer-standalone() {
+  pkgdesc+=' - Standalone'
+  optdepends+=('jack: to use with JACK')
+  depends+=(libasound.so libfontconfig.so libfreetype.so)
+  install -vDm 755 $pkgbase-build/${_projname}_artefacts/Standalone/"ZL Equalizer 2"\
+    -t "$pkgdir"/usr/bin
+  ln -sfv "ZL Equalizer 2" "$pkgdir"/usr/bin/$pkgbase
+  install -vDm 755 $_projname-$pkgver/LICENSE.md -t "$pkgdir"/usr/share/licenses/$pkgname
+}
+
+package_zl-equalizer-vst3() {
+  pkgdesc+=' - VST3'
+  groups+=(vst3-plugins)
+  depends+=(libfontconfig.so libfreetype.so)
+  optdepends+=('vst3-host: to load VST3 plugin')
+  replaces+=($pkgbase-vst)
+  install -vDm 755 \
+    "$pkgbase-build"/${_projname}_artefacts/VST3/"ZL Equalizer 2.vst3"/Contents/$CARCH-linux/*.so \
+    -t "$pkgdir/usr/lib/vst3/ZL Equalizer 2.vst3/Contents/$CARCH-linux"
+  install -Dm755 $_projname-$pkgver/LICENSE.md -t "$pkgdir"/usr/share/licenses/$pkgname
+}

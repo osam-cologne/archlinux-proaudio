@@ -1,0 +1,4 @@
+[zl-equalizer]
+source = "github"
+github = "ZL-Audio/ZLEqualizer"
+use_max_tag = true
