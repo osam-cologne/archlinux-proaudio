@@ -1,12 +1,12 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
 # Contributor: Christopher Arndt <osam -at- chrisarndt -dot- de>
-# Contributor: sfn
+# Contributor: sfn <https://aur.archlinux.org/account/sfn>
 
 _projname=ZLEqualizer
 pkgbase=zl-equalizer
 pkgname=($pkgbase $pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
 pkgver=1.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc='Parametric, dynamic equalizer plugin by ZL Audio'
 arch=(x86_64 aarch64)
 url='https://zl-audio.github.io/plugins/zlequalizer2/'
@@ -21,17 +21,21 @@ _kfr_hash='9a35250946f33c0ce61a05fba32a88223211fdae'
 source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/1.1.0.tar.gz"
         "JUCE-$_juce_hash.tar.gz::https://github.com/ZL-Audio/JUCE/archive/$_juce_hash.tar.gz"
         "kfr-$_kfr_hash.tar.gz::https://github.com/ZL-Audio/kfr/archive/$_kfr_hash.tar.gz"
-        "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz")
+        "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz"
+        'zl-equalizer-cmake-version.patch')
 sha256sums=('5addddd50ad95737760390c0e2f9abf8db600bfc900f75f7576b96fe45702521'
             '715636a615911e774e1d95ac5a4efa8921a9fd2336bb12c2e4dc002cc2f500a3'
             '3cd8ff3bb33f38cadf1a4dfad579ae8d78f8c093da44d6847c5d4415a73b8a42'
-            '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d')
+            '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d'
+            'bdb49b159ed37c0f58f55a9f6f0d956641f55c34a628311f16298f6936a17cb4')
 
 prepare() {
   cd $_projname-$pkgver
   rm -rf JUCE; ln -sf "$srcdir"/JUCE-$_juce_hash JUCE
   rm -rf kfr; ln -sf "$srcdir"/kfr-$_kfr_hash kfr
   rm -rf nlopt; ln -sf "$srcdir"/nlopt-$_nlopt_hash nlopt
+
+  patch -p0 -N -r - -i "$srcdir"/zl-equalizer-cmake-version.patch
 }
 
 build() {
@@ -42,15 +46,17 @@ build() {
     -G Ninja \
     -Wno-dev \
     -DCMAKE_C_COMPILER=/usr/lib/llvm21/bin/clang-21 \
-    -DCMAKE_CXX_COMPILER=/usr/lib/llvm21/bin/clang++ \
     -DCMAKE_C_FLAGS="$CFLAGS" \
+    -DCMAKE_CXX_COMPILER=/usr/lib/llvm21/bin/clang++ \
     -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
     -DCMAKE_SKIP_INSTALL_RPATH=YES \
-    -DZL_JUCE_COPY_PLUGIN=FALSE \
-    -DZL_JUCE_FORMATS="VST3;LV2;Standalone" \
-    -DKFR_ENABLE_MULTIARCH=ON \
     -DKFR_ARCHS="sse2;avx;avx2" \
-    -DZL_EQ_BAND_NUM=24
+    -DKFR_ENABLE_MULTIARCH=ON \
+    -DZL_EQ_BAND_NUM=24 \
+    -DZL_EQ_HASH="0000000" \
+    -DZL_EQ_VERSION="$pkgver" \
+    -DZL_JUCE_COPY_PLUGIN=FALSE \
+    -DZL_JUCE_FORMATS="VST3;LV2;Standalone"
   cmake --build $pkgbase-build
 }
 
