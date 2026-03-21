@@ -107,8 +107,10 @@
 <details>
   <summary><strong>Package Contents</strong></summary>
   <div class="files">
-    {{ range sort .files }}
-    <span class="{{ cond (strings.HasSuffix . `/`) `dir` `file` }}">{{ . }}</span>
+    {{ if .files }}
+      {{ range sort .files }}
+      <span class="{{ cond (strings.HasSuffix . `/`) `dir` `file` }}">{{ . }}</span>
+      {{ end }}
     {{ end }}
   </div>
 </details>
