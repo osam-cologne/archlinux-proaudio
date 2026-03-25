@@ -21,12 +21,9 @@ build() {
   cmake -B build-$pkgname-$pkgver -S $pkgname-$pkgver \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=/usr \
-    -DBuildCarlaPresets=OFF \
-    -DBuildRakarrackPlusLV2=OFF \
-    -DEnableNTK=OFF \
-    -DEnablePFFFT=ON \
-    -DEnableSysex=ON \
-    -DEnableZITA=ON \
+    -DBUILD_RPLUS_LV2=OFF \
+    -DENABLE_NTK=OFF \
+    -DENABLE_PFFFT=ON \
     -Wno-dev
   cmake --build build-$pkgname-$pkgver
 }
