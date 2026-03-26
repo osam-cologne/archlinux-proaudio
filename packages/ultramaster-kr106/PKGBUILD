@@ -1,0 +1,98 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
+
+pkgbase=ultramaster-kr106
+pkgname=($pkgbase $pkgbase-clap $pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
+pkgver=2.4.3
+pkgrel=1
+pkgdesc='A software synthesizer emulating the Roland Juno-106'
+arch=(aarch64 x86_64)
+url='https://kayrock.org/kr106/'
+license=(GPL-3.0-only)
+groups=(pro-audio)
+depends=(fontconfig freetype2 glibc harfbuzz libgcc libstdc++ libx11 libxcursor libxinerama libxrandr)
+makedepends=(alsa-lib cmake git ninja webkit2gtk)
+source=("$pkgbase::git+https://github.com/kayrockscreenprinting/ultramaster_kr106.git#tag=v$pkgver"
+        'JUCE::git+https://github.com/juce-framework/JUCE.git'
+        'clap::git+https://github.com/free-audio/clap.git'
+        'clap-helpers::git+https://github.com/free-audio/clap-helpers.git'
+        'clap-juce-extensions::git+https://github.com/free-audio/clap-juce-extensions.git')
+sha256sums=('7c3b2ca59365185fe7c84e78eb8ab254ed1ba736ec95597b394ca3b29d592d44'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP')
+
+prepare() {
+  cd $pkgbase
+  git submodule init
+  git submodule set-url libs/JUCE "$srcdir"/JUCE
+  git submodule set-url libs/clap-juce-extensions "$srcdir"/clap-juce-extensions
+  git -c protocol.file.allow=always submodule update
+
+  cd libs/clap-juce-extensions
+  git submodule init
+  git submodule set-url clap-libs/clap "$srcdir"/clap
+  git submodule set-url clap-libs/clap-helpers "$srcdir"/clap-helpers
+  git -c protocol.file.allow=always submodule update
+}
+
+build() {
+  local cmake_options=(
+    -B build-$pkgbase
+    -S $pkgbase
+    -G Ninja
+    -W no-dev
+    -D CMAKE_C_FLAGS="$CFLAGS" \
+    -D CMAKE_CXX_FLAGS="$CXXFLAGS" \
+    -D CMAKE_BUILD_TYPE=None
+    -D CMAKE_INSTALL_PREFIX=/usr
+    -D KR106_COPY_AFTER_BUILD=OFF
+  )
+  cmake "${cmake_options[@]}"
+  cmake --build build-$pkgbase
+}
+
+package_ultramaster-kr106() {
+  depends=($pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
+}
+
+package_ultramaster-kr106-clap() {
+  pkgdesc+=' - CLAP'
+  groups+=(clap-plugins)
+  depends+=(libfontconfig.so libfreetype.so)
+  optdepends+=('clap-host: to load CLAP plugin')
+  install -vDm 755 "build-$pkgbase"/KR106_artefacts/None/CLAP/"Ultramaster KR-106.clap" \
+    -t "$pkgdir"/usr/lib/clap/
+}
+
+package_ultramaster-kr106-lv2() {
+  pkgdesc+=' - LV2'
+  groups+=(lv2-plugins)
+  depends+=(libfontconfig.so libfreetype.so)
+  optdepends+=('lv2-host: to load LV2 plugin')
+  install -vDm 644 "build-$pkgbase"/KR106_artefacts/None/LV2/"Ultramaster KR-106.lv2"/*.ttl \
+    -t "$pkgdir"/usr/lib/lv2/"Ultramaster KR-106.lv2"
+  install -vDm 755 "build-$pkgbase"/KR106_artefacts/None/LV2/"Ultramaster KR-106.lv2"/*.so \
+    -t "$pkgdir"/usr/lib/lv2/"Ultramaster KR-106.lv2"
+}
+
+package_ultramaster-kr106-standalone() {
+  pkgdesc+=' - Standalone'
+  optdepends+=('jack: to use with JACK')
+  depends+=(libasound.so libfontconfig.so libfreetype.so)
+  install -vDm 755 build-$pkgbase/KR106_artefacts/None/Standalone/"Ultramaster KR-106"\
+    -t "$pkgdir"/usr/bin
+  ln -sfv "Ultramaster KR-106" "$pkgdir"/usr/bin/$pkgbase
+}
+
+package_ultramaster-kr106-vst3() {
+  pkgdesc+=' - VST3'
+  groups+=(vst3-plugins)
+  depends+=(libfontconfig.so libfreetype.so)
+  optdepends+=('vst3-host: to load VST3 plugin')
+  replaces+=($pkgbase-vst)
+  install -vDm 755 \
+    "build-$pkgbase"/KR106_artefacts/None/VST3/"Ultramaster KR-106.vst3"/Contents/$CARCH-linux/*.so \
+    -t "$pkgdir/usr/lib/vst3/Ultramaster KR-106.vst3/Contents/$CARCH-linux"
+}

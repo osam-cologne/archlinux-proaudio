@@ -1,0 +1,4 @@
+[ultramaster-kr106]
+source = "github"
+github = "kayrockscreenprinting/ultramaster_kr106"
+use_max_tag = true
