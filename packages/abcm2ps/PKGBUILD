@@ -18,8 +18,16 @@ depends=(glibc)
 makedepends=(freetype2 glib2 pango python-docutils)
 checkdepends=(adobe-source-han-sans-cn-fonts)
 groups=(abc pro-audio)
-source=("$pkgname-$pkgver.tar.gz::https://github.com/lewdlime/$pkgname/archive/v$pkgver.tar.gz")
-sha256sums=('5f02ac6203c4226cfbc6206935dca715ed7c45328535ee23e776c9da0219c822')
+source=(
+	"$pkgname-$pkgver.tar.gz::https://github.com/lewdlime/$pkgname/archive/v$pkgver.tar.gz"
+	fix-compilation.patch)
+sha256sums=('5f02ac6203c4226cfbc6206935dca715ed7c45328535ee23e776c9da0219c822'
+            'f5148e2e5533c73dab2de881b9ef3aa868adeb8d17257d5102727b5521f70370')
+
+prepare() {
+	cd "$pkgname-$pkgver"
+	patch --input="${srcdir}/fix-compilation.patch"
+}
 
 build() {
   cd $pkgname-$pkgver

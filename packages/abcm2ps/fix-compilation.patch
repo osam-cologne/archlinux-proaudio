@@ -1,0 +1,13 @@
+diff --git a/configure.orig b/configure
+index cc1f39a..0e6bea6 100755
+--- a/configure
++++ b/configure
+@@ -6,7 +6,7 @@ VDATE=2024-01-08
+
+ : "${CC:=gcc}"
+ : "${PKG_CONFIG:=pkg-config}"
+-CFLAGS="-g -O2 -Wall -pipe $CFLAGS"
++CFLAGS="-g -O2 -Wall -pipe -std=c99 -D_POSIX_C_SOURCE=200809L -include strings.h $CFLAGS"
+
+ srcdir=.
+ : "${prefix=/usr/local}"
