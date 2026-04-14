@@ -11,7 +11,7 @@ arch=(x86_64 aarch64)
 url='https://github.com/xunil-cloud/CloudReverb'
 license=(MIT)
 depends=(alsa-lib freetype2 glibc gcc-libs)
-makedepends=(cmake webkit2gtk)
+makedepends=(cmake webkit2gtk-4.1)
 checkdepends=(lv2lint)
 optdepends=(
   'jack: for running the standalone version with JACK'
