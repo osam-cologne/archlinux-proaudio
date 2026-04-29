@@ -15,16 +15,16 @@ depends=(fontconfig freetype2 glibc harfbuzz libgcc libstdc++ libx11 libxcursor 
 makedepends=(alsa-lib clang21 cmake ninja webkit2gtk-4.1)
 options=(!lto)
 groups=(zl-audio pro-audio)
-_juce_hash='6bd3353af91833ec11ebfe3ed4941c0448b2a7a4'
+_juce_hash='682426c3bcac80fc4bc78063267a431d5e6c100c'
 _nlopt_hash='ab0fd1ca07d11d6c2f52c4af0423ec02505352ea'
 _kfr_hash='9a35250946f33c0ce61a05fba32a88223211fdae'
-source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/1.1.0.tar.gz"
+source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/$pkgver.tar.gz"
         "JUCE-$_juce_hash.tar.gz::https://github.com/ZL-Audio/JUCE/archive/$_juce_hash.tar.gz"
         "kfr-$_kfr_hash.tar.gz::https://github.com/ZL-Audio/kfr/archive/$_kfr_hash.tar.gz"
         "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz"
         'zl-equalizer-cmake-version.patch')
-sha256sums=('5addddd50ad95737760390c0e2f9abf8db600bfc900f75f7576b96fe45702521'
-            '715636a615911e774e1d95ac5a4efa8921a9fd2336bb12c2e4dc002cc2f500a3'
+sha256sums=('e2804e602a5eb73d629caa0ac5add76c96ad7c6ec94e1bb39d5d3425ac63afa4'
+            '8451d9396a5d10db2c210a1667f52c5b85b3861a4010875e636bfc789788561c'
             '3cd8ff3bb33f38cadf1a4dfad579ae8d78f8c093da44d6847c5d4415a73b8a42'
             '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d'
             'bdb49b159ed37c0f58f55a9f6f0d956641f55c34a628311f16298f6936a17cb4')
