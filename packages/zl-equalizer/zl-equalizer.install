@@ -1,0 +1,13 @@
+print_notice() {
+  echo "This software requires CPU support for SIMD instructions (SSE2/SSE4/AVX2 or NEON)."
+  echo "You can set the maximum required SIMD instruction set level by re-building the package"
+  echo "while setting the ZL_HWY_STATIC_TARGET environment variable to SSS2, SS4, AVX2 or NEON."
+}
+
+post_install() {
+  print_notice
+}
+
+post_upgrade() {
+  print_notice
+}
