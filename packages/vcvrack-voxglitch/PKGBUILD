@@ -16,7 +16,7 @@ makedepends=(git jq simde zstd)
 # get release commit from https://github.com/VCVRack/library/issues/626
 _commit=267101591c21dee84c3e18e4bac64d5177c94d5a
 source=("git+https://github.com/clone45/$_name#commit=$_commit")
-sha256sums=('aa0ebfca00f86cf6c71d4e0497c953c0a2c73450ac14d736f0f6ba6273ff67ec')
+sha256sums=('5f4db48a7da88b926eb429b3f40704357c4b8db9712323eff6cf266d5b356300')
 
 prepare() {
   cd $_name
