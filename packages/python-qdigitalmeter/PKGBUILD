@@ -4,7 +4,7 @@
 _name=qdigitalmeter
 pkgname=python-$_name
 pkgver=0.1.0
-pkgrel=1
+pkgrel=2
 pkgdesc='A simple digital peak meter for use with PyQt5, PyQt6, PySide2, and PySide6'
 url='https://github.com/FrancescoCeruti/QDigitalMeter'
 arch=(any)

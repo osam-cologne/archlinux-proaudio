@@ -4,7 +4,7 @@
 
 _name=ConvertWithMoss
 pkgname=${_name,,}
-pkgver=15.5.0
+pkgver=17.1.0
 pkgrel=1
 pkgdesc='A tool for converting multi-samples from one format to another'
 url='https://mossgrabers.de/Software/ConvertWithMoss/ConvertWithMoss.html'
@@ -15,8 +15,8 @@ makedepends=(maven jdk-openjdk)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/git-moss/ConvertWithMoss/archive/refs/tags/$pkgver.tar.gz"
         'convertwithmoss-javafx-version.patch'
         'convertwithmoss.sh')
-sha256sums=('8276ba22b075d7d73f092dd6a17717c34719f231d2e66a6e75f4d0128d1a8007'
-            '9d59a6649f16196d4f466fe00d91a052958cf0fb569618043b63ce905aafd626'
+sha256sums=('2336501c17bfb935d45b740c4688e4d4c46302df5010fe425ae020bb0c3109b0'
+            '56b98e20ea95de4705be0696935c23dffb2f30c496c7532b37eaf9bfb5b10df0'
             '119c190f92a96c3556b770d504ada91fc89d522e837bf490dd3c6b4577d7ca3d')
 
 prepare() {
