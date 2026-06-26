@@ -5,7 +5,7 @@
 _projname=ZLEqualizer
 pkgbase=zl-equalizer
 pkgname=($pkgbase $pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
-pkgver=1.2.1
+pkgver=1.2.2
 pkgrel=1
 pkgdesc='Parametric, dynamic equalizer plugin by ZL Audio'
 arch=(x86_64 aarch64)
@@ -25,7 +25,7 @@ source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archi
         "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz"
         "zldsp_fft-$_zldsp_fft_hash.tar.gz::https://github.com/ZL-Audio/zldsp_fft/archive/$_zldsp_fft_hash.tar.gz"
         'zl-equalizer-cmake-version.patch')
-sha256sums=('5cbd2941b5dfe924487c2c863988e704b3edbf01f58d95bddcc60813d355c71e'
+sha256sums=('79d853267ea7bfd5d744f42e576c76d427c05c1b13710fa92bc56c47cfb74843'
             '29bd5cdc6380d32814c0929b82472d22f6088c4b2b2a4f7465c0d99777e6bb0f'
             '741d705781e0b3e406beda8f1f994fbae01321237ce8023a1ad90fbaf7940c25'
             '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d'
