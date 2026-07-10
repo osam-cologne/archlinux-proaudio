@@ -29,7 +29,7 @@ case $CARCH in
 esac
 
 prepare() {
-  _npmargs=("--openssl-fips=''" --cache "$srcdir"/npm-cache --no-audit --no-fund)
+  _npmargs=(--cache "$srcdir"/npm-cache --no-audit --no-fund)
   _electron_ver="$(< /usr/lib/$_electron/version)"
   cd $_name-$_ver
   # remove unused dependencies
