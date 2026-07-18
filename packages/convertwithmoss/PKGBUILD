@@ -13,13 +13,21 @@ license=(LGPL-3.0-only)
 depends=('java-runtime>=16' sh)
 makedepends=(maven jdk-openjdk)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/git-moss/ConvertWithMoss/archive/refs/tags/$pkgver.tar.gz"
-        'convertwithmoss.sh')
+        'convertwithmoss.sh'
+        'settings.xml.in')
 sha256sums=('b8b4e73b3e516cced2d3b2703c990baea113d17e85368b6286c111f2b99631c3'
-            '119c190f92a96c3556b770d504ada91fc89d522e837bf490dd3c6b4577d7ca3d')
+            '119c190f92a96c3556b770d504ada91fc89d522e837bf490dd3c6b4577d7ca3d'
+            '21dd62b95d6d9801c7dcb86522ba5b3c7bbe4bc5855a14353d99e6977513b0cb')
+
+prepare() {
+  # Workraround for ~/.m2 not being writable in CI
+  mkdir -p "$srcdir"/maven/repo
+  sed -e 's|@@REPO_DIR@@|'$srcdir'/maven/repo|' "$srcdir/settings.xml.in" > "$srcdir"/settings.xml
+}
 
 build() {
   cd $_name-$pkgver
-  mvn -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH clean install
+  mvn -s "$srcdir"/settings.xml -Dproject.build.outputTimestamp=$SOURCE_DATE_EPOCH clean install
 }
 
 package() {
