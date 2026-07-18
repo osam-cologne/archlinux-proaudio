@@ -13,19 +13,9 @@ license=(LGPL-3.0-only)
 depends=('java-runtime>=16' sh)
 makedepends=(maven jdk-openjdk)
 source=("$pkgname-$pkgver.tar.gz::https://github.com/git-moss/ConvertWithMoss/archive/refs/tags/$pkgver.tar.gz"
-        'convertwithmoss-javafx-version.patch'
         'convertwithmoss.sh')
 sha256sums=('b8b4e73b3e516cced2d3b2703c990baea113d17e85368b6286c111f2b99631c3'
-            '56b98e20ea95de4705be0696935c23dffb2f30c496c7532b37eaf9bfb5b10df0'
             '119c190f92a96c3556b770d504ada91fc89d522e837bf490dd3c6b4577d7ca3d')
-
-prepare() {
-  cd $_name-$pkgver
-  if [[ "$CARCH" = "aarch64" ]]; then
-    # Change version of javafx dependency to preview version 26-ea+17 for aarch64 support
-    patch -p1 -N -r - -i "$srcdir"/convertwithmoss-javafx-version.patch
-  fi
-}
 
 build() {
   cd $_name-$pkgver
