@@ -19,7 +19,7 @@ groups=(pro-audio)
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/jamulussoftware/$pkgbase/archive/r${pkgver//./_}.tar.gz"
   'jamulus.service'
   'jamulus.sysusers')
-sha256sums=('b2f28afc57193756d7becf4e07f54afb5ac873c86f28cb6f8a26d0f273638aca'
+sha256sums=('2d1e2d2a3d483562ae4baf5e2ab8e2546f5b0ffffdafb50851d6924aa520f742'
             '98e45f7f877dbc9f8113d63b6e009ff1025e73e1cce86f671b57474a4764e11f'
             '4117ad3a93b3211f679f93794b308ad292d1799a86f85a6b353cfdff8515e2f9')
 _pkgsrc=$pkgbase-r${pkgver//./_}
