@@ -4,7 +4,7 @@
 _slug=Cella
 _name=CellaVCV
 pkgname=vcvrack-cella
-pkgver=2.11.0
+pkgver=2.11.1
 pkgrel=1
 pkgdesc='Cella VCV Rack modules'
 arch=(aarch64 x86_64)
@@ -14,7 +14,7 @@ groups=(pro-audio vcvrack-plugins)
 depends=(gcc-libs vcvrack)
 makedepends=(git simde zstd)
 source=("git+https://github.com/victorkashirin/$_name#tag=v$pkgver")
-sha256sums=('036c60554a051da7260552dc49c7b50d3bcc8e70fb091f9d36b11d9e94008f10')
+sha256sums=('1b30f305968197a5fc1eda6fec20e935ea4501f6811669e945b62867d1640cb1')
 
 prepare() {
   cd $_name
