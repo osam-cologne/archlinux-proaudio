@@ -9,7 +9,7 @@
 pkgbase=tuxguitar
 pkgname=tuxguitar
 pkgver=1.5.6
-pkgrel=1
+pkgrel=2
 pkgdesc='Multitrack guitar tablature editor and player'
 arch=(x86_64 i686)
 url='https://sourceforge.net/projects/tuxguitar/'
