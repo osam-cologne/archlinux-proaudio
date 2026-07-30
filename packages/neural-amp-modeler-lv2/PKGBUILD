@@ -4,7 +4,7 @@
 
 pkgname=neural-amp-modeler-lv2
 pkgver=0.1.9
-pkgrel=2
+pkgrel=1
 pkgdesc='Neural Amp Modeler (NAM) LV2 plugin'
 arch=(x86_64)
 url='https://github.com/mikeoliphant/neural-amp-modeler-lv2'
