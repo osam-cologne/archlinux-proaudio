@@ -17,12 +17,12 @@ sha256sums=('21edbabfd92707a730ae93b98d850dfd61aceb3aa80f5b39e7eb2e7e9e9d77c7')
 
 prepare() {
   cd $pkgname-$pkgver
-  cargo fetch --locked --target $CARCH-unknown-linux-gnu
+  CARGO_HOME="$srcdir"/.cargo cargo fetch --locked --target $CARCH-unknown-linux-gnu
 }
 
 build() {
   cd $pkgname-$pkgver
-  cargo build --release --locked --all-features --target-dir=target
+  CARGO_HOME="$srcdir"/.cargo cargo build --release --locked --all-features --target-dir=target
 }
 
 package() {
