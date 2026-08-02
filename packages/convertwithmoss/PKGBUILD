@@ -20,7 +20,7 @@ sha256sums=('1c904340b4e76c132ddff1bd537188bb060019a98f1806e357b1e9f6acdd1363'
             '21dd62b95d6d9801c7dcb86522ba5b3c7bbe4bc5855a14353d99e6977513b0cb')
 
 prepare() {
-  # Workraround for ~/.m2 not being writable in CI
+  # Workaround for ~/.m2 not being writable in CI
   mkdir -p "$srcdir"/maven/repo
   sed -e 's|@@REPO_DIR@@|'$srcdir'/maven/repo|' "$srcdir/settings.xml.in" > "$srcdir"/settings.xml
 }
@@ -40,6 +40,6 @@ package() {
   install -vDm 644 linux/de.mossgrabers.$_name.appdata.xml \
     -t "$pkgdir"/usr/share/metainfo
   install -vDm 644 icons/$pkgname.png -t "$pkgdir"/usr/share/pixmaps
-  install -vDm 644 documentation/*.{md,ods} -t "$pkgdir"/usr/share/doc/$pkgname
+  install -vDm 644 documentation/*.{md,fods} -t "$pkgdir"/usr/share/doc/$pkgname
   install -vDm 644 documentation/design/*.md -t "$pkgdir"/usr/share/doc/$pkgname/design
 }
