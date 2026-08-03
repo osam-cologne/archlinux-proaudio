@@ -2,5 +2,4 @@
 source = "github"
 github = "midi2-dev/MIDI2.0Workbench"
 use_max_tag = true
-from_pattern = '^v(.*)p$'
-to_pattern = '\1'
+prefix = "v"
