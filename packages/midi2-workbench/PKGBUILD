@@ -33,6 +33,8 @@ prepare() {
   _npmargs=(--cache "$srcdir"/npm-cache --no-audit --no-fund)
   _electron_ver="$(< /usr/lib/$_electron/version)"
   cd $_name-$pkgver
+  # don't use prebuilt binaries
+  rm -rf node_modules/usb/prebuilds
   # remove unused dependencies
   sed -e /serialport/d -e /cobs/d -e /sanitize-filename/d -i package.json
   HOME="$srcdir"/.electron-gyp npm "${_npmargs[@]}" install --os linux --cpu $_arch \
