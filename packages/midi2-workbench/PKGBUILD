@@ -13,6 +13,7 @@ _electron=electron43
 depends=($_electron gcc-libs glibc)
 makedepends=(alsa-lib node-gyp npm systemd-libs)
 groups=(pro-audio)
+options=(!strip)
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/midi2-dev/$_name/archive/refs/tags/v$pkgver.tar.gz"
   'bonjour-service.tar.gz::https://github.com/starfishmod/bonjour-service/archive/6624418a.tar.gz'
@@ -45,6 +46,12 @@ prepare() {
 
 build() {
   cd $_name-$pkgver
+  # explicitly build midi binding since electron-builder seems to skip this
+  pushd node_modules/midi
+  node-gyp configure
+  node-gyp build
+  popd
+
   npx "${_npmargs[@]}" electron-builder -- \
     --linux --$_arch --dir \
     -c.electronDist=/usr/lib/$_electron \
@@ -64,7 +71,7 @@ package() {
 
   cd dist/linux-unpacked/resources
   # some cleanup
-  #rm -rf app/{midi2usb,winmidi2,*.png}
+  rm -rf app/{midi2usb,winmidi2,*.png}
   install -d "$pkgdir"/usr/lib
   cp -a app "$pkgdir"/usr/lib/$pkgname
 }
