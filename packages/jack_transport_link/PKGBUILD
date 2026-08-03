@@ -3,7 +3,7 @@
 
 pkgname=jack_transport_link
 _pkgver=0.0.14-linkaudio.5
-pkgver=${_pkgver/-/.}
+pkgver=0.0.13
 pkgrel=1
 pkgdesc='A bridge between Ableton Link to and from JACK transport'
 arch=(aarch64 x86_64)
