@@ -3,9 +3,8 @@
 
 _name=MIDI2.0Workbench
 pkgname=midi2-workbench
-pkgver=1.5.6
-_ver=${pkgver}p
-pkgrel=2
+pkgver=1.6.4
+pkgrel=1
 pkgdesc='MIDI 2.0 debugging utility'
 arch=(x86_64)
 url='https://github.com/midi2-dev/MIDI2.0Workbench'
@@ -15,13 +14,16 @@ depends=($_electron gcc-libs glibc)
 makedepends=(alsa-lib node-gyp npm systemd-libs)
 groups=(pro-audio)
 source=(
-  "$pkgname-$pkgver.tar.gz::https://github.com/midi2-dev/$_name/archive/refs/tags/v$_ver.tar.gz"
+  "$pkgname-$pkgver.tar.gz::https://github.com/midi2-dev/$_name/archive/refs/tags/v$pkgver.tar.gz"
+  'bonjour-service.tar.gz::https://github.com/starfishmod/bonjour-service/archive/6624418a.tar.gz'
   'midi2-workbench.sh'
   'midi2-workbench.desktop'
 )
-sha256sums=('317fe57e371af684c557c167de0d5a824fe231b58af6a7baece8d565ddf76bf2'
+sha256sums=('2b6811f179d51abdb1566fb4e248e65896c9bcf512075f9eaf39bd1553b7b990'
+            '9ecca3b29826d71c65f73bab6eaf1bfbb3840478e91347e7b5e14d387938de44'
             '874b315d24b7846f2a3b2cefba8d27085b45aaa355a6f26096ef5672db66d99b'
             'fe31fc81dfc72fbbb131c3a187b90cd924948c1bad5a0cbb6421771b92eb2c8c')
+noextract=(bonjour-service.tar.gz)
 case $CARCH in
  aarch64) _arch=arm64 ;;
  x86_64) _arch=x64 ;;
@@ -31,10 +33,11 @@ esac
 prepare() {
   _npmargs=(--cache "$srcdir"/npm-cache --no-audit --no-fund)
   _electron_ver="$(< /usr/lib/$_electron/version)"
-  cd $_name-$_ver
+  cd $_name-$pkgver
   # remove unused dependencies
-  sed -e /serialport/d -e /bonjour-service/d -e /cobs/d -e /sanitize-filename/d -i package.json
-  HOME="$srcdir"/.electron-gyp npm "${_npmargs[@]}" install --os linux --cpu $_arch
+  sed -e /serialport/d -e /cobs/d -e /sanitize-filename/d -i package.json
+  HOME="$srcdir"/.electron-gyp npm "${_npmargs[@]}" install --os linux --cpu $_arch \
+    bonjour-service@"$srcdir"/bonjour-service.tar.gz
   # don't use prebuilt binaries and fix build
   rm -rf node_modules/usb/prebuilds
   sed -e 's/-std=c++14/-std=c++17/' -i node_modules/usb/binding.gyp
@@ -43,7 +46,7 @@ prepare() {
 }
 
 build() {
-  cd $_name-$_ver
+  cd $_name-$pkgver
   npx "${_npmargs[@]}" electron-builder -- \
     --linux --$_arch --dir \
     -c.electronDist=/usr/lib/$_electron \
@@ -57,7 +60,7 @@ package() {
   install -vDm755 $pkgname.sh "$pkgdir"/usr/bin/$pkgname
   install -vDm644 $pkgname.desktop -t "$pkgdir"/usr/share/applications
 
-  cd $_name-$_ver
+  cd $_name-$pkgver
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
   install -vDm644 icon.png "$pkgdir"/usr/share/pixmaps/$pkgname.png
 

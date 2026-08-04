@@ -2,7 +2,8 @@
 # Contributor: Christopher Arndt <aur -at- chrisarndt -dot- de>
 
 pkgname=jack_transport_link
-pkgver=0.0.13
+_pkgver=0.0.14-linkaudio.5
+pkgver=${_pkgver/-/.}
 pkgrel=1
 pkgdesc='A bridge between Ableton Link to and from JACK transport'
 arch=(aarch64 x86_64)
@@ -11,14 +12,14 @@ license=(GPL-2.0-only)
 groups=(pro-audio)
 depends=(glibc jack libgcc libstdc++)
 makedepends=(cmake)
-source=("$url/releases/download/v$pkgver/$pkgname-v$pkgver-src.tar.gz")
-sha256sums=('359da6dda7cc6df0edce63c5af6c1f767fede6114d8cf258c17f976064d7ec76')
+source=("$url/releases/download/v$_pkgver/$pkgname-v$_pkgver-src.tar.gz")
+sha256sums=('0858fafff9d082c8bbab5290f5c5a90d87e435a7cb9e7272ad45c42631352d86')
 
 build() {
   local cmake_options=(
     -B build-$pkgname
-    -S $pkgname-v$pkgver
-    -W no-dev
+    -S $pkgname-v$_pkgver
+    -W no-author
     -D CMAKE_BUILD_TYPE=None
     -D CMAKE_INSTALL_PREFIX=/usr
     -D INSTALL_SERVICE_FILE=OFF
@@ -30,6 +31,6 @@ build() {
 package() {
   depends+=(libgcc_s.so libjack.so libstdc++.so)
   DESTDIR="$pkgdir" cmake --install build-$pkgname
-  cd $pkgname-v$pkgver
+  cd $pkgname-v$_pkgver
   install -vDm 644 README.md config/*.service.* -t "$pkgdir"/usr/share/doc/$pkgname
 }

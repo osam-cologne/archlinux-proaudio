@@ -1,7 +1,7 @@
 # Hugo static site generator config
 ---
 params:
-  bannerImage: https://unsplash.com/photos/19u5e9oSrlU/download
+  bannerImage: https://github.com/user-attachments/assets/a9ec7f4e-95b6-4b56-8c53-a1c111242c0a
   repoUrl: https://arch.osamc.de/proaudio/%s/%s
   pkgbuildUrl: https://github.com/osam-cologne/archlinux-proaudio/blob/master/packages/%s/PKGBUILD
   maxWidth: 1000
