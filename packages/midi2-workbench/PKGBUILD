@@ -13,7 +13,6 @@ _electron=electron43
 depends=($_electron gcc-libs glibc)
 makedepends=(alsa-lib node-gyp npm systemd-libs)
 groups=(pro-audio)
-options=(!strip)
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/midi2-dev/$_name/archive/refs/tags/v$pkgver.tar.gz"
   'bonjour-service.tar.gz::https://github.com/starfishmod/bonjour-service/archive/6624418a.tar.gz'
@@ -24,6 +23,7 @@ sha256sums=('2b6811f179d51abdb1566fb4e248e65896c9bcf512075f9eaf39bd1553b7b990'
             '9ecca3b29826d71c65f73bab6eaf1bfbb3840478e91347e7b5e14d387938de44'
             '874b315d24b7846f2a3b2cefba8d27085b45aaa355a6f26096ef5672db66d99b'
             'fe31fc81dfc72fbbb131c3a187b90cd924948c1bad5a0cbb6421771b92eb2c8c')
+noextract=(bonjour-service.tar.gz)
 case $CARCH in
  aarch64) _arch=arm64 ;;
  x86_64) _arch=x64 ;;
@@ -34,24 +34,19 @@ prepare() {
   _npmargs=(--cache "$srcdir"/npm-cache --no-audit --no-fund)
   _electron_ver="$(< /usr/lib/$_electron/version)"
   cd $_name-$pkgver
-  # don't use prebuilt binaries
-  rm -rf node_modules/usb/prebuilds
   # remove unused dependencies
   sed -e /serialport/d -e /cobs/d -e /sanitize-filename/d -i package.json
   HOME="$srcdir"/.electron-gyp npm "${_npmargs[@]}" install --os linux --cpu $_arch \
-    bonjour-service@"$srcdir"/bonjour-service
+    bonjour-service@"$srcdir"/bonjour-service.tar.gz
+  # don't use prebuilt binaries and fix build
+  rm -rf node_modules/usb/prebuilds
+  sed -e 's/-std=c++14/-std=c++17/' -i node_modules/usb/binding.gyp
   # use system node-gyp
   ln -sf /usr/bin/node-gyp node_modules/.bin/node-gyp
 }
 
 build() {
   cd $_name-$pkgver
-  # explicitly build midi binding since electron-builder seems to skip this
-  pushd node_modules/midi
-  node-gyp configure
-  node-gyp build
-  popd
-
   npx "${_npmargs[@]}" electron-builder -- \
     --linux --$_arch --dir \
     -c.electronDist=/usr/lib/$_electron \
