@@ -213,6 +213,8 @@ steps:
 
   - name: Push to AUR
     image: archlinux/archlinux:base-devel
+    # 2026-08-03 AUR is down for maintenance. Remove following line when available again.
+    failure: ignore
     volumes:
       - name: pkgdb
         path: /var/lib/pacman/sync
@@ -261,7 +263,7 @@ platform:
 
 steps:
   - name: Prepare
-    image: lopsided/archlinux-arm64v8:devel
+    image: &arch menci/archlinuxarm:base-devel
     volumes:
       - name: pkgdb
         path: /var/lib/pacman/sync
@@ -274,7 +276,7 @@ steps:
       - run_nobody tools/prepare-build.sh
 
   - name: Generate package list
-    image: lopsided/archlinux-arm64v8:devel
+    image: *arch
     commands:
       - source tools/build-env.sh
       - run_nobody tools/gen-packagelist.sh
@@ -284,7 +286,7 @@ steps:
           - refs/heads/master
 
   - name: Build packages
-    image: lopsided/archlinux-arm64v8:devel
+    image: *arch
     volumes:
       - name: pkgdb
         path: /var/lib/pacman/sync
@@ -338,7 +340,7 @@ steps:
         - failure
 
   - name: Update db
-    image: lopsided/archlinux-arm64v8:devel
+    image: *arch
     commands:
       - source tools/build-env.sh
       - tools/update-db.sh

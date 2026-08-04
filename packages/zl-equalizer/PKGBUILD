@@ -5,8 +5,8 @@
 _projname=ZLEqualizer
 pkgbase=zl-equalizer
 pkgname=($pkgbase $pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
-pkgver=1.2.1
-pkgrel=1
+pkgver=1.2.2
+pkgrel=2
 pkgdesc='Parametric, dynamic equalizer plugin by ZL Audio'
 arch=(x86_64 aarch64)
 url='https://zl-audio.github.io/plugins/zlequalizer2/'
@@ -15,21 +15,21 @@ depends=(fontconfig freetype2 glibc harfbuzz libgcc libstdc++ libx11 libxcursor 
 makedepends=(alsa-lib clang21 cmake ninja python webkit2gtk-4.1)
 options=(!lto)
 groups=(zl-audio pro-audio)
-_juce_hash='542dcc3584982fd3f5997aae7a0b185b5e416780'
+_juce_hash='176e4108cd86190681e96af76bfbe0d62de898da'
 _nlopt_hash='ab0fd1ca07d11d6c2f52c4af0423ec02505352ea'
 _highway_hash='2607d3b5b0113992fe84d3848859eae13b3b52c1'
-_zldsp_fft_hash='455a40bbe39947529e8d60053a4ba44c16d46b4a'
+_zldsp_fft_hash='0215d7e7ee7a338ea3bda855d1bd1cec50aaa922'
 source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/$pkgver.tar.gz"
         "JUCE-$_juce_hash.tar.gz::https://github.com/ZL-Audio/JUCE/archive/$_juce_hash.tar.gz"
         "highway-$_highway_hash.tar.gz::https://github.com/ZL-Audio/highway/archive/$_highway_hash.tar.gz"
         "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz"
         "zldsp_fft-$_zldsp_fft_hash.tar.gz::https://github.com/ZL-Audio/zldsp_fft/archive/$_zldsp_fft_hash.tar.gz"
         'zl-equalizer-cmake-version.patch')
-sha256sums=('5cbd2941b5dfe924487c2c863988e704b3edbf01f58d95bddcc60813d355c71e'
-            '29bd5cdc6380d32814c0929b82472d22f6088c4b2b2a4f7465c0d99777e6bb0f'
+sha256sums=('5bff87ba3d6aaaadf10710842b0b3038f0ab2f12e4d002bf242a80cfaa17cda3'
+            'c0cf095415ff4f51807a6c1ae5ad36a7654092aebb68f601c83f4737b964b53b'
             '741d705781e0b3e406beda8f1f994fbae01321237ce8023a1ad90fbaf7940c25'
             '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d'
-            'eabc31732bd010708212e28d7ff32eecdb9c0c2b07e74ead44454a3a73c35ea3'
+            '6ce2d72ae0fa59ffc7c566d9c763b05ff561b53f46d5116ad3af616139aca40b'
             'bdb49b159ed37c0f58f55a9f6f0d956641f55c34a628311f16298f6936a17cb4')
 install=$pkgbase.install
 
@@ -58,7 +58,7 @@ build() {
     -S $_projname-$pkgver \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -G Ninja \
-    -Wno-dev \
+    -Wno-author \
     -DCMAKE_C_COMPILER=/usr/lib/llvm21/bin/clang-21 \
     -DCMAKE_C_FLAGS="$CFLAGS" \
     -DCMAKE_CXX_COMPILER=/usr/lib/llvm21/bin/clang++ \
