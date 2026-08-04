@@ -5,8 +5,8 @@
 _projname=ZLEqualizer
 pkgbase=zl-equalizer
 pkgname=($pkgbase $pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
-pkgver=1.1.1
-pkgrel=1
+pkgver=1.2.2
+pkgrel=2
 pkgdesc='Parametric, dynamic equalizer plugin by ZL Audio'
 arch=(x86_64 aarch64)
 url='https://zl-audio.github.io/plugins/zlequalizer2/'
@@ -15,43 +15,56 @@ depends=(fontconfig freetype2 glibc harfbuzz libgcc libstdc++ libx11 libxcursor 
 makedepends=(alsa-lib clang21 cmake ninja python webkit2gtk-4.1)
 options=(!lto)
 groups=(zl-audio pro-audio)
-_juce_hash='682426c3bcac80fc4bc78063267a431d5e6c100c'
+_juce_hash='176e4108cd86190681e96af76bfbe0d62de898da'
 _nlopt_hash='ab0fd1ca07d11d6c2f52c4af0423ec02505352ea'
-_kfr_hash='9a35250946f33c0ce61a05fba32a88223211fdae'
+_highway_hash='2607d3b5b0113992fe84d3848859eae13b3b52c1'
+_zldsp_fft_hash='0215d7e7ee7a338ea3bda855d1bd1cec50aaa922'
 source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/$pkgver.tar.gz"
         "JUCE-$_juce_hash.tar.gz::https://github.com/ZL-Audio/JUCE/archive/$_juce_hash.tar.gz"
-        "kfr-$_kfr_hash.tar.gz::https://github.com/ZL-Audio/kfr/archive/$_kfr_hash.tar.gz"
+        "highway-$_highway_hash.tar.gz::https://github.com/ZL-Audio/highway/archive/$_highway_hash.tar.gz"
         "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz"
+        "zldsp_fft-$_zldsp_fft_hash.tar.gz::https://github.com/ZL-Audio/zldsp_fft/archive/$_zldsp_fft_hash.tar.gz"
         'zl-equalizer-cmake-version.patch')
-sha256sums=('e2804e602a5eb73d629caa0ac5add76c96ad7c6ec94e1bb39d5d3425ac63afa4'
-            '8451d9396a5d10db2c210a1667f52c5b85b3861a4010875e636bfc789788561c'
-            '3cd8ff3bb33f38cadf1a4dfad579ae8d78f8c093da44d6847c5d4415a73b8a42'
+sha256sums=('5bff87ba3d6aaaadf10710842b0b3038f0ab2f12e4d002bf242a80cfaa17cda3'
+            'c0cf095415ff4f51807a6c1ae5ad36a7654092aebb68f601c83f4737b964b53b'
+            '741d705781e0b3e406beda8f1f994fbae01321237ce8023a1ad90fbaf7940c25'
             '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d'
+            '6ce2d72ae0fa59ffc7c566d9c763b05ff561b53f46d5116ad3af616139aca40b'
             'bdb49b159ed37c0f58f55a9f6f0d956641f55c34a628311f16298f6936a17cb4')
+install=$pkgbase.install
 
 prepare() {
   cd $_projname-$pkgver
   rm -rf JUCE; ln -sf "$srcdir"/JUCE-$_juce_hash JUCE
-  rm -rf kfr; ln -sf "$srcdir"/kfr-$_kfr_hash kfr
+  rm -rf highway; ln -sf "$srcdir"/highway-$_highway_hash highway
   rm -rf nlopt; ln -sf "$srcdir"/nlopt-$_nlopt_hash nlopt
+  rm -rf source/dsp/fft/zldsp_fft; ln -sf "$srcdir"/zldsp_fft-$_zldsp_fft_hash source/dsp/fft/zldsp_fft
 
   patch -p0 -N -r - -i "$srcdir"/zl-equalizer-cmake-version.patch
 }
 
 build() {
+  if [[ "$CARCH" = "x86_64" ]]; then
+    ZL_HWY_STATIC_TARGET="${ZL_HWY_STATIC_TARGET:-AVX2}"
+  elif [[ "$CARCH" = "aarch64" ]]; then
+    ZL_HWY_STATIC_TARGET="${ZL_HWY_STATIC_TARGET:-NEON}"
+  else
+    echo "Unsupported architecture: $CARCH"
+    exit 1
+  fi
+  
   cmake \
     -B $pkgbase-build \
     -S $_projname-$pkgver \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -G Ninja \
-    -Wno-dev \
+    -Wno-author \
     -DCMAKE_C_COMPILER=/usr/lib/llvm21/bin/clang-21 \
     -DCMAKE_C_FLAGS="$CFLAGS" \
     -DCMAKE_CXX_COMPILER=/usr/lib/llvm21/bin/clang++ \
     -DCMAKE_CXX_FLAGS="$CXXFLAGS" \
     -DCMAKE_SKIP_INSTALL_RPATH=YES \
-    -DKFR_ARCHS="sse2;avx;avx2" \
-    -DKFR_ENABLE_MULTIARCH=ON \
+    -DZL_HWY_STATIC_TARGET="$ZL_HWY_STATIC_TARGET" \
     -DZL_EQ_BAND_NUM=24 \
     -DZL_EQ_HASH="0000000" \
     -DZL_EQ_VERSION="$pkgver" \
