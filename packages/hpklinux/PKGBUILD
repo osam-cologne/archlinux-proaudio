@@ -22,20 +22,20 @@ sha256sums=('82c3f85e28a54ace57ce451370bb2c858199a1f036ec61d9ad6561e470b307b1'
 
 prepare() {
   ls -la
-  cd ${pkgname}_$pkgver-*
+  cd ${pkgname}_$pkgver
   # fix python2 call in asi-python Makefile
   patch -p1 -i ../python.patch
 }
 
 build() {
-  cd ${pkgname}_$pkgver-*
+  cd ${pkgname}_$pkgver
   make -C hpi-lib
   make -C hpi-cli-apps
   make -C asi-python build
 }
 
 package() {
-  cd ${pkgname}_$pkgver-*
+  cd ${pkgname}_$pkgver
   make DESTDIR="$pkgdir" install-prefix=/usr -C hpi-lib install
   make DESTDIR="$pkgdir" install-prefix=/usr -C hpi-cli-apps install
   make CMD_OPTS="--root='$pkgdir' --skip-build --optimize=1" -C asi-python install
