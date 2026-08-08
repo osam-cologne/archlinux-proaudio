@@ -23,6 +23,12 @@ prepare() {
   # Workaround for ~/.m2 not being writable in CI
   mkdir -p "$srcdir"/maven/repo
   sed -e 's|@@REPO_DIR@@|'$srcdir'/maven/repo|' "$srcdir/settings.xml.in" > "$srcdir"/settings.xml
+  # Fix wrong SHA1 checksum for *.pom file
+  cd $_name-$pkgver/maven-local-repository/de/mossgrabers/uitools/2.0.7
+  sha1sum uitools-2.0.7.pom | cut -f 1 -d ' ' > uitools-2.0.7.pom.sha1
+  # Download all dependencies separately before build step
+  cd "$srcdir"/$_name-$pkgver
+  mvn -s "$srcdir"/settings.xml dependency:go-offline
 }
 
 build() {
