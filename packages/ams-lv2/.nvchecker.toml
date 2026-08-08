@@ -1,0 +1,5 @@
+[ams-lv2]
+source = "github"
+github = "blablack/ams-lv2"
+use_max_tag = true
+prefix = "v"
