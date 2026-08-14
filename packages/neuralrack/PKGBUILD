@@ -30,6 +30,8 @@ _pick() {
 
 build() {
   cd $_name-v$pkgver
+  export CFLAGS+=" -Wno-unused-result"
+  export CXXFLAGS+=" -Wno-unused-result"
   make CXX=g++ STRIP=:
 }
 
