@@ -54,7 +54,7 @@ check() {
 
 package_neuralrack() {
   arch=(any)
-  depends+=($pkgbase-{clap,lv2,standalone,vst})
+  depends+=($pkgbase-{clap,lv2,standalone,vst,vst3})
   cd $_name-v$pkgver
   make DESTDIR="$pkgdir" install
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
