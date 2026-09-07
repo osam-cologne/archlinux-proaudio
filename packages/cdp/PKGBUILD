@@ -1,0 +1,54 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+# Contributor: Florian Hülsmann <fh@cbix.de>
+
+_name=CDP8
+pkgname=cdp
+pkgver=8.0
+pkgrel=1
+pkgdesc='Composers Desktop Project suite of sound manipulation tools'
+arch=(aarch64 x86_64)
+url='https://www.composersdesktop.com/'
+license=(LGPL-2.1-only)
+groups=(pro-audio)
+depends=()
+makedepends=(cmake)
+_aaio_ver=0.3.1
+_pa_ver=19.7.0
+source=("$pkgname-$pkgver.tar.gz::https://github.com/ComposersDesktop/$_name/archive/refs/tags/CDP$pkgver.tar.gz"
+        "portaudio-$_pa_ver.tar.gz::https://github.com/PortAudio/portaudio/archive/refs/tags/v$_pa_ver.tar.gz"
+        'no-no-format.patch')
+sha256sums=('2a0e33c3d8bfdd12abf013ea5fcfa33e18c87f66823aa5676667810d726ffdff'
+            '5af29ba58bbdbb7bbcefaaecc77ec8fc413f0db6f4c4e286c40c3e1b83174fa0'
+            '637e91f8d6278ebe522a5e209e7eb403f8e447adef7f7c24fb253530e6e3ff08')
+
+prepare() {
+  cd $_name-CDP$pkgver
+  patch -Np1 -i ../no-no-format.patch
+  cd libaaio
+  bsdtar -xvjf libaaio-$_aaio_ver.tar.bz2
+}
+
+build() {
+  cd $_name-CDP$pkgver/libaaio/libaaio-$_aaio_ver
+  autoreconf -i
+  ./configure
+  make
+
+  cd "$srcdir"/portaudio-$_pa_ver
+  ./configure --with-alsa --with-jack
+  make
+
+  cd "$srcdir"
+  cmake -B build-$pkgname -S $_name-CDP$pkgver \
+    -DUSE_LOCAL_PORTAUDIO=Off \
+    -DPA="$srcdir"/portaudio-$_pa_ver/lib/.libs/libportaudio.a \
+    -DCMAKE_LIBRARY_PATH="$srcdir/$_name-CDP$pkgver/libaaio/libaaio-$_aaio_ver/.libs;/usr/lib" \
+    -DCMAKE_BUILD_TYPE=None \
+    -DCMAKE_INSTALL_PREFIX=/usr \
+    -Wno-dev
+  cmake --build build-$pkgname
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build-$pkgname
+}
