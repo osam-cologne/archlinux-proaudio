@@ -23,7 +23,7 @@ source=(
   "vcl-$_vcl_ref.tar.gz::https://github.com/vectorclass/version2/archive/$_vcl_ref.tar.gz"
 )
 sha256sums=('33ce139a4edb192e8f04d52ca3b08dcf84726f844526872c3d342eafb1c82cda'
-            'b6098367417b0236914e1b773df9c4bb618fb10c306c799b3bcef0fffe8bef18'
+            '844b5216c5293066e89a612e799265e1879bfe378bc62c95c9e363d2025d0949'
             'd2a36ccedf4585b33fdba6cb38000aaa022c5b5306efeff2ad58cca52999c827')
 
 prepare() {
