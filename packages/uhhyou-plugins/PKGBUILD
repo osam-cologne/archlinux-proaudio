@@ -15,7 +15,7 @@ depends=(cairo gcc-libs glibc libxcb xcb-util xcb-util-cursor)
 makedepends=(cmake fontconfig git gtkmm3 libx11 libxkbcommon-x11 pango vst3sdk
              xcb-util-keysyms)
 optdepends=('vst3-host: for running VST3 plugins')
-_pocketfft_ref=0fa0ef5
+_pocketfft_ref=0fa0ef591e38c2758e3184c6c23e497b9f732ffa
 _vcl_ref=4c90584
 source=(
   "$pkgname-$pkgver.tar.gz::https://github.com/ryukau/VSTPlugins/archive/refs/tags/UhhyouPlugins$pkgver.tar.gz"
@@ -23,7 +23,7 @@ source=(
   "vcl-$_vcl_ref.tar.gz::https://github.com/vectorclass/version2/archive/$_vcl_ref.tar.gz"
 )
 sha256sums=('33ce139a4edb192e8f04d52ca3b08dcf84726f844526872c3d342eafb1c82cda'
-            '7dd1a34b48af6c906ace0ce2108b0e0799f6cd8de90e79aa4a8ec1aec81e8eea'
+            'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'
             'd2a36ccedf4585b33fdba6cb38000aaa022c5b5306efeff2ad58cca52999c827')
 
 prepare() {
