@@ -19,8 +19,20 @@ source=(
   "git+https://github.com/ryukau/VSTPlugins#tag=UhhyouPlugins$pkgver"
   'git+https://gitlab.mpcdf.mpg.de/mtr/pocketfft.git/'
   'git+https://github.com/ryukau/vcl_version2#branch=sse2neon_hack'
+  'git+https://github.com/steinbergmedia/vst3sdk'
+  'git+https://github.com/steinbergmedia/vst3_base'
+  'git+https://github.com/steinbergmedia/vst3_cmake'
+  'git+https://github.com/steinbergmedia/vst3_pluginterfaces'
+  'git+https://github.com/steinbergmedia/vst3_public_sdk'
+  'git+https://github.com/steinbergmedia/vstgui'
 )
 sha256sums=('3d37db90de7d420279709cd6b8dd1f2f68fac9287d1d00bcaa9a0a46511a3d73'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP'
             'SKIP'
             'SKIP')
 
@@ -30,12 +42,21 @@ prepare() {
   git submodule init
   git config submodule.lib/pocketfft.url "$srcdir"/pocketfft
   git config submodule.lib/vcl.url "$srcdir"/vcl_version2
+  git config submodule.lib/vst3sdk.url "$srcdir"/vst3sdk
   git -c protocol.file.allow=always submodule update
-  # copy and patch vst3sdk
-  rm -rf lib/vst3sdk
-  cp -r /usr/src/vst3sdk lib
-  cd lib/vst3sdk/vstgui4
-  git apply ../../../ci/linux_patch/cairographicscontext.patch
+  pushd lib/vst3sdk
+  git submodule init
+  git config submodule.base.url "$srcdir"/vst3_base
+  git config submodule.cmake.url "$srcdir"/vst3_cmake
+  git config submodule.pluginterfaces.url "$srcdir"/vst3_pluginterfaces
+  git config submodule.public.sdk.url "$srcdir"/vst3_public_sdk
+  git config submodule.vstgui4.url "$srcdir"/vstgui
+  git -c protocol.file.allow=always submodule update
+  popd
+
+  # patch vst3sdk
+  #cd lib/vst3sdk/vstgui4
+  #git apply ../../../ci/linux_patch/cairographicscontext.patch
 }
 
 build() {
