@@ -12,8 +12,7 @@ url='https://ryukau.github.io/VSTPlugins/'
 license=(GPL-3.0-only)
 groups=(pro-audio vst3-plugins)
 depends=(cairo gcc-libs glibc libxcb xcb-util xcb-util-cursor)
-makedepends=(cmake fontconfig git gtkmm3 libx11 libxkbcommon-x11 pango vst3sdk
-             xcb-util-keysyms)
+makedepends=(cmake fontconfig git gtkmm3 libx11 libxkbcommon-x11 pango xcb-util-keysyms)
 optdepends=('vst3-host: for running VST3 plugins')
 source=(
   "git+https://github.com/ryukau/VSTPlugins#tag=UhhyouPlugins$pkgver"
@@ -53,10 +52,6 @@ prepare() {
   git config submodule.vstgui4.url "$srcdir"/vstgui
   git -c protocol.file.allow=always submodule update
   popd
-
-  # patch vst3sdk
-  #cd lib/vst3sdk/vstgui4
-  #git apply ../../../ci/linux_patch/cairographicscontext.patch
 }
 
 build() {
