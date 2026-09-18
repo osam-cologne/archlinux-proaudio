@@ -44,7 +44,7 @@ prepare() {
   git config submodule.lib/vst3sdk.url "$srcdir"/vst3sdk
   git -c protocol.file.allow=always submodule update
   pushd lib/vst3sdk
-  git submodule init base
+  git submodule init base cmake pluginterfaces public.sdk vstgui4
   git config submodule.base.url "$srcdir"/vst3_base
   git config submodule.cmake.url "$srcdir"/vst3_cmake
   git config submodule.pluginterfaces.url "$srcdir"/vst3_pluginterfaces
