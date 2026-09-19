@@ -5,7 +5,7 @@
 _projname=ZLEqualizer
 pkgbase=zl-equalizer
 pkgname=($pkgbase $pkgbase-lv2 $pkgbase-standalone $pkgbase-vst3)
-pkgver=1.3.1
+pkgver=1.4.0
 pkgrel=1
 pkgdesc='Parametric, dynamic equalizer plugin by ZL Audio'
 arch=(x86_64 aarch64)
@@ -15,21 +15,21 @@ depends=(fontconfig freetype2 glibc harfbuzz libgcc libstdc++ libx11 libxcursor 
 makedepends=(alsa-lib clang21 cmake ninja python webkit2gtk-4.1)
 options=(!lto)
 groups=(zl-audio pro-audio)
-_juce_hash='176e4108cd86190681e96af76bfbe0d62de898da'
+_juce_hash='74c3b9a218f8552c7f33e176755d9020adcdb384'
 _nlopt_hash='ab0fd1ca07d11d6c2f52c4af0423ec02505352ea'
 _highway_hash='2607d3b5b0113992fe84d3848859eae13b3b52c1'
-_zldsp_fft_hash='515059f972572b684e51b6afe09f62636b767b22'
+_zldsp_fft_hash='b741fb7ac6ecdb9ea935730aa34fa89602f3e52f'
 source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/$pkgver.tar.gz"
         "JUCE-$_juce_hash.tar.gz::https://github.com/ZL-Audio/JUCE/archive/$_juce_hash.tar.gz"
         "highway-$_highway_hash.tar.gz::https://github.com/ZL-Audio/highway/archive/$_highway_hash.tar.gz"
         "nlopt-$_nlopt_hash.tar.gz::https://github.com/ZL-Audio/nlopt/archive/$_nlopt_hash.tar.gz"
         "zldsp_fft-$_zldsp_fft_hash.tar.gz::https://github.com/ZL-Audio/zldsp_fft/archive/$_zldsp_fft_hash.tar.gz"
         'zl-equalizer-cmake-version.patch')
-sha256sums=('20222f7f59532f7bd3451c1decc920133ada19dea8bd73e4cb3e942941b77122'
-            'c0cf095415ff4f51807a6c1ae5ad36a7654092aebb68f601c83f4737b964b53b'
+sha256sums=('a2a0e5c8f62790ce53dad736325a2dc9e000fbd6476c73b30939b89695aaf330'
+            '312393041d05afaab08d584f4e8cf5e50e6781e67a3aa6696f0d38af795d2f8d'
             '741d705781e0b3e406beda8f1f994fbae01321237ce8023a1ad90fbaf7940c25'
             '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d'
-            '1ce525fc4396b429cf48f1ede96638c9bd294ef32c48dd78bbab1617175ccdab'
+            '3a002ff9cba82ff8206be1df1a10e690f595e15cfeb0fc6bff930b3d6e71b9b4'
             'bdb49b159ed37c0f58f55a9f6f0d956641f55c34a628311f16298f6936a17cb4')
 install=$pkgbase.install
 
