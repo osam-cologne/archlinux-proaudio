@@ -94,7 +94,7 @@ build() {
   autoreconf -f -i dep/libsamplerate-$_libsamplerate_ver
   _static_deps=(lib/lib{rtaudio,samplerate}.a)
   make -C dep ${_static_deps[@]} \
-    include/{nanovg.h,blendish.h,osdialog.h,pffft.h,tinyexpr.h,FuzzySearchDatabase.hpp}
+    include/{nanovg.h,nanosvg.h,blendish.h,osdialog.h,pffft.h,tinyexpr.h,FuzzySearchDatabase.hpp}
 
   # build Rack
   _ldflags=(-Wl,--whole-archive -static-libstdc++ ${_static_deps[@]/#/dep/}
