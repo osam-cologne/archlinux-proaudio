@@ -5,33 +5,33 @@ _name=clap-host
 # clap-host as pkgname is not ideal due to other hosts using that as a virtual provides
 pkgname=clap-example-host
 pkgver=1.0.3
-pkgrel=3
+pkgrel=4
 pkgdesc='CLAP example audio plugin host'
 arch=(aarch64 x86_64)
 url='https://github.com/free-audio/clap-host'
 license=(MIT)
 depends=(gcc-libs qt6-base)
-makedepends=(catch2-v2 cmake rtaudio rtmidi)
+makedepends=(catch2-v2 cmake git rtaudio rtmidi)
 provides=(clap-host)
 groups=(pro-audio)
-_clap_ref='d6cbd4f'
-_clap_helpers_ref='15dd627'
-source=("$pkgname-$pkgver.tar.gz::https://github.com/free-audio/$_name/archive/refs/tags/$pkgver.tar.gz"
-        "clap-$_clap_ref.tar.gz::https://github.com/free-audio/clap/archive/$_clap_ref.tar.gz"
-        "clap-helpers-$_clap_helpers_ref.tar.gz::https://github.com/free-audio/clap-helpers/archive/$_clap_helpers_ref.tar.gz")
-sha256sums=('03b4a272cde2336024ba34c2b679ab55756e08bc72bc193b8738e9534602b2c2'
-            'e5d52790eaccf124725c7511e18204f2caa25e662d853b0d50b1f4baade00d17'
-            'd1c035d54743346d0e3735bd4d2b4f12868201b8ab49c716cf1e6a3b39fcf04e')
-noextract=(clap-$_clap_ref.tar.gz clap-helpers-$_clap_helpers_ref.tar.gz)
+source=("git+https://github.com/free-audio/$_name#tag=$pkgver"
+        'git+https://github.com/free-audio/clap'
+        'git+https://github.com/free-audio/clap-helpers')
+sha256sums=('84b1e4265abc1481bf29075125ffbda179b065635a39fa4971f267aba23590a8'
+            'SKIP'
+            'SKIP')
 
 prepare() {
-  cd $_name-$pkgver
-  bsdtar -xf ../clap-$_clap_ref.tar.gz -C clap --strip-components 1
-  bsdtar -xf ../clap-helpers-$_clap_helpers_ref.tar.gz -C clap-helpers --strip-components 1
+  cd $_name
+  for _mod in clap clap-helpers; do
+    git submodule init $_mod
+    git config submodule.$_mod.url "$srcdir/$_mod"
+  done
+  git -c protocol.file.allow=always submodule update
 }
 
 build() {
-  cmake -B build-$pkgname -S $_name-$pkgver \
+  cmake -B build-$pkgname -S $_name \
     -DCMAKE_BUILD_TYPE=None \
     -DCMAKE_INSTALL_PREFIX=/usr \
     -DCLAP_BUILD_TESTS=On \
@@ -47,6 +47,6 @@ check() {
 package() {
   depends+=(hicolor-icon-theme librtaudio.so librtmidi.so)
   DESTDIR="$pkgdir" cmake --install build-$pkgname
-  cd $_name-$pkgver
+  cd $_name
   install -vDm644 LICENSE -t "$pkgdir"/usr/share/licenses/$pkgname
 }
