@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 4613155..cfa2e59 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -168,7 +168,7 @@ endif()
+ set(CDPLIB "lib")
+ 
+ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+-    add_definitions("-Wno-format")
++    #add_definitions("-Wno-format")
+ #    add_compiler_flags("-g")
+ endif()
+ 
