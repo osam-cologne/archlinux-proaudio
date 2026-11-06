@@ -1,0 +1,5 @@
+["calfnxt"]
+source = "github"
+github = "boomshop/calfnxt"
+use_max_tag = true
+prefix = "v"
