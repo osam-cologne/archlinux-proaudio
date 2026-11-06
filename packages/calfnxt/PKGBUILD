@@ -1,0 +1,94 @@
+# Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
+
+pkgname=calfnxt
+pkgver=2.16.0
+pkgrel=1
+pkgdesc='Successor to the Calf Studio Gear plugin suite'
+arch=(aarch64 x86_64)
+url='https://calfnxt.org/'
+license=(GPL-3.0-or-later)
+groups=(pro-audio vst3-plugins)
+depends=(
+  glib2
+  glibc
+  gtk3
+  gtk4
+  libgcc
+  libstdc++
+  libsoup3
+  libx11
+  webkit2gtk-4.1
+  webkitgtk-6.0
+)
+makedepends=(cmake git ninja python)
+optdepends=('vst3-host: for running the VST3 plugin')
+source=(
+  "$pkgname-$pkgver.tar.gz::https://github.com/boomshop/calfnxt/archive/refs/tags/v$pkgver.tar.gz"
+  "calfnxt-ui-dist.tar.xz::https://github.com/boomshop/calfnxt/releases/download/v$pkgver/calfnxt-$pkgver-ui-dist.tar.xz"
+  "vst3sdk::git+https://github.com/steinbergmedia/vst3sdk.git#tag=v3.8.0_build_66"
+  'vst3sdk-base::git+https://github.com/steinbergmedia/vst3_base.git'
+  'vst3sdk-cmake::git+https://github.com/steinbergmedia/vst3_cmake.git'
+  'vst3sdk-pluginterfaces::git+https://github.com/steinbergmedia/vst3_pluginterfaces.git'
+  'vst3sdk-public-sdk::git+https://github.com/steinbergmedia/vst3_public_sdk.git'
+)
+sha256sums=('6813d20270526346f5ee8977df65584b309fc026abdad56769b4810313dbe06a'
+            'c8030bca8649681cbcea8f430d54bc3c0ee07d5a9520476bf1d93902f9cbf033'
+            '91c7f2fa5ffeb4817e6466d0db01022e58a3dab479e37478544eaa9a1f13ae2a'
+            'SKIP'
+            'SKIP'
+            'SKIP'
+            'SKIP')
+
+prepare() {
+  local _src="$srcdir/calfnxt-$pkgver"
+  local _sdk="$srcdir/vst3sdk"
+
+  cd "$_src"
+
+  rm -f ui/dist; mkdir -p ui; ln -s "$srcdir"/ui/dist ui/dist
+  rm -f external/vst3sdk; mkdir -p external; ln -s "$srcdir"/vst3sdk external/vst3sdk
+
+  cd "$_sdk"
+  git submodule init base cmake pluginterfaces public.sdk
+  git submodule set-url base "$srcdir"/vst3sdk-base
+  git submodule set-url cmake "$srcdir"/vst3sdk-cmake
+  git submodule set-url pluginterfaces "$srcdir"/vst3sdk-pluginterfaces
+  git submodule set-url public.sdk "$srcdir"/vst3sdk-public-sdk
+  git -c protocol.file.allow=always submodule update
+}
+
+build() {
+  # Project requires build type set to DEVELOPMENT, RELEASE, _DEBUG, or NDEBUG
+  local cmake_options=(
+    -B build-$pkgname
+    -S $pkgname-$pkgver
+    -W no-author
+    -D CMAKE_BUILD_TYPE=Release
+    -D CMAKE_INSTALL_PREFIX=/usr
+    -D CALFNXT_USE_PREBUILT_UI=ON
+    -G Ninja
+  )
+  cmake "${cmake_options[@]}"
+  cmake --build build-$pkgname
+}
+
+package() {
+  DESTDIR="$pkgdir" cmake --install build-$pkgname --prefix /usr
+
+  # De-duplicate fonts
+  install -vDm 644 \
+    "$srcdir"/$pkgname-$pkgver/ui/dist/assets/AUXIcons-*.ttf \
+    "$srcdir"/$pkgname-$pkgver/ui/dist/assets/{Oswald-Regular,PragatiNarrow-Regular}-*.woff2 \
+    -t "$pkgdir"/usr/share/$pkgname/assets
+  for _bundle in "$pkgdir"/usr/lib/vst3/*.vst3; do
+    rm -v "$_bundle"/Contents/Resources/assets/*.{ttf,woff2}
+    for _font in "$pkgdir"/usr/share/$pkgname/assets/*.{ttf,woff2}; do
+      local _fn="${_font##*/}"
+      ln -vs /usr/share/$pkgname/assets/"$_fn" "$_bundle"/Contents/Resources/assets
+    done
+  done
+
+  # additional license information
+  install -vDm 644 "$srcdir"/$pkgname-$pkgver/COPYRIGHT \
+    -t "$pkgdir"/usr/share/licenses/$pkgname
+}
