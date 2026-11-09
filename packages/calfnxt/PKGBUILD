@@ -3,7 +3,7 @@
 pkgname=calfnxt
 pkgver=2.16.0
 pkgrel=1
-pkgdesc='Successor to the Calf Studio Gear plugin suite'
+pkgdesc='Successor to the Calf Studio Gear audio plugin suite with web GUIs'
 arch=(aarch64 x86_64)
 url='https://calfnxt.org/'
 license=(GPL-3.0-or-later)
