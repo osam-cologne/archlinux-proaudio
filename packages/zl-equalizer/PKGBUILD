@@ -15,10 +15,10 @@ depends=(fontconfig freetype2 glibc harfbuzz libgcc libstdc++ libx11 libxcursor 
 makedepends=(alsa-lib clang21 cmake ninja python webkit2gtk-4.1)
 options=(!lto)
 groups=(zl-audio pro-audio)
-_juce_hash='e66b82515320d92a2224651f8ecc1c888a8ec3d8'
+_juce_hash='68492e3382af69761ade554dcd9de73861f914b6'
 _nlopt_hash='ab0fd1ca07d11d6c2f52c4af0423ec02505352ea'
 _highway_hash='2607d3b5b0113992fe84d3848859eae13b3b52c1'
-_zldsp_fft_hash='b741fb7ac6ecdb9ea935730aa34fa89602f3e52f'
+_zldsp_fft_hash='73e96f1c05b8d8846b8a514bdb6e0931e55f3693'
 source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archive/refs/tags/$pkgver.tar.gz"
         "JUCE-$_juce_hash.tar.gz::https://github.com/ZL-Audio/JUCE/archive/$_juce_hash.tar.gz"
         "highway-$_highway_hash.tar.gz::https://github.com/ZL-Audio/highway/archive/$_highway_hash.tar.gz"
@@ -26,11 +26,11 @@ source=("$_projname-$pkgver.tar.gz::https://github.com/ZL-Audio/$_projname/archi
         "zldsp_fft-$_zldsp_fft_hash.tar.gz::https://github.com/ZL-Audio/zldsp_fft/archive/$_zldsp_fft_hash.tar.gz"
         'zl-equalizer-cmake-version.patch')
 sha256sums=('a6b2117b161bdbaa8da152a260b15a65cf57a87098f0ec52d727704a7ab0571e'
-            '493b4d8d30d64b53c6f2845b17dd21cf6cc19b40ca33e9d5d2e0e788bd8034a5'
+            '27e6bb0e190ef480eb4e7d1dca4ec195e7b7a2bbf2dac19c7c0176ae7fcbcbaa'
             '741d705781e0b3e406beda8f1f994fbae01321237ce8023a1ad90fbaf7940c25'
             '1d1afac63eb1f2a13ecafdae52d8df6ffd4efedaffd4fea4ee48c6554583de9d'
-            '3a002ff9cba82ff8206be1df1a10e690f595e15cfeb0fc6bff930b3d6e71b9b4'
-            'bdb49b159ed37c0f58f55a9f6f0d956641f55c34a628311f16298f6936a17cb4')
+            '0690dc7c22315820452d00a5b7c12712255a42e3789118669631ae92bd11fc88'
+            '499a8545ce567ad9727fd3e363a97d95a59acc3faeef3334c97e4cd3fc7fac3b')
 install=$pkgbase.install
 
 prepare() {
@@ -40,7 +40,7 @@ prepare() {
   rm -rf nlopt; ln -sf "$srcdir"/nlopt-$_nlopt_hash nlopt
   rm -rf zldsp_fft; ln -sf "$srcdir"/zldsp_fft-$_zldsp_fft_hash zldsp_fft
 
-  patch -p0 -N -r - -i "$srcdir"/zl-equalizer-cmake-version.patch
+  patch -p1 -N -r - -i "$srcdir"/zl-equalizer-cmake-version.patch
 }
 
 build() {
