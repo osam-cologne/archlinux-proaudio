@@ -1,17 +1,21 @@
---- CMakeLists.txt.orig	2026-03-18 13:33:39.896119646 +0100
-+++ CMakeLists.txt	2026-03-18 13:39:57.192742269 +0100
-@@ -5,7 +5,13 @@
+diff -uNr ZLEqualizer-1.4.2.orig/CMakeLists.txt ZLEqualizer-1.4.2/CMakeLists.txt
+--- ZLEqualizer-1.4.2.orig/CMakeLists.txt	2026-11-08 22:29:05.000000000 +0100
++++ ZLEqualizer-1.4.2/CMakeLists.txt	2026-11-09 09:24:29.463411858 +0100
+@@ -6,7 +6,15 @@
  
- # This tells cmake we have goodies in the /cmake folder
+ # Load the project-specific CMake helpers.
  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake-includes")
 -include(GitVersion)
 +if (NOT DEFINED ZL_EQ_VERSION)
 +    include(GitVersion)
 +else ()
-+    add_definitions(-DZLEQUALIZER_CURRENT_VERSION="${ZL_EQ_VERSION}")
-+    add_definitions(-DZLEQUALIZER_CURRENT_HASH="${ZL_EQ_HASH}")
++    set(CURRENT_VERSION "${ZL_EQ_VERSION}")
++    set(CURRENT_HASH "${ZL_EQ_HASH}")
++    add_definitions(-DZL_PLUGIN_CURRENT_VERSION="${ZL_EQ_VERSION}")
++    add_definitions(-DZL_PLUGIN_CURRENT_HASH="${ZL_EQ_HASH}")
 +    file(WRITE VERSION "${ZL_EQ_VERSION}")
 +endif ()
- include(PamplejuceVersion)
  
- # Configures universal binaries and decides which version of macOS to support
+ # Keep local builds and CI on macOS 12 or newer, including reused build directories.
+ if (CMAKE_HOST_APPLE)
+
