@@ -38,7 +38,21 @@ build() {
 
 check() {
   cd $_name-v$pkgver
-  lv2lint -M pack -s '_Z*' -I bin/$_name "$_plugin_uri"
+
+  local lv2specs=(
+    atom buf-size core data-access dynmanifest event instance-access log midi
+    morph options parameters patch port-groups port-props resize-port schemas
+    state time ui units uri-map urid worker kx-programs kx-properties)
+
+  mkdir -p .lv2
+
+  for spec in ${lv2specs[@]}; do
+    ln -vsf /usr/lib/lv2/$spec.lv2 .lv2
+  done
+
+  echo "Checking $pkgbase.lv2 with lv2lint ..."
+  ln -vsf "../bin/$_name" .lv2
+  LV2_PATH="${PWD}/.lv2" lv2lint -M pack -s '_Z*' "$_plugin_uri"
 }
 
 package_ratatouille() {
