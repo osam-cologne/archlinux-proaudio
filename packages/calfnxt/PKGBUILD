@@ -1,7 +1,7 @@
 # Maintainer: OSAMC <https://github.com/osam-cologne/archlinux-proaudio>
 
 pkgname=calfnxt
-pkgver=2.17.0
+pkgver=2.18.0
 pkgrel=1
 pkgdesc='Successor to the Calf Studio Gear audio plugin suite with web GUIs'
 arch=(aarch64 x86_64)
@@ -27,8 +27,8 @@ source=(
   "calfnxt-ui-dist.tar.xz::https://github.com/boomshop/calfnxt/releases/download/v$pkgver/calfnxt-$pkgver-ui-dist.tar.xz"
   "calfnxt-unvendor-vst3sdk.patch"
 )
-sha256sums=('6dbd8ce6a759e184e0c79c31b9a845425872ad3a125acbd236683ecb62a50743'
-            'dd855ea576f2b27fbc9c6f3cdac210f3db5b249e6c8ea7acb45248733932cd91'
+sha256sums=('e766a9b93e68618cd29ed7a861dedddc6a03e44ae826e9c28b1383d7e9875eb9'
+            '1efed4f5dee7d67b6f0ed5792944e09d16479e4e7f09b2637dcc1aaf17ff9cc7'
             'a747bbb29b140414aa11e8296fc5f5ca205503ad4bacbb14ec541a552a4d5387')
 
 prepare() {
