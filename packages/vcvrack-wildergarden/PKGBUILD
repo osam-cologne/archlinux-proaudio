@@ -4,7 +4,7 @@
 _slug=wildergarden
 _name=wildergarden-vcv
 pkgname=vcvrack-wildergarden
-pkgver=2.1.0
+pkgver=2.2.0
 pkgrel=1
 pkgdesc='Wildergarden VCV Rack modules'
 arch=(aarch64 x86_64)
