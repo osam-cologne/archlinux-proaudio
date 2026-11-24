@@ -1,0 +1,28 @@
+diff -uNr calfnxt-2.16.0.orig/CMakeLists.txt calfnxt-2.16.0/CMakeLists.txt
+--- calfnxt-2.16.0.orig/CMakeLists.txt	2026-11-01 11:55:03.000000000 +0100
++++ calfnxt-2.16.0/CMakeLists.txt	2026-11-09 18:55:19.806023216 +0100
+@@ -35,11 +35,11 @@
+ set(CALFNXT_USER_VST3_DIR "${_calfnxt_default_user_vst3}" CACHE PATH
+   "Default destination for install-user-vst3-copy (overridable via CALFNXT_VST3_DIR env)")
+ 
+-add_subdirectory(external/vst3sdk)
+-
+ # Not visible from the SDK subdir — needed for linuxmain.cpp / smtg_target_add_library_main
+-set(SDK_ROOT "${CMAKE_SOURCE_DIR}/external/vst3sdk")
++set(SDK_ROOT "/usr/src/vst3sdk")
+ set(public_sdk_SOURCE_DIR "${SDK_ROOT}/public.sdk")
++add_subdirectory("${SDK_ROOT}" "external/vst3sdk")
++
+ 
+ find_package(Python3 REQUIRED COMPONENTS Interpreter)
+ 
+diff -uNr calfnxt-2.16.0.orig/common/dsp/CMakeLists.txt calfnxt-2.16.0/common/dsp/CMakeLists.txt
+--- calfnxt-2.16.0.orig/common/dsp/CMakeLists.txt	2026-11-01 11:55:03.000000000 +0100
++++ calfnxt-2.16.0/common/dsp/CMakeLists.txt	2026-11-09 18:46:42.657581284 +0100
+@@ -1,5 +1,5 @@
+ # Shared DSP base (SingleComponent + stereo + WebEditor)
+-set(VST3_SDK_ROOT "${CMAKE_SOURCE_DIR}/external/vst3sdk")
++set(VST3_SDK_ROOT "/usr/src/vst3sdk")
+ 
+ add_library(calfnxt_dsp STATIC
+   effect_base.cpp
